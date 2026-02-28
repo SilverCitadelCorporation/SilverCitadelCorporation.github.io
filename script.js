@@ -1,18 +1,1 @@
-// script.js
-
-// JavaScript for interactive features and navigation
-
-// Example interactive function
-function toggleMenu() {
-    const menu = document.getElementById('menu');
-    menu.classList.toggle('open');
-}
-
-// Function to initialize event listeners
-function init() {
-    const menuButton = document.getElementById('menu-button');
-    menuButton.addEventListener('click', toggleMenu);
-}
-
-// Initialize on document ready
-document.addEventListener('DOMContentLoaded', init);
+// Smooth Scrolling\ndocument.querySelectorAll('a[href^="#"]').forEach(anchor => {\n    anchor.addEventListener('click', function(e) {\n        e.preventDefault();\n        document.querySelector(this.getAttribute('href')).scrollIntoView({\n            behavior: 'smooth'\n        });\n    });\n});\n\n// Navigation Highlighting\nconst sections = document.querySelectorAll('section');\nconst navLinks = document.querySelectorAll('nav a');\n\nwindow.addEventListener('scroll', () => {\n    let current = '';\n    sections.forEach(section => {\n        const sectionTop = section.offsetTop;\n        const sectionHeight = section.clientHeight;\n        if (pageYOffset >= sectionTop - sectionHeight / 3) {\n            current = section.getAttribute('id');\n        }\n    });\n\n    navLinks.forEach(link => {\n        link.classList.remove('active');\n        if (link.classList.contains(current)) {\n            link.classList.add('active');\n        }\n    });\n});\n\n// Mobile Menu Toggle\nconst mobileMenuToggle = document.querySelector('.mobile-menu-toggle');\nconst mobileMenu = document.querySelector('.mobile-menu');\n\nmobileMenuToggle.addEventListener('click', () => {\n    mobileMenu.classList.toggle('active');\n});\n\n// Scroll Animations\nconst animatedItems = document.querySelectorAll('.animate-on-scroll');\n\nconst onScrollAnimation = () => {\n    animatedItems.forEach(item => {\n        const itemTop = item.getBoundingClientRect().top;\n        const windowHeight = window.innerHeight;\n\n        if (itemTop < windowHeight - 100) {\n            item.classList.add('animate');\n        }\n    });\n};\n\nwindow.addEventListener('scroll', onScrollAnimation);
