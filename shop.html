@@ -1,30 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discord Bot Product Listing</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        .product { border: 1px solid #ccc; border-radius: 8px; padding: 20px; margin: 20px 0; }
-        .price { color: red; }
-        .discounted { text-decoration: line-through; }
-    </style>
+<meta charset="UTF-8">
+<title>Silver Citadel Shop</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #0f172a;
+    color: white;
+    text-align: center;
+    padding: 40px;
+}
+
+.product {
+    background: #1e293b;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 500px;
+    margin: auto;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+h1 {
+    margin-bottom: 40px;
+}
+
+.price {
+    font-size: 22px;
+    margin: 10px 0;
+}
+
+.old-price {
+    text-decoration: line-through;
+    color: gray;
+}
+
+button {
+    border: none;
+    padding: 12px 25px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.paypal {
+    background-color: #0070ba;
+    color: white;
+}
+
+.cashapp {
+    background-color: #00c244;
+    color: white;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+</style>
 </head>
+
 <body>
-    <h1>Discord Bot Product Listing</h1>
-    <div class="product">
-        <h2>Discord Bot</h2>
-        <h3>Features:</h3>
-        <ul>
-            <li>Tickets</li>
-            <li>Moderation</li>
-            <li>Banned Words</li>
-            <li>Commands</li>
-        </ul>
-        <p class="price">Original Price: <span class="discounted">$7.99</span></p>
-        <p class="price">Discounted Price: $5.99</p>
-        <button onclick="alert('Thank you for your purchase!')">Purchase</button>
-    </div>
+
+<h1>Silver Citadel Corporation</h1>
+
+<div class="product">
+    <h2>Custom Discord Bot</h2>
+
+    <p>Includes:</p>
+    <ul style="list-style:none; padding:0;">
+        <li>✔ Ticket System</li>
+        <li>✔ Moderation Tools</li>
+        <li>✔ Banned Words Filter</li>
+        <li>✔ Custom Commands</li>
+    </ul>
+
+    <p class="price">
+        <span class="old-price">$7.99</span>
+    </p>
+
+    <p class="price">$5.99 (Limited Discount)</p>
+
+    <a href="https://paypal.me/SilverCitadelCo" target="_blank">
+        <button class="paypal">Pay with PayPal</button>
+    </a>
+
+    <a href="https://cash.app/$SilverCitadelCo" target="_blank">
+        <button class="cashapp">Pay with Cash App</button>
+    </a>
+
+    <p style="margin-top:20px; font-size:14px;">
+        After payment, open a ticket in our Discord and send proof of purchase.
+    </p>
+</div>
+
 </body>
 </html>
