@@ -2,34 +2,46 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Silver Citadel Shop</title>
+<title>Silver Citadel Corporation</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body {
+    margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #0f172a;
     color: white;
-    text-align: center;
+    background: url('banner.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+
+.overlay {
+    background: rgba(0, 0, 0, 0.75);
+    min-height: 100vh;
     padding: 40px;
+    text-align: center;
+}
+
+.logo {
+    width: 220px;
+    margin-bottom: 20px;
 }
 
 .product {
-    background: #1e293b;
+    background: rgba(30, 41, 59, 0.95);
     padding: 30px;
     border-radius: 12px;
-    max-width: 500px;
-    margin: auto;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    max-width: 600px;
+    margin: 40px auto;
+    box-shadow: 0 0 25px rgba(0,0,0,0.6);
 }
 
-h1 {
-    margin-bottom: 40px;
+.knight-img {
+    width: 250px;
+    margin-bottom: 20px;
 }
 
 .price {
     font-size: 22px;
-    margin: 10px 0;
 }
 
 .old-price {
@@ -46,66 +58,58 @@ button {
     margin: 10px;
 }
 
-.paypal {
-    background-color: #0070ba;
-    color: white;
-}
+.paypal { background-color: #0070ba; color: white; }
+.cashapp { background-color: #00c244; color: white; }
+.discord { background-color: #5865F2; color: white; }
 
-.cashapp {
-    background-color: #00c244;
-    color: white;
-}
-
-.discord {
-    background-color: #5865F2;
-    color: white;
-}
-
-button:hover {
-    opacity: 0.85;
-}
+button:hover { opacity: 0.85; }
 </style>
 </head>
 
 <body>
 
-<h1>Silver Citadel Corporation</h1>
+<div class="overlay">
+
+<img src="logo.png" class="logo" alt="Silver Citadel Logo">
+
+<h1>Custom Discord Bot</h1>
 
 <div class="product">
-    <h2>Custom Discord Bot</h2>
 
-    <p>Includes:</p>
-    <ul style="list-style:none; padding:0;">
-        <li>✔ Ticket System</li>
-        <li>✔ Moderation Tools</li>
-        <li>✔ Banned Words Filter</li>
-        <li>✔ Custom Commands</li>
-    </ul>
+<img src="knight.png" class="knight-img" alt="SCK Knight">
 
-    <p class="price">
-        <span class="old-price">$7.99</span>
-    </p>
+<ul style="list-style:none; padding:0;">
+    <li>⚔ Ticket System</li>
+    <li>🛡 Moderation Tools</li>
+    <li>🔥 Banned Words Filter</li>
+    <li>⚡ Custom Commands</li>
+</ul>
 
-    <p class="price">$5.99 (Limited Discount)</p>
+<p class="price">
+    <span class="old-price">$7.99</span>
+</p>
+<p class="price">$5.99 (Limited Offer)</p>
 
-    <a href="https://paypal.me/SilverCitadelCo" target="_blank">
-        <button class="paypal">Pay with PayPal</button>
-    </a>
+<a href="https://paypal.me/SilverCitadelCo" target="_blank">
+    <button class="paypal">Pay with PayPal</button>
+</a>
 
-    <a href="https://cash.app/$SilverCitadelCo" target="_blank">
-        <button class="cashapp">Pay with Cash App</button>
-    </a>
+<a href="https://cash.app/$SilverCitadelCo" target="_blank">
+    <button class="cashapp">Pay with Cash App</button>
+</a>
 
-    <br>
+<br>
 
-    <a href="https://discord.gg/silvercitadel" target="_blank">
-        <button class="discord">Join Our Discord</button>
-    </a>
+<a href="https://discord.gg/silvercitadel" target="_blank">
+    <button class="discord">Join Our Discord</button>
+</a>
 
-    <p style="margin-top:20px; font-size:14px;">
-        After payment, join our Discord server and open a support ticket with proof of purchase.
-    </p>
+<p style="margin-top:20px; font-size:14px;">
+After payment, join our Discord and open a support ticket with proof of purchase.
+</p>
+
 </div>
 
+</div>
 </body>
 </html>
