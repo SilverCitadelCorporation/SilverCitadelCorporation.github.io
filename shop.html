@@ -12,46 +12,176 @@
     <meta name="theme-color" content="#d4af37">
 
     <style>
-        body { margin: 0; font-family: 'Segoe UI', Arial, sans-serif; color: white; background: #1a1a1a url('banner.jpg') no-repeat center center fixed; background-size: cover; }
-        .overlay { background: rgba(0, 0, 0, 0.85); min-height: 100vh; padding: 40px 20px; text-align: center; box-sizing: border-box; }
-        .nav-back { text-align: left; max-width: 600px; margin: 0 auto 20px auto; }
-        .nav-back a { color: #d4af37; text-decoration: none; font-weight: bold; font-size: 14px; }
-        .product { background: rgba(30, 41, 59, 0.95); padding: 35px; border-radius: 12px; max-width: 500px; margin: 0 auto; border: 1px solid rgba(212, 175, 55, 0.4); box-shadow: 0 0 30px rgba(0,0,0,0.6); }
-        .knight-img { width: 220px; transition: 0.3s; margin-bottom: 15px; }
-        .knight-img:hover { transform: scale(1.05); filter: drop-shadow(0 0 15px #d4af37); }
-        ul { list-style: none; padding: 0; margin: 20px 0; text-align: left; display: inline-block; }
-        ul li { margin: 10px 0; font-size: 17px; }
-        .price-box { margin: 20px 0; }
-        .price { font-size: 36px; color: #d4af37; font-weight: bold; }
-        .old-price { text-decoration: line-through; color: #888; font-size: 20px; margin-right: 10px; }
-        .discount-tag { color: #00c244; font-size: 14px; display: block; margin-top: 5px; font-weight: bold; }
-        .trust-bar { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; margin: 20px 0; font-size: 13px; display: flex; justify-content: space-around; border: 1px solid rgba(255,255,255,0.1); }
-        .btn-container { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-        button { width: 100%; max-width: 320px; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.2s; letter-spacing: 1px; }
-        button:hover { opacity: 0.9; transform: translateY(-2px); }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: white;
+            background: #1a1a1a url('banner.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .overlay {
+            background: rgba(0, 0, 0, 0.88);
+            min-height: 100vh;
+            padding: 40px 20px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .nav-back {
+            text-align: left;
+            max-width: 600px;
+            margin: 0 auto 20px auto;
+        }
+
+        .nav-back a {
+            color: #d4af37;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .product {
+            background: rgba(30, 41, 59, 0.95);
+            padding: 35px;
+            border-radius: 12px;
+            max-width: 500px;
+            margin: 0 auto;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 30px rgba(0,0,0,0.6);
+        }
+
+        .knight-img {
+            width: 220px;
+            transition: 0.3s;
+            margin-bottom: 15px;
+        }
+
+        .knight-img:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 15px #d4af37);
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+            text-align: left;
+            display: inline-block;
+        }
+
+        ul li {
+            margin: 10px 0;
+            font-size: 17px;
+        }
+
+        .trust-bar {
+            background: rgba(255,255,255,0.05);
+            padding: 12px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-around;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .price-box {
+            margin: 20px 0;
+        }
+
+        .price {
+            font-size: 36px;
+            color: #d4af37;
+            font-weight: bold;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #888;
+            font-size: 20px;
+            margin-right: 10px;
+        }
+
+        .discount-tag {
+            color: #00c244;
+            font-size: 14px;
+            display: block;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        button {
+            width: 100%;
+            max-width: 320px;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: 0.2s;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
         .paypal { background-color: #0070ba; color: white; }
         .cashapp { background-color: #00c244; color: white; }
-        .discord { background-color: #5865F2; color: white; margin-top: 10px; }
-        .info-section { text-align: left; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(212, 175, 55, 0.2); font-size: 14px; }
-        footer { margin-top: 40px; padding-bottom: 20px; font-size: 12px; color: #777; }
-        footer a { color: #d4af37; text-decoration: none; }
+        .discord { background-color: #5865F2; color: white; }
+
+        .info-section {
+            text-align: left;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            font-size: 14px;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding-bottom: 20px;
+            font-size: 12px;
+            color: #777;
+        }
+
+        footer a {
+            color: #d4af37;
+            text-decoration: none;
+        }
     </style>
 </head>
-<body>
 
+<body>
 <div class="overlay">
+
     <div class="nav-back">
         <a href="index.html">← BACK TO CITADEL</a>
     </div>
 
     <div class="product">
         <img src="knight.png" class="knight-img" alt="Silver Citadel Knight">
+
         <h2>Custom Discord Bot</h2>
+
         <ul>
             <li>⚔️ Advanced Ticket System</li>
             <li>🛡️ Elite Moderation Tools</li>
             <li>🔥 Banned Words Filter</li>
             <li>⚡ Custom Commands</li>
+            <li>💰 Economy & Level System (Optional)</li>
+            <li>🎮 Mini Games (Optional)</li>
         </ul>
 
         <div class="trust-bar">
@@ -62,26 +192,44 @@
 
         <div class="price-box">
             <span class="old-price">$7.99</span>
-            <span class="
-old-price">$7.99</span>
             <span class="price">$5.99</span>
-            <span class="discount-tag">⚔️ Vouch for 5% OFF your next order!</span>
+            <span class="discount-tag">⚔️ Leave a vouch for 5% OFF your next order!</span>
         </div>
 
         <div class="btn-container">
             <a href="https://paypal.me/SilverCitadelCo" target="_blank" style="width:100%; text-decoration:none;">
                 <button class="paypal">Pay with PayPal</button>
             </a>
+
             <a href="https://cash.app/$SilverCitadelCo" target="_blank" style="width:100%; text-decoration:none;">
                 <button class="cashapp">Pay with Cash App</button>
             </a>
-            <a href="https://discord.gg/silvercitadel" target="_blank" style="width:100%; text-decoration:none;">
-                <button class="
+
             <a href="https://discord.gg/silvercitadel" target="_blank" style="width:100%; text-decoration:none;">
                 <button class="discord">Join Discord to Claim</button>
             </a>
         </div>
 
         <div class="info-section">
-            <h3 style="color: #d4af37; margin-top: 0;">How
+            <h3 style="color: #d4af37; margin-top: 0;">How It Works</h3>
+            <p>
+                1. Complete your payment using PayPal or Cash App.<br><br>
+                2. Join our Discord server and open a support ticket.<br><br>
+                3. Provide your server details and customization requests.<br><br>
+                4. Your custom bot will be delivered within 24–48 hours.
+            </p>
 
+            <h3 style="color: #d4af37;">Need Help?</h3>
+            <p>
+                If you have any questions before purchasing, join our Discord server and speak with our team. We’re happy to help.
+            </p>
+        </div>
+
+        <footer>
+            © 2026 Silver Citadel Corporation. All rights reserved.
+        </footer>
+
+    </div>
+</div>
+</body>
+</html>
