@@ -7,18 +7,71 @@
     <link rel="icon" type="image/png" href="logo.png">
     <style>
         body { background-color: #2c3e50; color: #d4af37; font-family: 'Times New Roman', serif; margin: 0; padding: 0; }
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px; background-color: #4a235a; border-bottom: 2px solid #d4af37; }
+        
+        header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 20px; 
+            background-color: #4a235a; 
+            border-bottom: 2px solid #d4af37; 
+        }
+        
         img.logo { height: 80px; }
+        
         nav a { color: #d4af37; text-decoration: none; margin: 0 15px; font-weight: bold; }
-        .hero { text-align: center; padding: 100px 20px; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('banner.jpg') no-repeat center center; background-size: cover; }
-        .hero h1 { font-size: 50px; margin-bottom: 10px; text-shadow: 2px 2px 10px black; }
-        .button { background-color: #d4af37; color: #4a235a; padding: 15px 30px; border: none; font-size: 18px; margin: 10px; cursor: pointer; border-radius: 5px; text-decoration: none; display: inline-block; font-weight: bold; }
-        .button:hover { background-color: #f1c40f; transform: scale(1.05); transition: 0.3s; }
-        .about { text-align: center; padding: 60px 20px; background-color: #3b2c4a; line-height: 1.6; }
-        footer { text-align: center; padding: 20px; background-color: #4a235a; font-size: 12px; }
+        nav a:hover { color: #f1c40f; }
+
+        .hero { 
+            text-align: center; 
+            padding: 120px 20px; 
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('banner.jpg') no-repeat center center; 
+            background-size: cover; 
+        }
+
+        .hero h1 { font-size: 55px; margin-bottom: 10px; text-shadow: 2px 2px 15px black; }
+        
+        .button { 
+            background-color: #d4af37; 
+            color: #4a235a; 
+            padding: 15px 35px; 
+            border: none; 
+            font-size: 18px; 
+            margin: 15px; 
+            cursor: pointer; 
+            border-radius: 5px; 
+            text-decoration: none; 
+            display: inline-block; 
+            font-weight: bold; 
+            transition: 0.3s;
+        }
+
+        .button:hover { background-color: #f1c40f; transform: scale(1.05); }
+
+        .about { 
+            text-align: center; 
+            padding: 80px 20px; 
+            background-color: #3b2c4a; 
+            line-height: 1.8; 
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .about h2 { color: #f1c40f; letter-spacing: 2px; text-transform: uppercase; }
+
+        footer { 
+            text-align: center; 
+            padding: 40px 20px; 
+            background-color: #4a235a; 
+            font-size: 13px; 
+            border-top: 2px solid #d4af37;
+        }
+
+        footer a { color: #d4af37; text-decoration: none; margin-top: 10px; display: inline-block; }
+        footer a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
+
     <header>
         <img src="logo.png" alt="Silver Citadel Logo" class="logo">
         <nav>
@@ -29,22 +82,24 @@
 
     <section class="hero">
         <h1>Silver Citadel Corporation</h1>
-        <p style="font-size: 20px;">Forging Digital Tools with a Knightly Touch</p>
+        <p style="font-size: 22px; margin-bottom: 30px;">Forging Digital Tools with a Knightly Touch</p>
         <a href="shop.html" class="button">Enter the Shop</a>
-        <a href="https://discord.gg/silvercitadel" class="button">Join the Kingdom</a>
+        <a href="https://discord.gg/silvercitadel" target="_blank" class="button">Join the Kingdom</a>
     </section>
 
     <section class="about">
         <h2>Who We Are</h2>
-        <p style="max-width: 700px; margin: auto;">
+        <p style="max-width: 750px; margin: auto; font-size: 18px;">
             We specialize in high-performance Discord bots and custom digital assets. 
             Whether you need a powerful moderation system or a custom-coded tool for your community, 
-            the Citadel is here to build it.
+            the Citadel is here to build it with precision and honor.
         </p>
     </section>
 
     <footer>
         <p>&copy; 2026 Silver Citadel Corporation. All Rights Reserved.</p>
+        <a href="tos.html">Terms of Service</a>
     </footer>
+
 </body>
 </html>
