@@ -2,136 +2,52 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Citadel Shop - Custom Bot</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to the Silver Citadel</title>
     <link rel="icon" type="image/png" href="logo.png">
+    <meta property="og:title" content="Silver Citadel Corporation">
+    <meta property="og:description" content="Forging custom Discord bots and digital tools with a knightly touch.">
+    <meta property="og:image" content="logo.png">
+    <meta name="theme-color" content="#d4af37">
     <style>
-        body { margin: 0; font-family: 'Segoe UI', Arial, sans-serif; color: white; background: #1a1a1a url('banner.jpg') no-repeat center center fixed; background-size: cover; }
-        
-        .overlay { background: rgba(0, 0, 0, 0.85); min-height: 100vh; padding: 40px 20px; text-align: center; box-sizing: border-box; }
-        
-        .nav-back { text-align: left; max-width: 600px; margin: 0 auto 20px auto; }
-        .nav-back a { color: #d4af37; text-decoration: none; font-weight: bold; font-size: 14px; }
-
-        .product { 
-            background: rgba(30, 41, 59, 0.95); 
-            padding: 35px; 
-            border-radius: 12px; 
-            max-width: 500px; 
-            margin: 0 auto; 
-            border: 1px solid rgba(212, 175, 55, 0.4); 
-            box-shadow: 0 0 30px rgba(0,0,0,0.6); 
-        }
-
-        .knight-img { width: 220px; transition: 0.3s; margin-bottom: 15px; }
-        .knight-img:hover { transform: scale(1.05); filter: drop-shadow(0 0 15px #d4af37); }
-
-        ul { list-style: none; padding: 0; margin: 20px 0; text-align: left; display: inline-block; }
-        ul li { margin: 10px 0; font-size: 17px; }
-
-        .price-box { margin: 20px 0; }
-        .price { font-size: 36px; color: #d4af37; font-weight: bold; }
-        .old-price { text-decoration: line-through; color: #888; font-size: 20px; margin-right: 10px; }
-
-        .trust-bar { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; margin: 20px 0; font-size: 13px; display: flex; justify-content: space-around; border: 1px solid rgba(255,255,255,0.1); }
-
-        .btn-container { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-        
-        button { 
-            width: 100%; 
-            max-width: 320px; 
-            padding: 15px; 
-            border: none; 
-            border-radius: 8px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            text-transform: uppercase; 
-            transition: 0.2s;
-            letter-spacing: 1px;
-        }
-
-        button:hover { opacity: 0.9; transform: translateY(-2px); }
-        button:active { transform: translateY(0); }
-
-        .paypal { background-color: #0070ba; color: white; }
-        .cashapp { background-color: #00c244; color: white; }
-        .discord { background-color: #5865F2; color: white; margin-top: 10px; }
-
-        .info-section { text-align: left; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(212, 175, 55, 0.2); font-size: 14px; }
-        .info-section h3 { color: #d4af37; margin-bottom: 10px; font-size: 18px; }
-        
-        footer { margin-top: 40px; font-size: 12px; color: #777; }
-        footer a { color: #777; text-decoration: none; }
+        body { background-color: #2c3e50; color: #d4af37; font-family: 'Times New Roman', serif; margin: 0; padding: 0; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px; background-color: #4a235a; border-bottom: 2px solid #d4af37; }
+        img.logo { height: 80px; }
+        nav a { color: #d4af37; text-decoration: none; margin: 0 15px; font-weight: bold; transition: 0.3s; }
+        nav a:hover { color: #f1c40f; }
+        .hero { text-align: center; padding: 120px 20px; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('banner.jpg') no-repeat center center; background-size: cover; }
+        .hero h1 { font-size: 55px; margin-bottom: 10px; text-shadow: 2px 2px 15px black; }
+        .button { background-color: #d4af37; color: #4a235a; padding: 15px 35px; border: none; font-size: 18px; margin: 15px; cursor: pointer; border-radius: 5px; text-decoration: none; display: inline-block; font-weight: bold; transition: 0.3s; }
+        .button:hover { background-color: #f1c40f; transform: scale(1.05); }
+        .about { text-align: center; padding: 80px 20px; background-color: #3b2c4a; line-height: 1.8; border-top: 1px solid rgba(212, 175, 55, 0.2); }
+        footer { text-align: center; padding: 40px 20px; background-color: #4a235a; font-size: 13px; border-top: 2px solid #d4af37; }
+        footer a { color: #d4af37; text-decoration: none; }
     </style>
 </head>
 <body>
-
-<div class="overlay">
-    <div class="nav-back">
-        <a href="index.html">← BACK TO CITADEL</a>
-    </div>
-
-    <div class="product">
-        <img src="knight.png" class="knight-img" alt="Silver Citadel Knight">
-        
-        <h2>Custom Discord Bot</h2>
-        
-        <ul>
-            <li>⚔️ Advanced Ticket System</li>
-            <li>🛡️ Elite Moderation Tools</li>
-            <li>🔥 Banned Words Filter</li>
-            <li>⚡ Custom Commands</li>
-        </ul>
-
-        <div class="trust-bar">
-            <span>✅ 99.9% Uptime</span>
-            <span>🛡️ Secure</span>
-            <span>🚀 Quick Setup</span>
-        </div>
-
-        <div class="price-box">
-            <span class="old-price">$7.99</span>
-            <span class="price">$5.99</span>
-        </div>
-
-        <div class="btn-container">
-            <a href="https://paypal.me/SilverCitadelCo" target="_blank" style="width:100%;">
-                <button class="paypal">Pay with PayPal</button>
-            </a>
-            <a href="https://cash.app/$SilverCitadelCo" target="_blank" style="width:100%;">
-                <button class="cashapp">Pay with Cash App</button>
-            </a>
-            <a href="https://discord.gg/silvercitadel" target="_blank" style="width:100%;">
-                <button class="discord">Join Discord to Claim</button>
-            </a>
-        </div>
-
-        <div class="info-section">
-            <h3>How to Claim</h3>
-            <p>1. Complete payment via PayPal or Cash App.</p>
-            <p>2. Join our Discord and open a <strong>#support-ticket</strong>.</p>
-            <p>3. Send a screenshot of your receipt to receive your bot files!</p>
-        </div>
-    </div>
-
+    <header>
+        <img src="logo.png" alt="Silver Citadel Logo" class="logo">
+        <nav>
+            <a href="shop.html">Shop</a>
+            <a href="https://discord.gg/silvercitadel" target="_blank">Discord</a>
+        </nav>
+    </header>
+    <section class="hero">
+        <h1>Silver Citadel Corporation</h1>
+        <p style="font-size: 22px; margin-bottom: 30px;">Forging Digital Tools with a Knightly Touch</p>
+        <a href="shop.html" class="button">Enter the Shop</a>
+        <a href="https://discord.gg/silvercitadel" target="_blank" class="button">Join the Kingdom</a>
+    </section>
+    <section class="about">
+        <h2>Who We Are</h2>
+        <p style="max-width: 750px; margin: auto; font-size: 18px;">
+            In an age of digital chaos, the <strong>Silver Citadel</strong> stands as a bastion of order. 
+            We forge ironclad solutions for community leaders—bots built to protect your borders and serve your citizens with precision.
+        </p>
+    </section>
     <footer>
-        <p>&copy; 2026 Silver Citadel Corporation | <a href="tos.html">Terms of Service</a></p>
-        <div style="margin-top: 30px; padding: 20px; background: rgba(212, 175, 55, 0.05); border: 1px dashed #d4af37; border-radius: 12px; text-align: left;">
-            <h3 style="color: #d4af37; text-align: center; margin-top: 0; font-size: 18px;">🛡️ THE ROADMAP</h3>
-            <ul style="list-style: '→ '; padding-left: 20px; font-size: 14px; color: #ddd; line-height: 1.6;">
-                <li><strong>Minecraft Plugins:</strong> Custom Java tools.</li>
-                <li><strong>Server Templates:</strong> Professional layouts.</li>
-                <li><strong>Graphic Armory:</strong> Custom banners and icons.</li>
-            </ul>
-            
-            <div style="margin-top: 15px; display: flex; justify-content: center; gap: 10px; opacity: 0.8;">
-                <span style="font-size: 10px; background: #334155; padding: 4px 8px; border-radius: 4px; letter-spacing: 1px;">🔒 SSL SECURE</span>
-                <span style="font-size: 10px; background: #334155; padding: 4px 8px; border-radius: 4px; letter-spacing: 1px;">✔️ VERIFIED DEV</span>
-            </div>
-        </div>
-   
- </footer>
-</div>
-
+        <p>&copy; 2026 Silver Citadel Corporation. All Rights Reserved.</p>
+        <p><a href="tos.html">Terms of Service</a> | <span style="color: #00c244;">●</span> All Systems Operational</p>
+    </footer>
 </body>
 </html>
