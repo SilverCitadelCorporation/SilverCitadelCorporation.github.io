@@ -17,7 +17,7 @@ body {
 .overlay {
     background: rgba(0, 0, 0, 0.75);
     min-height: 100vh;
-    padding: 40px;
+    padding: 40px 20px; /* Added side padding for mobile */
     text-align: center;
 }
 
@@ -33,36 +33,69 @@ body {
     max-width: 600px;
     margin: 40px auto;
     box-shadow: 0 0 25px rgba(0,0,0,0.6);
+    border: 1px solid rgba(212, 175, 55, 0.3); /* Subtle gold border */
 }
 
 .knight-img {
     width: 250px;
     margin-bottom: 20px;
+    transition: transform 0.3s ease; /* Smooth hover effect */
+}
+
+.knight-img:hover {
+    transform: scale(1.05); /* Slight zoom when hovering */
+}
+
+/* New Trust Banner Style */
+.trust-bar {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px;
+    border-radius: 8px;
+    margin: 20px 0;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
 }
 
 .price {
-    font-size: 22px;
+    font-size: 26px; /* Slightly larger */
+    font-weight: bold;
+    color: #d4af37;
 }
 
 .old-price {
     text-decoration: line-through;
-    color: gray;
+    color: #888;
+    font-size: 18px;
 }
 
 button {
     border: none;
-    padding: 12px 25px;
+    padding: 14px 25px;
     font-size: 16px;
     border-radius: 8px;
     cursor: pointer;
     margin: 10px;
+    width: 100%; /* Full width on mobile */
+    max-width: 240px; /* Limit on desktop */
+    font-weight: bold;
+    transition: opacity 0.2s, transform 0.1s;
 }
+
+button:active { transform: scale(0.98); }
 
 .paypal { background-color: #0070ba; color: white; }
 .cashapp { background-color: #00c244; color: white; }
-.discord { background-color: #5865F2; color: white; }
+.discord { background-color: #5865F2; color: white; margin-top: 20px; }
 
 button:hover { opacity: 0.85; }
+
+ul li {
+    font-size: 18px;
+    margin: 12px 0;
+}
 </style>
 </head>
 
@@ -70,46 +103,25 @@ button:hover { opacity: 0.85; }
 
 <div class="overlay">
 
-<img src="logo.png" class="logo" alt="Silver Citadel Logo">
+    <img src="logo.png" class="logo" alt="Silver Citadel Logo">
 
-<h1>Custom Discord Bot</h1>
+    <h1>Custom Discord Bot</h1>
 
-<div class="product">
+    <div class="product">
 
-<img src="knight.png" class="knight-img" alt="SCK Knight">
+        <img src="knight.png" class="knight-img" alt="SCK Knight">
 
-<ul style="list-style:none; padding:0;">
-    <li>⚔ Ticket System</li>
-    <li>🛡 Moderation Tools</li>
-    <li>🔥 Banned Words Filter</li>
-    <li>⚡ Custom Commands</li>
-</ul>
+        <ul style="list-style:none; padding:0;">
+            <li>⚔️ Ticket System</li>
+            <li>🛡️ Moderation Tools</li>
+            <li>🔥 Banned Words Filter</li>
+            <li>⚡ Custom Commands</li>
+        </ul>
 
-<p class="price">
-    <span class="old-price">$7.99</span>
-</p>
-<p class="price">$5.99 (Limited Offer)</p>
+        <div class="trust-bar">
+            <span>✅ 99.9% Uptime</span>
+            <span>🛡️ Secure</span>
+            <span>🚀 Quick Setup</span>
+        </div>
 
-<a href="https://paypal.me/SilverCitadelCo" target="_blank">
-    <button class="paypal">Pay with PayPal</button>
-</a>
-
-<a href="https://cash.app/$SilverCitadelCo" target="_blank">
-    <button class="cashapp">Pay with Cash App</button>
-</a>
-
-<br>
-
-<a href="https://discord.gg/silvercitadel" target="_blank">
-    <button class="discord">Join Our Discord</button>
-</a>
-
-<p style="margin-top:20px; font-size:14px;">
-After payment, join our Discord and open a support ticket with proof of purchase.
-</p>
-
-</div>
-
-</div>
-</body>
-</html>
+        <p style="margin-
