@@ -254,11 +254,11 @@ footer {
 
         <div class="price-box">
             <span class="old-price">$7.99</span>
-            <span class="price" data-price="5.99">$5.99</span>
+            <span class="price">$5.99</span>
         </div>
 
         <div class="loyalty-box">
-            🎉 After completing your purchase, you will receive a 5% OFF discount automatically for your next order!
+            🎉 After completing your purchase, you will receive a 5% OFF discount code for your next order.
         </div>
 
         <div class="btn-container">
@@ -274,7 +274,7 @@ footer {
                 2. Join our Discord server and open a support ticket.<br>
                 3. Provide your server details and customization requests.<br>
                 4. Receive your custom bot delivery within 1–2 hours.<br>
-                5. The 5% OFF discount will be applied automatically on your next purchase.
+                5. Receive 5% OFF your next purchase as a loyalty reward.
             </p>
 
             <h3>Need Help?</h3>
@@ -288,29 +288,163 @@ footer {
     &copy; 2026 Silver Citadel Corporation. All rights reserved.
 </footer>
 
-<!-- LOYALTY DISCOUNT SCRIPT -->
+</body>
+</html>
+
+I see what you want: instead of just telling users they “will receive a 5% OFF code,” you want the 5% discount to apply automatically on their next purchase. Since your current site is just HTML with buttons linking to PayPal and Cash App, we need some JavaScript to handle this kind of automatic discount.
+
+Because PayPal/Cash App links themselves don’t store state, the simplest way is to store the discount in the browser using localStorage. Then, when the user visits the shop again, the 5% discount can automatically reduce the price displayed.
+
+Here’s how you can do it:
+
+1️⃣ Add a data-price attribute to your product price
+
+Replace your price HTML:
+
+<div class="price-box">
+    <span class="old-price">$7.99</span>
+    <span class="price" data-price="5.99">$5.99</span>
+</div>
+
+The data-price will hold the original price so we can calculate discounts.
+
+2️⃣ Add a “Redeem 5%” automatic system with JavaScript
+
+Just before your </body> tag, add:
+
 <script>
+// Check if user has a 5% discount stored
 window.addEventListener('DOMContentLoaded', () => {
     const priceElem = document.querySelector('.price');
     const originalPrice = parseFloat(priceElem.getAttribute('data-price'));
 
-    // Apply 5% discount if user has it
+    // If a discount exists in localStorage, apply it
     const discountActive = localStorage.getItem('sc_loyalty_discount');
     if (discountActive === 'true') {
         const discountedPrice = (originalPrice * 0.95).toFixed(2);
         priceElem.textContent = `$${discountedPrice}`;
-        localStorage.removeItem('sc_loyalty_discount');
+        localStorage.removeItem('sc_loyalty_discount'); // Use once
         alert('🎉 Your 5% loyalty discount has been applied!');
     }
 });
 
-// Set loyalty discount on purchase click
+// When user clicks PayPal or Cash App, save the discount for next time
 document.querySelectorAll('.btn-container a').forEach(link => {
     link.addEventListener('click', () => {
         localStorage.setItem('sc_loyalty_discount', 'true');
     });
 });
 </script>
+
+✅ How it works:
+
+When the user clicks a payment button, it sets sc_loyalty_discount in localStorage.
+
+Next time the user visits the shop page, the script reads that value, applies 5% off automatically, and then removes the flag so it’s only used once.
+
+The user sees the discounted price and an alert confirming it.
+
+This keeps everything client-side. If later you want it to be secure across devices/accounts, you’d need a proper backend with login/checkout, but this works great for a simple shop.
+
+If you want, I can rewrite your shop HTML with this integrated so the 5% discount is ready to go, including updating the button links and prices automatically.
+
+Do you want me to do that?
+
+here my main html add anything u need <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Silver Citadel Corporation</title>
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="stylesheet" href="css/style.css">
+
+<meta property="og:title" content="Silver Citadel Corporation">
+<meta property="og:description" content="Enter the world of Silver Citadel – medieval, epic, and digital!">
+<meta property="og:image" content="logo.png">
+<meta name="theme-color" content="#d4af37">
+</head>
+<body>
+
+<header>
+    <img src="logo.png" alt="Silver Citadel Logo" style="width:120px; margin-bottom:10px;">
+    <h1>Welcome to Silver Citadel</h1>
+</header>
+
+<nav>
+    <a href="index.html">Home</a> |
+    <a href="about.html">About</a> |
+    <a href="shop.html">Shop</a> |
+    <a href="contact.html">Contact</a> |
+    <a href="tos.html">Terms of Service</a>
+</nav>
+
+<div class="overlay" style="background-color: rgba(0,0,0,0.6); padding:50px; text-align:center; min-height:80vh;">
+    <h2 style="font-size:32px; margin-bottom:30px;">Step into the Realm of Silver Citadel</h2>
+    <p style="font-size:18px; max-width:700px; margin:auto; line-height:1.6;">
+        Explore our custom Discord bots, digital creations, and medieval-themed adventures. Join our community and bring the Silver Citadel to life!
+    </p>
+
+    <div style="margin-top:40px;">
+        <a href="shop.html"><button class="button" style="padding:15px 30px; font-size:18px;">Enter the Shop</button></a>
+    </div>
+</div>
+
+<footer style="text-align:center; padding:20px; color:#d4af37;">
+    &copy; 2026 Silver Citadel Corporation. All rights reserved.
+</footer>
+
+<style>
+body {
+    margin:0;
+    font-family:'Garamond', serif;
+    background: url('background.png') no-repeat center center fixed;
+    background-size: cover;
+    color:#d4af37;
+}
+
+header h1 {
+    margin:0;
+    font-size:36px;
+}
+
+nav {
+    text-align:center;
+    background-color: rgba(0,0,0,0.7);
+    padding:10px 0;
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+nav a {
+    color:#d4af37;
+    text-decoration:none;
+    margin:0 15px;
+    font-weight:bold;
+    font-size:16px;
+}
+
+nav a:hover {
+    color:#fff;
+}
+
+.button {
+    background-color:#4a235a;
+    color:#d4af37;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    transition:0.3s;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+.button:hover {
+    background-color:#d4af37;
+    color:#4a235a;
+}
+</style>
 
 </body>
 </html>
