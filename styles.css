@@ -1,57 +1,88 @@
-.body {
-    background-color: #2c3e50; /* Charcoal */
-    color: #d4af37; /* Gold */
-    font-family: 'Garamond', serif; /* Medieval-like font */
+body {
+    background-color: #1a1a1a;
+    color: #d4af37;
+    font-family: 'Garamond', serif;
     margin: 0;
     padding: 0;
-    transition: background-color 0.5s ease;
 }
 
-/* Responsive Typography */
+.overlay {
+    background: rgba(0,0,0,0.88);
+    min-height: 100vh;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
 h1, h2, h3 {
-    color: #d4af37; /* Gold */
+    color: #d4af37;
     text-align: center;
+    text-shadow: 1px 1px #4a235a;
 }
 
-/* Links */
 a {
-    color: #d4af37; /* Gold */
+    color: #d4af37;
     text-decoration: none;
-    transition: color 0.3s ease;
 }
-
 a:hover {
-    color: #4a235a; /* Deep Purple */
+    color: #fff;
+    text-shadow: 1px 1px 5px #4a235a;
 }
 
-/* Buttons */
 .button {
-    background-color: #4a235a; /* Deep Purple */
-    color: #d4af37; /* Gold */
+    background-color: #4a235a;
+    color: #d4af37;
     border: none;
     padding: 10px 20px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    border-radius: 6px;
 }
-
 .button:hover {
-    background-color: #d4af37; /* Gold */
-    color: #4a235a; /* Deep Purple */
+    background-color: #d4af37;
+    color: #4a235a;
 }
 
-/* Media Queries for Responsive Design */
-@media (max-width: 768px) {
-    body {
-        font-size: 14px; /* Slightly smaller on mobile */
+.main-card, .content-card, .shop-card {
+    background: rgba(30, 41, 59, 0.95);
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 600px;
+    margin: 0 auto 50px auto;
+    border: 2px solid #d4af37;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.7);
+}
+
+.shop-card ul, .main-card p, .content-card p {
+    font-size: 16px;
+    line-height: 1.5em;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 6px;
+    border: none;
+}
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    font-size: 12px;
+    color: #888;
+}
+
+/* Social links */
+.social-links a {
+    display: inline-block;
+    margin: 0 10px;
+}
+
+/* Responsive */
+@media screen and (max-width: 500px) {
+    .main-card, .content-card, .shop-card {
+        padding: 20px;
+        margin: 20px 10px;
     }
-}
-
-/* Animations */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.fade-in {
-    animation: fadeIn 1s ease forwards;
 }
