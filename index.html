@@ -2,91 +2,167 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>Silver Citadel Corporation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to the Silver Citadel</title>
     <link rel="icon" type="image/png" href="logo.png">
-    
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+
     <script>
         async function sendReceipt() {
-            // REPLACE THIS WITH YOUR ACTUAL WEBHOOK URL
-            const webhookURL = "https://discord.com/api/webhooks/1478165921829884067/EYSwADuMHd_YdDw1uWKkY8LaZmj-fCUOQdkpYsQmwlNV7OBtiMmTPK9nTV-HwRgAxpUh"; 
-            
+            const webhookURL = "https://discord.com/api/webhooks/your_id_here";
+
             const message = {
                 content: "🛡️ **New Receipt from Silver Citadel**",
                 embeds: [{
                     title: "Transaction Successful",
-                    description: "A customer has interacted with the Citadel Shop.",
+                    description: "A noble customer has made a purchase.",
                     fields: [
                         { name: "Item", value: "Knightly Custom Bot", inline: true },
                         { name: "Status", value: "Paid", inline: true }
                     ],
-                    color: 13938487 // Gold color (#d4af37)
+                    color: 13938487
                 }]
             };
 
             try {
-                const response = await fetch(webhookURL, {
+                await fetch(webhookURL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(message)
                 });
-
-                if (response.ok) {
-                    alert("Receipt sent to the Discord Kingdom!");
-                } else {
-                    alert("Failed to send receipt. Check your Webhook URL.");
-                }
             } catch (error) {
-                console.error("Error:", error);
-                alert("An error occurred.");
+                console.error("Webhook error:", error);
             }
         }
     </script>
 
     <style>
-        /* Your existing CSS (I'm keeping it the same) */
-        body { background-color: #2c3e50; color: #d4af37; font-family: 'Times New Roman', serif; margin: 0; padding: 0; }
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px; background-color: #4a235a; border-bottom: 2px solid #d4af37; }
-        img.logo { height: 80px; }
-        nav a { color: #d4af37; text-decoration: none; margin: 0 15px; font-weight: bold; }
-        .hero { text-align: center; padding: 120px 20px; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('banner.jpg') no-repeat center center; background-size: cover; }
-        .hero h1 { font-size: 55px; margin-bottom: 10px; text-shadow: 2px 2px 15px black; }
-        .button { background-color: #d4af37; color: #4a235a; padding: 15px 35px; border: none; font-size: 18px; margin: 15px; cursor: pointer; border-radius: 5px; text-decoration: none; display: inline-block; font-weight: bold; transition: 0.3s; }
-        .button:hover { background-color: #f1c40f; transform: scale(1.05); }
-        .about { text-align: center; padding: 80px 20px; background-color: #3b2c4a; line-height: 1.8; border-top: 1px solid rgba(212, 175, 55, 0.2); }
-        footer { text-align: center; padding: 40px 20px; background-color: #4a235a; font-size: 13px; border-top: 2px solid #d4af37; }
+        body {
+            margin: 0;
+            background-color: #2c3e50;
+            color: #d4af37;
+            font-family: 'Cinzel', serif;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #4a235a;
+            border-bottom: 2px solid #d4af37;
+        }
+
+        img.logo {
+            height: 80px;
+        }
+
+        nav a {
+            color: #d4af37;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: white;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 120px 20px;
+            background:
+                linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                url('banner.jpg') no-repeat center center;
+            background-size: cover;
+        }
+
+        .hero h1 {
+            font-size: 55px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 15px black;
+        }
+
+        .button {
+            background-color: #d4af37;
+            color: #4a235a;
+            padding: 15px 35px;
+            border: none;
+            font-size: 18px;
+            margin: 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .button:hover {
+            background-color: #f1c40f;
+            transform: scale(1.05);
+        }
+
+        .about {
+            text-align: center;
+            padding: 80px 20px;
+            background-color: #3b2c4a;
+            line-height: 1.8;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: #4a235a;
+            font-size: 13px;
+            border-top: 2px solid #d4af37;
+        }
+
+        footer a {
+            color: #d4af37;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: white;
+        }
     </style>
 </head>
+
 <body>
 
-    <header>
-        <img src="logo.png" alt="Silver Citadel Logo" class="logo">
-        <nav>
-            <a href="shop.html">Shop</a>
-            <a href="https://discord.gg/silvercitadel" target="_blank">Discord</a>
-        </nav>
-    </header>
+<header>
+    <img src="logo.png" alt="Silver Citadel Logo" class="logo">
+    <nav>
+        <a href="shop.html">Shop</a>
+        <a href="https://discord.gg/silvercitadel" target="_blank">Discord</a>
+    </nav>
+</header>
 
-    <section class="hero">
-        <h1>Silver Citadel Corporation</h1>
-        <p style="font-size: 22px; margin-bottom: 30px;">Forging Digital Tools with a Knightly Touch</p>
-        
-        <button onclick="sendReceipt()" class="button">Test Discord Receipt</button>
-        
-        <a href="https://discord.gg/silvercitadel" target="_blank" class="button">Join the Kingdom</a>
-    </section>
+<section class="hero">
+    <h1>Silver Citadel Corporation</h1>
+    <p style="font-size: 22px; margin-bottom: 30px;">
+        Forging Digital Tools with a Knightly Touch
+    </p>
 
-    <section class="about">
-        <h2>Who We Are</h2>
-        <p style="max-width: 750px; margin: auto; font-size: 18px;">
-            We specialize in high-performance Discord bots and custom digital assets.
-        </p>
-    </section>
+    <a href="https://discord.gg/silvercitadel" target="_blank" class="button">
+        Join the Kingdom
+    </a>
+</section>
 
-    <footer>
-        <p>&copy; 2026 Silver Citadel Corporation. All Rights Reserved.</p>
-        <a href="tos.html">Terms of Service</a>
-    </footer>
+<section class="about">
+    <h2>Who We Are</h2>
+    <p style="max-width: 750px; margin: auto; font-size: 18px;">
+        We specialize in high-performance Discord bots and custom digital assets.
+    </p>
+</section>
+
+<footer>
+    <p>&copy; 2026 Silver Citadel Corporation. All Rights Reserved.</p>
+    <a href="tos.html">Terms of Service</a>
+</footer>
 
 </body>
 </html>
