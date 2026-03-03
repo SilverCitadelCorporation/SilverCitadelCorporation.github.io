@@ -1,141 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Silver Citadel Corporation</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="logo.png">
+<meta charset="UTF-8">
+<title>Silver Citadel Corporation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="https://via.placeholder.com/80x80?text=Logo">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
 
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+<style>
+    /* Base styles */
+    body {
+        margin: 0;
+        background-color: #1b1b2f; /* dark royal blue */
+        color: #d4af37; /* gold */
+        font-family: 'Cinzel', serif;
+        scroll-behavior: smooth;
+    }
 
-    <script>
-        async function sendReceipt() {
-            const webhookURL = "https://discord.com/api/webhooks/your_id_here";
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 40px;
+        background-color: #2c1a47; /* deep royal purple */
+        border-bottom: 3px solid #d4af37;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
 
-            const message = {
-                content: "🛡️ **New Receipt from Silver Citadel**",
-                embeds: [{
-                    title: "Transaction Successful",
-                    description: "A noble customer has made a purchase.",
-                    fields: [
-                        { name: "Item", value: "Knightly Custom Bot", inline: true },
-                        { name: "Status", value: "Paid", inline: true }
-                    ],
-                    color: 13938487
-                }]
-            };
+    img.logo { height: 80px; }
 
-            try {
-                await fetch(webhookURL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(message)
-                });
-            } catch (error) {
-                console.error("Webhook error:", error);
-            }
-        }
-    </script>
+    nav a {
+        color: #d4af37;
+        text-decoration: none;
+        margin: 0 15px;
+        font-weight: bold;
+        transition: color 0.3s;
+    }
 
-    <style>
-        body {
-            margin: 0;
-            background-color: #2c3e50;
-            color: #d4af37;
-            font-family: 'Cinzel', serif;
-        }
+    nav a:hover { color: #f1c40f; }
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background-color: #4a235a;
-            border-bottom: 2px solid #d4af37;
-        }
+    .hero {
+        text-align: center;
+        padding: 140px 20px;
+        background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://via.placeholder.com/1200x400?text=Hero+Banner') no-repeat center center;
+        background-size: cover;
+        position: relative;
+        overflow: hidden;
+    }
 
-        img.logo {
-            height: 80px;
-        }
+    .hero h1 {
+        font-size: 60px;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 20px black;
+        animation: fadeIn 2s ease forwards;
+    }
 
-        nav a {
-            color: #d4af37;
-            text-decoration: none;
-            margin: 0 15px;
-            font-weight: bold;
-        }
+    .hero p {
+        font-size: 22px;
+        margin-bottom: 30px;
+        text-shadow: 1px 1px 10px black;
+        animation: fadeIn 3s ease forwards;
+    }
 
-        nav a:hover {
-            color: white;
-        }
+    .button {
+        background: linear-gradient(45deg, #d4af37, #f1c40f);
+        color: #2c1a47;
+        padding: 15px 35px;
+        border: 2px solid #d4af37;
+        font-size: 18px;
+        margin: 15px;
+        cursor: pointer;
+        border-radius: 8px;
+        text-decoration: none;
+        display: inline-block;
+        font-weight: bold;
+        transition: 0.4s;
+    }
 
-        .hero {
-            text-align: center;
-            padding: 120px 20px;
-            background:
-                linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
-                url('banner.jpg') no-repeat center center;
-            background-size: cover;
-        }
+    .button:hover { 
+        transform: scale(1.08); 
+        box-shadow: 0 0 20px #d4af37;
+    }
 
-        .hero h1 {
-            font-size: 55px;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 15px black;
-        }
+    section { text-align: center; padding: 80px 20px; }
 
-        .button {
-            background-color: #d4af37;
-            color: #4a235a;
-            padding: 15px 35px;
-            border: none;
-            font-size: 18px;
-            margin: 15px;
-            cursor: pointer;
-            border-radius: 5px;
-            text-decoration: none;
-            display: inline-block;
-            font-weight: bold;
-            transition: 0.3s;
-        }
+    .about { 
+        background-color: #2c1a47;
+        line-height: 1.8;
+        border-top: 1px solid rgba(212,175,55,0.3);
+    }
 
-        .button:hover {
-            background-color: #f1c40f;
-            transform: scale(1.05);
-        }
+    .features {
+        display: flex; flex-wrap: wrap; justify-content: center; gap: 30px;
+    }
 
-        .about {
-            text-align: center;
-            padding: 80px 20px;
-            background-color: #3b2c4a;
-            line-height: 1.8;
-            border-top: 1px solid rgba(212, 175, 55, 0.2);
-        }
+    .features div {
+        background-color: #3b235a;
+        padding: 30px;
+        border-radius: 10px;
+        width: 250px;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
 
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            background-color: #4a235a;
-            font-size: 13px;
-            border-top: 2px solid #d4af37;
-        }
+    .features div:hover { transform: translateY(-10px); box-shadow: 0 0 20px #d4af37; }
 
-        footer a {
-            color: #d4af37;
-            text-decoration: none;
-        }
+    .gallery {
+        display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;
+        background-color: #1b1b2f;
+        padding-bottom: 40px;
+    }
 
-        footer a:hover {
-            color: white;
-        }
-    </style>
+    .gallery img {
+        width: 250px;
+        border-radius: 10px;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .gallery img:hover { transform: scale(1.05); box-shadow: 0 0 20px #d4af37; }
+
+    .testimonials {
+        background-color: #2c1a47;
+        padding: 80px 20px;
+    }
+
+    .testimonial-card {
+        background-color: #3b235a;
+        padding: 25px;
+        border-radius: 10px;
+        margin: 15px;
+        max-width: 300px;
+        display: inline-block;
+        vertical-align: top;
+        font-size: 16px;
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 0.8s ease-out;
+    }
+
+    .testimonial-card.visible { opacity: 1; transform: translateY(0); }
+
+    footer {
+        text-align: center;
+        padding: 40px 20px;
+        background-color: #2c1a47;
+        font-size: 13px;
+        border-top: 3px solid #d4af37;
+    }
+
+    footer a { color: #d4af37; text-decoration: none; }
+    footer a:hover { color: #f1c40f; }
+
+    /* Animations */
+    @keyframes fadeIn { 0% {opacity:0;} 100% {opacity:1;} }
+
+    /* Responsive */
+    @media (max-width: 800px) {
+        .features, .gallery { flex-direction: column; align-items: center; }
+    }
+</style>
 </head>
 
 <body>
 
 <header>
-    <img src="logo.png" alt="Silver Citadel Logo" class="logo">
+    <img src="https://via.placeholder.com/80x80?text=Logo" alt="Silver Citadel Logo" class="logo">
     <nav>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#testimonials">Testimonials</a>
         <a href="shop.html">Shop</a>
         <a href="https://discord.gg/silvercitadel" target="_blank">Discord</a>
     </nav>
@@ -143,26 +178,82 @@
 
 <section class="hero">
     <h1>Silver Citadel Corporation</h1>
-    <p style="font-size: 22px; margin-bottom: 30px;">
-        Forging Digital Tools with a Knightly Touch
-    </p>
-
-    <a href="https://discord.gg/silvercitadel" target="_blank" class="button">
-        Join the Kingdom
-    </a>
+    <p>Forging Digital Tools with a Knightly Touch</p>
+    <a href="https://discord.gg/silvercitadel" target="_blank" class="button">Join the Kingdom</a>
 </section>
 
-<section class="about">
+<section class="about" id="about">
     <h2>Who We Are</h2>
     <p style="max-width: 750px; margin: auto; font-size: 18px;">
-        We specialize in high-performance Discord bots and custom digital assets.
+        We specialize in high-performance Discord bots and custom digital assets, bringing your server the tools and visuals of a true digital kingdom.
     </p>
+</section>
+
+<section class="features" id="services">
+    <h2 style="font-size: 36px; width:100%;">Our Services</h2>
+    <div>
+        <h3>Custom Discord Bots</h3>
+        <p>Create bots tailored to your server with unique commands and mini-games.</p>
+    </div>
+    <div>
+        <h3>Automation Tools</h3>
+        <p>Streamline server management and engagement with advanced automation features.</p>
+    </div>
+    <div>
+        <h3>Digital Assets</h3>
+        <p>Custom graphics, banners, and visual content to give your server a unique identity.</p>
+    </div>
+</section>
+
+<section class="gallery" id="gallery">
+    <h2 style="font-size: 36px; width:100%;">Gallery</h2>
+    <img src="https://via.placeholder.com/250x150?text=Bot+1" alt="Bot Screenshot 1">
+    <img src="https://via.placeholder.com/250x150?text=Bot+2" alt="Bot Screenshot 2">
+    <img src="https://via.placeholder.com/250x150?text=Banner" alt="Banner Preview">
+</section>
+
+<section class="testimonials" id="testimonials">
+    <h2 style="font-size: 36px; margin-bottom:40px;">What Our Customers Say</h2>
+    <div class="testimonial-card">
+        <p>"The Silver Citadel bot transformed our server! Super responsive and full of fun features."</p>
+        <strong>- KnightMaster123</strong>
+    </div>
+    <div class="testimonial-card">
+        <p>"Their custom graphics made our server look amazing. Highly recommend!"</p>
+        <strong>- LadyLancer</strong>
+    </div>
+    <div class="testimonial-card">
+        <p>"Fast support, great tools, and a real medieval vibe in everything they do."</p>
+        <strong>- SirCodeALot</strong>
+    </div>
+</section>
+
+<section>
+    <a href="https://discord.gg/silvercitadel" target="_blank" class="button">Join the Kingdom Today</a>
 </section>
 
 <footer>
     <p>&copy; 2026 Silver Citadel Corporation. All Rights Reserved.</p>
     <a href="tos.html">Terms of Service</a>
 </footer>
+
+<script>
+    // Animate testimonials when visible
+    function revealTestimonials() {
+        const cards = document.querySelectorAll('.testimonial-card');
+        const triggerBottom = window.innerHeight * 0.85;
+
+        cards.forEach(card => {
+            const cardTop = card.getBoundingClientRect().top;
+            if (cardTop < triggerBottom) {
+                card.classList.add('visible');
+            }
+        });
+    }
+
+    window.addEventListener('scroll', revealTestimonials);
+    window.addEventListener('load', revealTestimonials);
+</script>
 
 </body>
 </html>
