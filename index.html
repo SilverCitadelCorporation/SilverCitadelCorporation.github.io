@@ -26,7 +26,6 @@ header {
     border-bottom: 3px solid #d4af37;
     position: sticky;
     top: 0;
-    z-index: 1000;
 }
 
 .logo {
@@ -42,37 +41,36 @@ nav a {
 }
 
 nav a:hover {
-    color: #ffffff;
+    color: white;
 }
 
 /* HERO */
 .hero {
-    height: 90vh;
+    height: 95vh;
     background:
         linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
-        url("Background.png") no-repeat center center;
+        url("./background.png");
     background-size: cover;
+    background-position: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 20px;
 }
 
 .hero h1 {
     font-size: 60px;
     margin: 0;
-    text-shadow: 0 0 20px black;
 }
 
 .hero p {
     font-size: 22px;
     margin-top: 15px;
-    margin-bottom: 30px;
 }
 
 .button {
+    margin-top: 30px;
     background: linear-gradient(45deg, #d4af37, #f1c40f);
     color: #1c1330;
     padding: 15px 35px;
@@ -140,33 +138,24 @@ footer {
     text-align: center;
     border-top: 3px solid #d4af37;
 }
-
-footer a {
-    color: #d4af37;
-    text-decoration: none;
-}
 </style>
 </head>
 
 <body>
 
 <header>
-    <img src="finally logo.png" class="logo" alt="Silver Citadel Logo">
+    <img src="./logo.png" class="logo" alt="Silver Citadel Logo">
     <nav>
         <a href="#about">About</a>
         <a href="#services">Services</a>
         <a href="#gallery">Gallery</a>
-        <a href="shop.html">Shop</a>
-        <a href="https://discord.gg/silvercitadel" target="_blank">Discord</a>
     </nav>
 </header>
 
 <section class="hero">
     <h1>Silver Citadel Corporation</h1>
     <p>Forging Digital Power with a Knightly Edge</p>
-    <a href="https://discord.gg/silvercitadel" target="_blank" class="button">
-        Join the Kingdom
-    </a>
+    <a href="#" class="button">Join the Kingdom</a>
 </section>
 
 <section class="about" id="about">
@@ -199,14 +188,11 @@ footer a {
 
 <section class="gallery" id="gallery">
     <h2>The Citadel Arsenal</h2>
-
-    <img src="bot.png" alt="SCK Knight Bot">
-    <img src="Background.png" alt="Battle Banner">
+    <img src="./bot.png" alt="SCK Knight Bot">
 </section>
 
 <footer>
     <p>&copy; 2026 Silver Citadel Corporation. All Rights Reserved.</p>
-    <a href="tos.html">Terms of Service</a>
 </footer>
 
 </body>
