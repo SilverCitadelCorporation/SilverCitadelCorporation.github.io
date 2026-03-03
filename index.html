@@ -5,13 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Silver Citadel Corporation</title>
 <link rel="icon" type="image/png" href="logo.png">
+<link rel="stylesheet" href="css/style.css">
 
-<meta property="og:title" content="Silver Citadel Shop">
-<meta property="og:description" content="Secure your custom Discord bot for only $5.99.">
+<meta property="og:title" content="Silver Citadel Corporation">
+<meta property="og:description" content="Enter the digital fortress of Silver Citadel Corporation.">
 <meta property="og:image" content="logo.png">
 <meta name="theme-color" content="#d4af37">
-
-<link rel="stylesheet" href="css/style.css">
 
 <style>
 /* General Body */
@@ -23,13 +22,13 @@ body {
     color: #d4af37;
 }
 
-/* Overlay for text readability */
+/* Overlay */
 .overlay {
-    background: rgba(0, 0, 0, 0.85);
+    background: rgba(0,0,0,0.85);
     min-height: 100vh;
     padding: 40px 20px;
-    box-sizing: border-box;
     text-align: center;
+    box-sizing: border-box;
 }
 
 /* Header */
@@ -41,7 +40,7 @@ header h1 {
 
 /* Navigation */
 nav {
-    margin-bottom: 40px;
+    margin-bottom: 50px;
 }
 nav a {
     color: #d4af37;
@@ -55,121 +54,66 @@ nav a:hover {
     text-shadow: 1px 1px 5px #4a235a;
 }
 
-/* Shop Card */
-.shop-card {
+/* Featured Sections */
+.section-card {
     background: rgba(30, 41, 59, 0.95);
     padding: 40px;
     border-radius: 12px;
-    max-width: 600px;
-    margin: 0 auto 50px auto;
+    max-width: 700px;
+    margin: 0 auto 40px auto;
     border: 2px solid #d4af37;
     box-shadow: 0 0 30px rgba(0,0,0,0.7);
     transition: transform 0.3s;
 }
-.shop-card:hover {
+.section-card:hover {
     transform: translateY(-5px);
 }
-.shop-card img {
+.section-card img {
     width: 200px;
     margin-bottom: 20px;
     border-radius: 8px;
     transition: transform 0.3s;
 }
-.shop-card img:hover {
+.section-card img:hover {
     transform: scale(1.05);
     filter: drop-shadow(0 0 15px #d4af37);
 }
-.shop-card h2 {
+.section-card h2 {
     font-size: 2em;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     color: #d4af37;
     text-shadow: 1px 1px #4a235a;
 }
-.shop-card ul {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 20px 0;
-    text-align: left;
-}
-.shop-card ul li {
-    margin: 10px 0;
+.section-card p {
     font-size: 1.1em;
-}
-
-/* Trust Bar */
-.trust-bar {
-    display: flex;
-    justify-content: space-around;
-    font-size: 14px;
+    line-height: 1.6;
     margin-bottom: 20px;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid rgba(212,175,55,0.4);
-    background: rgba(255,255,255,0.05);
-}
-
-/* Pricing */
-.price-box {
-    margin-bottom: 25px;
-}
-.price-box .old-price {
-    text-decoration: line-through;
-    color: #888;
-    font-size: 20px;
-    margin-right: 10px;
-}
-.price-box .price {
-    font-size: 32px;
-    font-weight: bold;
-}
-.price-box .discount-tag {
-    display: block;
-    margin-top: 5px;
-    font-size: 14px;
-    color: #00c244;
-    font-weight: bold;
 }
 
 /* Buttons */
-.btn-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-}
-button {
-    width: 100%;
-    max-width: 320px;
-    padding: 15px;
+.button {
+    background-color: #4a235a;
+    color: #d4af37;
+    padding: 12px 25px;
     border-radius: 8px;
     border: none;
-    cursor: pointer;
     font-weight: bold;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: 0.2s;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+    text-decoration: none;
+    display: inline-block;
 }
-button:hover {
-    opacity: 0.9;
-    transform: translateY(-2px);
-}
-.paypal { background-color: #0070ba; color: white; }
-.cashapp { background-color: #00c244; color: white; }
-.discord { background-color: #5865F2; color: white; }
-
-/* Info Section */
-.info-section {
-    text-align: left;
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(212,175,55,0.2);
-    font-size: 14px;
+.button:hover {
+    background-color: #d4af37;
+    color: #4a235a;
 }
 
 /* Footer */
 footer {
     text-align: center;
-    margin-top: 40px;
+    margin-top: 50px;
     padding: 20px;
     font-size: 12px;
     color: #888;
@@ -177,9 +121,8 @@ footer {
 
 /* Responsive */
 @media screen and (max-width: 500px) {
-    .shop-card { padding: 25px; margin: 0 10px 40px 10px; }
-    .shop-card img { width: 150px; }
-    .trust-bar { flex-direction: column; gap: 8px; }
+    .section-card { padding: 25px; margin: 0 10px 30px 10px; }
+    .section-card img { width: 150px; }
 }
 </style>
 </head>
@@ -192,60 +135,25 @@ footer {
 </header>
 
 <nav>
-    <a href="shop.html">Home</a> |
+    <a href="index.html">Home</a> |
     <a href="about.html">About</a> |
     <a href="contact.html">Contact</a> |
-    <a href="tos.html">Terms of Service</a>
+    <a href="tos.html">Terms of Service</a> |
+    <a href="shop.html">Shop</a>
 </nav>
 
-<section class="shop-card">
-    <img src="bot.png" alt="Silver Citadel Bot">
-    <h2>Custom Discord Bot</h2>
-    <ul>
-        <li>⚔️ Advanced Ticket System</li>
-        <li>🛡️ Elite Moderation Tools</li>
-        <li>🔥 Banned Words Filter</li>
-        <li>⚡ Custom Commands</li>
-        <li>💰 Economy & Level System (Optional)</li>
-        <li>🎮 Mini Games (Optional)</li>
-    </ul>
+<section class="section-card">
+    <img src="logo.png" alt="Silver Citadel Logo">
+    <h2>The Digital Fortress</h2>
+    <p>Enter the world of Silver Citadel Corporation, where medieval grandeur meets digital creation. Explore our custom Discord bots, join our community, and experience a royal journey online.</p>
+    <a href="shop.html" class="button">Visit the Shop</a>
+</section>
 
-    <div class="trust-bar">
-        <span>✅ 99.9% Uptime</span>
-        <span>🛡️ Secure</span>
-        <span>🚀 Quick Setup</span>
-    </div>
-
-    <div class="price-box">
-        <span class="old-price">$7.99</span>
-        <span class="price">$5.99</span>
-        <span class="discount-tag">⚔️ Leave a vouch for 5% OFF your next order!</span>
-    </div>
-
-    <div class="btn-container">
-        <a href="https://paypal.me/SilverCitadelCo" target="_blank">
-            <button class="paypal button">Pay with PayPal</button>
-        </a>
-        <a href="https://cash.app/$SilverCitadelCo" target="_blank">
-            <button class="cashapp button">Pay with Cash App</button>
-        </a>
-        <a href="https://discord.gg/silvercitadel" target="_blank">
-            <button class="discord button">Join Discord to Claim</button>
-        </a>
-    </div>
-
-    <div class="info-section">
-        <h3>How It Works</h3>
-        <p>
-            1. Complete your payment using PayPal or Cash App.<br>
-            2. Join our Discord server and open a support ticket.<br>
-            3. Provide your server details and customization requests.<br>
-            4. Your custom bot will be delivered within 1–2 hours depending on your order.
-        </p>
-
-        <h3>Need Help?</h3>
-        <p>If you have any questions before purchasing, join our Discord server and speak with our team. We’re happy to help.</p>
-    </div>
+<section class="section-card">
+    <img src="knight.png" alt="Silver Citadel Knight">
+    <h2>Join the Adventure</h2>
+    <p>Become part of our digital fortress. Help us build the Silver Citadel universe through art, stories, and collaboration. Adventure awaits!</p>
+    <a href="about.html" class="button">Learn More About Us</a>
 </section>
 
 <footer>
