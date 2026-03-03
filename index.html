@@ -1,15 +1,200 @@
-<!-- SHOP SECTION -->
-<section class="shop-section" id="shop" style="background: #1c1330; padding: 80px 20px;">
-    <div style="max-width: 600px; margin: 0 auto 40px auto; text-align: left;">
-        <a href="index.html" style="color:#d4af37; font-weight:bold; text-decoration:none; font-size:16px;">← BACK TO HOME</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Silver Citadel Shop</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="logo.png">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #1a1a1a;
+    color: #fff;
+}
+
+/* Overlay for background dimming */
+.overlay {
+    background: rgba(0,0,0,0.85);
+    min-height: 100vh;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+/* Back to home link */
+.nav-back {
+    text-align: left;
+    max-width: 600px;
+    margin: 0 auto 30px auto;
+}
+
+.nav-back a {
+    color: #d4af37;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.nav-back a:hover {
+    text-decoration: underline;
+}
+
+/* Shop Card */
+.shop-card {
+    background: #1e293b;
+    max-width: 450px;
+    margin: 0 auto 50px auto;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid rgba(212,175,55,0.4);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+    transition: transform 0.3s;
+}
+
+.shop-card:hover {
+    transform: translateY(-5px);
+}
+
+.shop-card img {
+    width: 180px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    transition: transform 0.3s;
+}
+
+.shop-card img:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 15px #d4af37);
+}
+
+.shop-card h2 {
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+.shop-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+    text-align: left;
+}
+
+.shop-card ul li {
+    margin: 8px 0;
+    font-size: 16px;
+}
+
+.trust-bar {
+    display: flex;
+    justify-content: space-around;
+    font-size: 13px;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.05);
+}
+
+.price-box {
+    margin-bottom: 20px;
+}
+
+.price-box .old-price {
+    text-decoration: line-through;
+    color: #888;
+    font-size: 18px;
+    margin-right: 8px;
+}
+
+.price-box .price {
+    font-size: 28px;
+    color: #d4af37;
+    font-weight: bold;
+}
+
+.price-box .discount-tag {
+    display: block;
+    margin-top: 5px;
+    font-size: 13px;
+    color: #00c244;
+    font-weight: bold;
+}
+
+.btn-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.btn-container button {
+    width: 100%;
+    max-width: 300px;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+}
+
+.btn-container button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.paypal { background-color: #0070ba; color: white; }
+.cashapp { background-color: #00c244; color: white; }
+.discord { background-color: #5865F2; color: white; }
+
+.info-section {
+    text-align: left;
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(212,175,55,0.2);
+    font-size: 14px;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    font-size: 12px;
+    color: #777;
+}
+
+footer a {
+    color: #d4af37;
+    text-decoration: none;
+}
+
+@media screen and (max-width: 500px) {
+    .shop-card {
+        padding: 20px;
+        margin: 0 10px 40px 10px;
+    }
+    .shop-card img {
+        width: 150px;
+    }
+}
+</style>
+</head>
+<body>
+<div class="overlay">
+    <div class="nav-back">
+        <a href="index.html">← BACK TO HOME</a>
     </div>
 
-    <h2 style="font-size: 36px; margin-bottom: 50px; text-align:center;">Shop the Citadel</h2>
-
-    <div class="shop-card" style="background: rgba(30, 41, 59, 0.95); padding: 30px; border-radius: 12px; max-width: 400px; margin: 0 auto 40px auto; border: 1px solid rgba(212,175,55,0.4); box-shadow: 0 8px 25px rgba(0,0,0,0.6); text-align:center; transition:0.3s;">
-        <img src="bot.png" alt="Silver Citadel Bot" style="width:180px; margin-bottom:15px; border-radius:8px; transition:0.3s;">
-        <h2 style="margin-bottom:15px;">Custom Discord Bot</h2>
-        <ul style="list-style:none; padding:0; margin:0 0 20px 0; text-align:left; display:inline-block;">
+    <div class="shop-card">
+        <img src="bot.png" alt="Silver Citadel Bot">
+        <h2>Custom Discord Bot</h2>
+        <ul>
             <li>⚔️ Advanced Ticket System</li>
             <li>🛡️ Elite Moderation Tools</li>
             <li>🔥 Banned Words Filter</li>
@@ -17,28 +202,28 @@
             <li>💰 Economy & Level System (Optional)</li>
             <li>🎮 Mini Games (Optional)</li>
         </ul>
-        <div class="trust-bar" style="background: rgba(255,255,255,0.05); padding:10px; border-radius:8px; display:flex; justify-content:space-around; font-size:13px; margin-bottom:15px; border:1px solid rgba(255,255,255,0.1);">
+        <div class="trust-bar">
             <span>✅ 99.9% Uptime</span>
             <span>🛡️ Secure</span>
             <span>🚀 Quick Setup</span>
         </div>
-        <div class="price-box" style="margin-bottom:20px;">
-            <span class="old-price" style="text-decoration: line-through; color:#888; font-size:18px; margin-right:8px;">$7.99</span>
-            <span class="price" style="font-size:28px; color:#d4af37; font-weight:bold;">$5.99</span>
-            <span class="discount-tag" style="color:#00c244; font-size:13px; display:block; margin-top:5px; font-weight:bold;">⚔️ Leave a vouch for 5% OFF your next order!</span>
+        <div class="price-box">
+            <span class="old-price">$7.99</span>
+            <span class="price">$5.99</span>
+            <span class="discount-tag">⚔️ Leave a vouch for 5% OFF your next order!</span>
         </div>
-        <div class="btn-container" style="display:flex; flex-direction:column; align-items:center; gap:10px;">
-            <a href="https://paypal.me/SilverCitadelCo" target="_blank" style="width:100%; text-decoration:none;">
-                <button class="paypal" style="background:#0070ba; color:white; padding:12px 20px; border-radius:6px; font-weight:bold;">Pay with PayPal</button>
+        <div class="btn-container">
+            <a href="https://paypal.me/SilverCitadelCo" target="_blank">
+                <button class="paypal">Pay with PayPal</button>
             </a>
-            <a href="https://cash.app/$SilverCitadelCo" target="_blank" style="width:100%; text-decoration:none;">
-                <button class="cashapp" style="background:#00c244; color:white; padding:12px 20px; border-radius:6px; font-weight:bold;">Pay with Cash App</button>
+            <a href="https://cash.app/$SilverCitadelCo" target="_blank">
+                <button class="cashapp">Pay with Cash App</button>
             </a>
-            <a href="https://discord.gg/silvercitadel" target="_blank" style="width:100%; text-decoration:none;">
-                <button class="discord" style="background:#5865F2; color:white; padding:12px 20px; border-radius:6px; font-weight:bold;">Join Discord to Claim</button>
+            <a href="https://discord.gg/silvercitadel" target="_blank">
+                <button class="discord">Join Discord to Claim</button>
             </a>
         </div>
-        <div class="info-section" style="text-align:left; margin-top:25px; padding-top:15px; border-top:1px solid rgba(212,175,55,0.2); font-size:14px;">
+        <div class="info-section">
             <h3 style="color:#d4af37; margin-top:0;">How It Works</h3>
             <p>
                 1. Complete your payment using PayPal or Cash App.<br><br>
@@ -50,4 +235,10 @@
             <p>If you have any questions before purchasing, join our Discord server and speak with our team. We’re happy to help.</p>
         </div>
     </div>
-</section>
+
+    <footer>
+        © 2026 Silver Citadel Corporation. All rights reserved.
+    </footer>
+</div>
+</body>
+</html>
