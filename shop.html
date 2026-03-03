@@ -254,11 +254,11 @@ footer {
 
         <div class="price-box">
             <span class="old-price">$7.99</span>
-            <span class="price">$5.99</span>
+            <span class="price" data-price="5.99">$5.99</span>
         </div>
 
         <div class="loyalty-box">
-            🎉 After completing your purchase, you will receive a 5% OFF discount code for your next order.
+            🎉 After completing your purchase, you will receive a 5% OFF discount automatically for your next order!
         </div>
 
         <div class="btn-container">
@@ -274,7 +274,7 @@ footer {
                 2. Join our Discord server and open a support ticket.<br>
                 3. Provide your server details and customization requests.<br>
                 4. Receive your custom bot delivery within 1–2 hours.<br>
-                5. Receive 5% OFF your next purchase as a loyalty reward.
+                5. The 5% OFF discount will be applied automatically on your next purchase.
             </p>
 
             <h3>Need Help?</h3>
@@ -287,6 +287,30 @@ footer {
 <footer>
     &copy; 2026 Silver Citadel Corporation. All rights reserved.
 </footer>
+
+<!-- LOYALTY DISCOUNT SCRIPT -->
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+    const priceElem = document.querySelector('.price');
+    const originalPrice = parseFloat(priceElem.getAttribute('data-price'));
+
+    // Apply 5% discount if user has it
+    const discountActive = localStorage.getItem('sc_loyalty_discount');
+    if (discountActive === 'true') {
+        const discountedPrice = (originalPrice * 0.95).toFixed(2);
+        priceElem.textContent = `$${discountedPrice}`;
+        localStorage.removeItem('sc_loyalty_discount');
+        alert('🎉 Your 5% loyalty discount has been applied!');
+    }
+});
+
+// Set loyalty discount on purchase click
+document.querySelectorAll('.btn-container a').forEach(link => {
+    link.addEventListener('click', () => {
+        localStorage.setItem('sc_loyalty_discount', 'true');
+    });
+});
+</script>
 
 </body>
 </html>
