@@ -5,82 +5,253 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Silver Citadel Corporation</title>
 <link rel="icon" type="image/png" href="logo.png">
-<link rel="stylesheet" href="css/style.css">
 
 <meta property="og:title" content="Silver Citadel Shop">
 <meta property="og:description" content="Secure your custom Discord bot for only $5.99.">
 <meta property="og:image" content="logo.png">
 <meta name="theme-color" content="#d4af37">
+
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+/* General Body */
+body {
+    margin: 0;
+    font-family: 'Garamond', serif;
+    background: url('banner.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #d4af37;
+}
+
+/* Overlay for text readability */
+.overlay {
+    background: rgba(0, 0, 0, 0.85);
+    min-height: 100vh;
+    padding: 40px 20px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* Header */
+header h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px #4a235a;
+}
+
+/* Navigation */
+nav {
+    margin-bottom: 40px;
+}
+nav a {
+    color: #d4af37;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0 12px;
+    font-size: 16px;
+}
+nav a:hover {
+    color: #fff;
+    text-shadow: 1px 1px 5px #4a235a;
+}
+
+/* Shop Card */
+.shop-card {
+    background: rgba(30, 41, 59, 0.95);
+    padding: 40px;
+    border-radius: 12px;
+    max-width: 600px;
+    margin: 0 auto 50px auto;
+    border: 2px solid #d4af37;
+    box-shadow: 0 0 30px rgba(0,0,0,0.7);
+    transition: transform 0.3s;
+}
+.shop-card:hover {
+    transform: translateY(-5px);
+}
+.shop-card img {
+    width: 200px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    transition: transform 0.3s;
+}
+.shop-card img:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 15px #d4af37);
+}
+.shop-card h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #d4af37;
+    text-shadow: 1px 1px #4a235a;
+}
+.shop-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+    text-align: left;
+}
+.shop-card ul li {
+    margin: 10px 0;
+    font-size: 1.1em;
+}
+
+/* Trust Bar */
+.trust-bar {
+    display: flex;
+    justify-content: space-around;
+    font-size: 14px;
+    margin-bottom: 20px;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(212,175,55,0.4);
+    background: rgba(255,255,255,0.05);
+}
+
+/* Pricing */
+.price-box {
+    margin-bottom: 25px;
+}
+.price-box .old-price {
+    text-decoration: line-through;
+    color: #888;
+    font-size: 20px;
+    margin-right: 10px;
+}
+.price-box .price {
+    font-size: 32px;
+    font-weight: bold;
+}
+.price-box .discount-tag {
+    display: block;
+    margin-top: 5px;
+    font-size: 14px;
+    color: #00c244;
+    font-weight: bold;
+}
+
+/* Buttons */
+.btn-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+button {
+    width: 100%;
+    max-width: 320px;
+    padding: 15px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: 0.2s;
+}
+button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+.paypal { background-color: #0070ba; color: white; }
+.cashapp { background-color: #00c244; color: white; }
+.discord { background-color: #5865F2; color: white; }
+
+/* Info Section */
+.info-section {
+    text-align: left;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(212,175,55,0.2);
+    font-size: 14px;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    font-size: 12px;
+    color: #888;
+}
+
+/* Responsive */
+@media screen and (max-width: 500px) {
+    .shop-card { padding: 25px; margin: 0 10px 40px 10px; }
+    .shop-card img { width: 150px; }
+    .trust-bar { flex-direction: column; gap: 8px; }
+}
+</style>
 </head>
-<body class="fade-in">
+
+<body>
+<div class="overlay">
 
 <header>
     <h1>Welcome to Silver Citadel</h1>
 </header>
 
 <nav>
-    <a href="index.html">Home</a> |
+    <a href="shop.html">Home</a> |
     <a href="about.html">About</a> |
     <a href="contact.html">Contact</a> |
-    <a href="tos.html">Terms of Service</a> |
-    <a href="shop.html">Shop</a>
+    <a href="tos.html">Terms of Service</a>
 </nav>
 
-<main>
-    <section class="shop-card">
-        <img src="bot.png" alt="Silver Citadel Bot">
-        <h2>Custom Discord Bot</h2>
-        <ul>
-            <li>⚔️ Advanced Ticket System</li>
-            <li>🛡️ Elite Moderation Tools</li>
-            <li>🔥 Banned Words Filter</li>
-            <li>⚡ Custom Commands</li>
-            <li>💰 Economy & Level System (Optional)</li>
-            <li>🎮 Mini Games (Optional)</li>
-        </ul>
+<section class="shop-card">
+    <img src="bot.png" alt="Silver Citadel Bot">
+    <h2>Custom Discord Bot</h2>
+    <ul>
+        <li>⚔️ Advanced Ticket System</li>
+        <li>🛡️ Elite Moderation Tools</li>
+        <li>🔥 Banned Words Filter</li>
+        <li>⚡ Custom Commands</li>
+        <li>💰 Economy & Level System (Optional)</li>
+        <li>🎮 Mini Games (Optional)</li>
+    </ul>
 
-        <div class="trust-bar">
-            <span>✅ 99.9% Uptime</span>
-            <span>🛡️ Secure</span>
-            <span>🚀 Quick Setup</span>
-        </div>
+    <div class="trust-bar">
+        <span>✅ 99.9% Uptime</span>
+        <span>🛡️ Secure</span>
+        <span>🚀 Quick Setup</span>
+    </div>
 
-        <div class="price-box">
-            <span class="old-price">$7.99</span>
-            <span class="price">$5.99</span>
-            <span class="discount-tag">⚔️ Leave a vouch for 5% OFF your next order!</span>
-        </div>
+    <div class="price-box">
+        <span class="old-price">$7.99</span>
+        <span class="price">$5.99</span>
+        <span class="discount-tag">⚔️ Leave a vouch for 5% OFF your next order!</span>
+    </div>
 
-        <div class="btn-container">
-            <a href="https://paypal.me/SilverCitadelCo" target="_blank">
-                <button class="paypal button">Pay with PayPal</button>
-            </a>
-            <a href="https://cash.app/$SilverCitadelCo" target="_blank">
-                <button class="cashapp button">Pay with Cash App</button>
-            </a>
-            <a href="https://discord.gg/silvercitadel" target="_blank">
-                <button class="discord button">Join Discord to Claim</button>
-            </a>
-        </div>
+    <div class="btn-container">
+        <a href="https://paypal.me/SilverCitadelCo" target="_blank">
+            <button class="paypal button">Pay with PayPal</button>
+        </a>
+        <a href="https://cash.app/$SilverCitadelCo" target="_blank">
+            <button class="cashapp button">Pay with Cash App</button>
+        </a>
+        <a href="https://discord.gg/silvercitadel" target="_blank">
+            <button class="discord button">Join Discord to Claim</button>
+        </a>
+    </div>
 
-        <div class="info-section">
-            <h3>How It Works</h3>
-            <p>
-                1. Complete your payment using PayPal or Cash App.<br>
-                2. Join our Discord server and open a support ticket.<br>
-                3. Provide your server details and customization requests.<br>
-                4. Your custom bot will be delivered within 1–2 hours depending on your order.
-            </p>
+    <div class="info-section">
+        <h3>How It Works</h3>
+        <p>
+            1. Complete your payment using PayPal or Cash App.<br>
+            2. Join our Discord server and open a support ticket.<br>
+            3. Provide your server details and customization requests.<br>
+            4. Your custom bot will be delivered within 1–2 hours depending on your order.
+        </p>
 
-            <h3>Need Help?</h3>
-            <p>If you have any questions before purchasing, join our Discord server and speak with our team. We’re happy to help.</p>
-        </div>
-    </section>
-</main>
+        <h3>Need Help?</h3>
+        <p>If you have any questions before purchasing, join our Discord server and speak with our team. We’re happy to help.</p>
+    </div>
+</section>
 
 <footer>
     <p>&copy; 2026 Silver Citadel Corporation. All rights reserved.</p>
 </footer>
 
+</div>
 </body>
 </html>
