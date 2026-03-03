@@ -8,128 +8,13 @@
 <link rel="stylesheet" href="css/style.css">
 
 <meta property="og:title" content="Silver Citadel Corporation">
-<meta property="og:description" content="Enter the digital fortress of Silver Citadel Corporation.">
+<meta property="og:description" content="Explore the digital fortress of Silver Citadel.">
 <meta property="og:image" content="logo.png">
 <meta name="theme-color" content="#d4af37">
-
-<style>
-/* General Body */
-body {
-    margin: 0;
-    font-family: 'Garamond', serif;
-    background: url('banner.jpg') no-repeat center center fixed;
-    background-size: cover;
-    color: #d4af37;
-}
-
-/* Overlay */
-.overlay {
-    background: rgba(0,0,0,0.85);
-    min-height: 100vh;
-    padding: 40px 20px;
-    text-align: center;
-    box-sizing: border-box;
-}
-
-/* Header */
-header h1 {
-    font-size: 3em;
-    margin-bottom: 20px;
-    text-shadow: 2px 2px #4a235a;
-}
-
-/* Navigation */
-nav {
-    margin-bottom: 50px;
-}
-nav a {
-    color: #d4af37;
-    text-decoration: none;
-    font-weight: bold;
-    margin: 0 12px;
-    font-size: 16px;
-}
-nav a:hover {
-    color: #fff;
-    text-shadow: 1px 1px 5px #4a235a;
-}
-
-/* Featured Sections */
-.section-card {
-    background: rgba(30, 41, 59, 0.95);
-    padding: 40px;
-    border-radius: 12px;
-    max-width: 700px;
-    margin: 0 auto 40px auto;
-    border: 2px solid #d4af37;
-    box-shadow: 0 0 30px rgba(0,0,0,0.7);
-    transition: transform 0.3s;
-}
-.section-card:hover {
-    transform: translateY(-5px);
-}
-.section-card img {
-    width: 200px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    transition: transform 0.3s;
-}
-.section-card img:hover {
-    transform: scale(1.05);
-    filter: drop-shadow(0 0 15px #d4af37);
-}
-.section-card h2 {
-    font-size: 2em;
-    margin-bottom: 15px;
-    color: #d4af37;
-    text-shadow: 1px 1px #4a235a;
-}
-.section-card p {
-    font-size: 1.1em;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
-
-/* Buttons */
-.button {
-    background-color: #4a235a;
-    color: #d4af37;
-    padding: 12px 25px;
-    border-radius: 8px;
-    border: none;
-    font-weight: bold;
-    text-transform: uppercase;
-    cursor: pointer;
-    font-size: 16px;
-    transition: 0.3s;
-    text-decoration: none;
-    display: inline-block;
-}
-.button:hover {
-    background-color: #d4af37;
-    color: #4a235a;
-}
-
-/* Footer */
-footer {
-    text-align: center;
-    margin-top: 50px;
-    padding: 20px;
-    font-size: 12px;
-    color: #888;
-}
-
-/* Responsive */
-@media screen and (max-width: 500px) {
-    .section-card { padding: 25px; margin: 0 10px 30px 10px; }
-    .section-card img { width: 150px; }
-}
-</style>
 </head>
+<body class="fade-in">
 
-<body>
 <div class="overlay">
-
 <header>
     <h1>Welcome to Silver Citadel</h1>
 </header>
@@ -142,24 +27,22 @@ footer {
     <a href="shop.html">Shop</a>
 </nav>
 
-<section class="section-card">
+<section class="main-card">
     <img src="logo.png" alt="Silver Citadel Logo">
-    <h2>The Digital Fortress</h2>
-    <p>Enter the world of Silver Citadel Corporation, where medieval grandeur meets digital creation. Explore our custom Discord bots, join our community, and experience a royal journey online.</p>
-    <a href="shop.html" class="button">Visit the Shop</a>
-</section>
+    <h2>The Digital Fortress of Creativity</h2>
+    <p>Welcome to Silver Citadel Corporation, where medieval fantasy meets digital craftsmanship. Explore our custom Discord bots, community projects, and join the adventure.</p>
 
-<section class="section-card">
-    <img src="knight.png" alt="Silver Citadel Knight">
-    <h2>Join the Adventure</h2>
-    <p>Become part of our digital fortress. Help us build the Silver Citadel universe through art, stories, and collaboration. Adventure awaits!</p>
-    <a href="about.html" class="button">Learn More About Us</a>
+    <div class="btn-container">
+        <a href="shop.html"><button class="button">Visit Shop</button></a>
+        <a href="about.html"><button class="button">About Us</button></a>
+        <a href="contact.html"><button class="button">Contact</button></a>
+    </div>
 </section>
 
 <footer>
     <p>&copy; 2026 Silver Citadel Corporation. All rights reserved.</p>
 </footer>
-
 </div>
+
 </body>
 </html>
