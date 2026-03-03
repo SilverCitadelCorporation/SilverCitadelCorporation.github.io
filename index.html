@@ -2,143 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Silver Citadel</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Silver Citadel Corporation</title>
 <link rel="icon" type="image/png" href="logo.png">
+<link rel="stylesheet" href="css/style.css">
 
-<meta property="og:title" content="Silver Citadel">
-<meta property="og:description" content="Get your custom Discord bot today!">
+<meta property="og:title" content="Silver Citadel Shop">
+<meta property="og:description" content="Secure your custom Discord bot for only $5.99.">
 <meta property="og:image" content="logo.png">
 <meta name="theme-color" content="#d4af37">
-
-<style>
-body {
-    margin: 0;
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: #1a1a1a url('banner.jpg') no-repeat center center fixed;
-    background-size: cover;
-    color: #fff;
-}
-
-.overlay {
-    background: rgba(0,0,0,0.88);
-    min-height: 100vh;
-    padding: 50px 20px;
-    text-align: center;
-    box-sizing: border-box;
-}
-
-header h1 {
-    font-size: 40px;
-    color: #d4af37;
-    margin-bottom: 30px;
-    text-shadow: 0 0 10px #d4af37;
-}
-
-.shop-card {
-    background: rgba(30, 41, 59, 0.95);
-    padding: 30px;
-    border-radius: 12px;
-    max-width: 450px;
-    margin: 0 auto 50px auto;
-    text-align: center;
-    border: 1px solid rgba(212,175,55,0.4);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-    transition: transform 0.3s;
-}
-
-.shop-card:hover {
-    transform: translateY(-5px);
-}
-
-.shop-card img {
-    width: 160px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    transition: transform 0.3s;
-}
-
-.shop-card img:hover {
-    transform: scale(1.05);
-    filter: drop-shadow(0 0 15px #d4af37);
-}
-
-.shop-card h2 {
-    font-size: 26px;
-    color: #d4af37;
-    margin-bottom: 15px;
-}
-
-.shop-card ul {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 20px 0;
-    text-align: left;
-}
-
-.shop-card ul li {
-    margin: 8px 0;
-    font-size: 16px;
-}
-
-.btn-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.btn-container button {
-    width: 100%;
-    max-width: 300px;
-    padding: 12px;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: all 0.2s;
-}
-
-.btn-container button:hover {
-    opacity: 0.9;
-    transform: translateY(-2px);
-}
-
-.paypal { background-color: #0070ba; color: white; }
-.cashapp { background-color: #00c244; color: white; }
-.shop-link { background-color: #d4af37; color: black; }
-
-footer {
-    text-align: center;
-    margin-top: 40px;
-    padding: 20px;
-    font-size: 12px;
-    color: #777;
-}
-
-footer a {
-    color: #d4af37;
-    text-decoration: none;
-}
-
-@media screen and (max-width: 500px) {
-    .shop-card img {
-        width: 140px;
-    }
-}
-</style>
 </head>
-<body>
-<div class="overlay">
-    <header>
-        <h1>Welcome to Silver Citadel</h1>
-        <p>Your one-stop shop for custom Discord bots!</p>
-    </header>
+<body class="fade-in">
 
-    <div class="shop-card">
+<header>
+    <h1>Welcome to Silver Citadel</h1>
+</header>
+
+<nav>
+    <a href="index.html">Home</a> |
+    <a href="about.html">About</a> |
+    <a href="contact.html">Contact</a> |
+    <a href="tos.html">Terms of Service</a> |
+    <a href="shop.html">Shop</a>
+</nav>
+
+<main>
+    <section class="shop-card">
         <img src="bot.png" alt="Silver Citadel Bot">
         <h2>Custom Discord Bot</h2>
         <ul>
@@ -149,14 +38,49 @@ footer a {
             <li>💰 Economy & Level System (Optional)</li>
             <li>🎮 Mini Games (Optional)</li>
         </ul>
-        <div class="btn-container">
-            <a href="shop.html"><button class="shop-link">Go to Shop</button></a>
-        </div>
-    </div>
 
-    <footer>
-        © 2026 Silver Citadel Corporation. All rights reserved.
-    </footer>
-</div>
+        <div class="trust-bar">
+            <span>✅ 99.9% Uptime</span>
+            <span>🛡️ Secure</span>
+            <span>🚀 Quick Setup</span>
+        </div>
+
+        <div class="price-box">
+            <span class="old-price">$7.99</span>
+            <span class="price">$5.99</span>
+            <span class="discount-tag">⚔️ Leave a vouch for 5% OFF your next order!</span>
+        </div>
+
+        <div class="btn-container">
+            <a href="https://paypal.me/SilverCitadelCo" target="_blank">
+                <button class="paypal button">Pay with PayPal</button>
+            </a>
+            <a href="https://cash.app/$SilverCitadelCo" target="_blank">
+                <button class="cashapp button">Pay with Cash App</button>
+            </a>
+            <a href="https://discord.gg/silvercitadel" target="_blank">
+                <button class="discord button">Join Discord to Claim</button>
+            </a>
+        </div>
+
+        <div class="info-section">
+            <h3>How It Works</h3>
+            <p>
+                1. Complete your payment using PayPal or Cash App.<br>
+                2. Join our Discord server and open a support ticket.<br>
+                3. Provide your server details and customization requests.<br>
+                4. Your custom bot will be delivered within 1–2 hours depending on your order.
+            </p>
+
+            <h3>Need Help?</h3>
+            <p>If you have any questions before purchasing, join our Discord server and speak with our team. We’re happy to help.</p>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2026 Silver Citadel Corporation. All rights reserved.</p>
+</footer>
+
 </body>
 </html>
