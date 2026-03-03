@@ -78,6 +78,11 @@ nav .links a:hover {
     border-radius:8px;
     margin-bottom:25px;
     box-shadow:0 0 20px rgba(212,175,55,0.6);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.sale-banner:hover {
+    transform: scale(1.02);
+    box-shadow:0 0 30px rgba(212,175,55,0.9);
 }
 
 .shop-card {
@@ -189,6 +194,17 @@ nav .links a:hover {
     transform:translateY(-2px);
 }
 
+.btn-container button[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    background: rgba(0,0,0,0.8);
+    color: #d4af37;
+    padding:5px 8px;
+    border-radius:4px;
+    top:-35px;
+    font-size:12px;
+}
+
 .paypal { background-color:#0070ba; color:white; }
 .cashapp { background-color:#00c244; color:white; }
 .discord { background-color:#5865F2; color:white; }
@@ -208,6 +224,12 @@ footer {
     font-size:14px;
     color:#888;
     border-top:1px solid rgba(212,175,55,0.3);
+}
+
+/* Mobile tweak */
+@media (max-width:500px){
+    .shop-card { margin:20px; padding:20px; }
+    .price-box .price { font-size:24px; }
 }
 </style>
 </head>
@@ -234,7 +256,7 @@ footer {
     </div>
 
     <section class="shop-card">
-        <img src="bot.png" alt="Silver Citadel Bot">
+        <img src="bot.png" alt="Silver Citadel Bot" title="Custom Discord Bot">
         <h2>Custom Discord Bot</h2>
 
         <ul>
@@ -253,28 +275,28 @@ footer {
         </div>
 
         <div class="price-box">
-            <span class="old-price">$7.99</span>
-            <span class="price" data-price="5.99">$5.99</span>
+            <span class="old-price">$7.99 / month</span>
+            <span class="price" data-price="5.99">$5.99 / month</span>
         </div>
 
         <div class="loyalty-box">
-            🎉 After completing your purchase, you will receive a 5% OFF discount automatically for your next order!
+            🎉 After completing your purchase, you will receive a 5% OFF discount automatically for your next monthly subscription!
         </div>
 
         <div class="btn-container">
-            <a href="https://paypal.me/SilverCitadelCo" target="_blank"><button class="paypal">Pay with PayPal</button></a>
-            <a href="https://cash.app/$SilverCitadelCo" target="_blank"><button class="cashapp">Pay with Cash App</button></a>
+            <a href="https://paypal.me/SilverCitadelCo" target="_blank" title="Monthly Price: $5.99"><button class="paypal">Pay with PayPal</button></a>
+            <a href="https://cash.app/$SilverCitadelCo" target="_blank" title="Monthly Price: $5.99"><button class="cashapp">Pay with Cash App</button></a>
             <a href="https://discord.gg/silvercitadel" target="_blank"><button class="discord">Join Discord to Claim</button></a>
         </div>
 
         <div class="info-section">
             <h3>How It Works</h3>
             <p>
-                1. Complete your payment using PayPal or Cash App.<br>
+                1. Complete your monthly payment using PayPal or Cash App.<br>
                 2. Join our Discord server and open a support ticket.<br>
                 3. Provide your server details and customization requests.<br>
                 4. Receive your custom bot delivery within 1–2 hours.<br>
-                5. The 5% OFF discount will be applied automatically on your next purchase.
+                5. The 5% OFF discount will be applied automatically on your next monthly subscription.
             </p>
 
             <h3>Need Help?</h3>
@@ -298,7 +320,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const discountActive = localStorage.getItem('sc_loyalty_discount');
     if (discountActive === 'true') {
         const discountedPrice = (originalPrice * 0.95).toFixed(2);
-        priceElem.textContent = `$${discountedPrice}`;
+        priceElem.textContent = `$${discountedPrice} / month`;
         localStorage.removeItem('sc_loyalty_discount');
         alert('🎉 Your 5% loyalty discount has been applied!');
     }
