@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Silver Citadel Corporation</title>
+<title>Silver Citadel</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="logo.png">
 
-<meta property="og:title" content="Silver Citadel Corporation">
-<meta property="og:description" content="Welcome to Silver Citadel! Custom Discord bots, premium services, and community support.">
+<meta property="og:title" content="Silver Citadel">
+<meta property="og:description" content="Get your custom Discord bot today!">
 <meta property="og:image" content="logo.png">
 <meta name="theme-color" content="#d4af37">
 
@@ -23,89 +23,97 @@ body {
 .overlay {
     background: rgba(0,0,0,0.88);
     min-height: 100vh;
-    padding: 60px 20px;
-    box-sizing: border-box;
+    padding: 50px 20px;
     text-align: center;
+    box-sizing: border-box;
 }
 
-h1 {
-    font-size: 48px;
+header h1 {
+    font-size: 40px;
     color: #d4af37;
-    margin-bottom: 10px;
-}
-
-h2 {
-    font-size: 24px;
     margin-bottom: 30px;
+    text-shadow: 0 0 10px #d4af37;
 }
 
-.hero-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-bottom: 50px;
-}
-
-.hero-buttons a {
-    text-decoration: none;
-}
-
-.hero-buttons button {
-    padding: 15px 30px;
-    border-radius: 8px;
-    border: none;
-    font-weight: bold;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: 1px;
-    font-size: 16px;
-}
-
-.hero-buttons button:hover {
-    transform: translateY(-2px);
-    opacity: 0.9;
-}
-
-.shop-btn { background-color: #d4af37; color: #1a1a1a; }
-.discord-btn { background-color: #5865F2; color: white; }
-
-.feature-card {
+.shop-card {
     background: rgba(30, 41, 59, 0.95);
-    padding: 25px;
+    padding: 30px;
     border-radius: 12px;
-    max-width: 400px;
-    margin: 20px auto;
+    max-width: 450px;
+    margin: 0 auto 50px auto;
+    text-align: center;
     border: 1px solid rgba(212,175,55,0.4);
     box-shadow: 0 8px 25px rgba(0,0,0,0.6);
     transition: transform 0.3s;
 }
 
-.feature-card:hover {
+.shop-card:hover {
     transform: translateY(-5px);
 }
 
-.feature-card img {
-    width: 140px;
-    margin-bottom: 15px;
+.shop-card img {
+    width: 160px;
+    margin-bottom: 20px;
     border-radius: 8px;
     transition: transform 0.3s;
 }
 
-.feature-card img:hover {
+.shop-card img:hover {
     transform: scale(1.05);
     filter: drop-shadow(0 0 15px #d4af37);
 }
 
-.feature-card h3 {
-    margin-bottom: 10px;
+.shop-card h2 {
+    font-size: 26px;
     color: #d4af37;
+    margin-bottom: 15px;
 }
+
+.shop-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+    text-align: left;
+}
+
+.shop-card ul li {
+    margin: 8px 0;
+    font-size: 16px;
+}
+
+.btn-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.btn-container button {
+    width: 100%;
+    max-width: 300px;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+}
+
+.btn-container button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.paypal { background-color: #0070ba; color: white; }
+.cashapp { background-color: #00c244; color: white; }
+.shop-link { background-color: #d4af37; color: black; }
 
 footer {
     text-align: center;
-    margin-top: 60px;
+    margin-top: 40px;
     padding: 20px;
     font-size: 12px;
     color: #777;
@@ -117,42 +125,38 @@ footer a {
 }
 
 @media screen and (max-width: 500px) {
-    h1 { font-size: 36px; }
-    h2 { font-size: 20px; }
-    .hero-buttons { flex-direction: column; gap: 15px; }
-    .feature-card img { width: 120px; }
+    .shop-card img {
+        width: 140px;
+    }
 }
 </style>
 </head>
-
 <body>
 <div class="overlay">
+    <header>
+        <h1>Welcome to Silver Citadel</h1>
+        <p>Your one-stop shop for custom Discord bots!</p>
+    </header>
 
-    <h1>Welcome to Silver Citadel</h1>
-    <h2>Custom Discord Bots & Premium Services</h2>
-
-    <div class="hero-buttons">
-        <a href="shop.html"><button class="shop-btn">Visit Shop</button></a>
-        <a href="https://discord.gg/silvercitadel" target="_blank"><button class="discord-btn">Join Discord</button></a>
-    </div>
-
-    <!-- Optional feature cards for homepage -->
-    <div class="feature-card">
-        <img src="bot.png" alt="Custom Bot">
-        <h3>Custom Discord Bot</h3>
-        <p>Advanced ticket system, moderation tools, mini games, economy & more. Get your bot delivered fast!</p>
-    </div>
-
-    <div class="feature-card">
-        <img src="logo.png" alt="Community">
-        <h3>Community & Support</h3>
-        <p>Join our Discord to connect with the community, get help, and leave vouches for discounts!</p>
+    <div class="shop-card">
+        <img src="bot.png" alt="Silver Citadel Bot">
+        <h2>Custom Discord Bot</h2>
+        <ul>
+            <li>⚔️ Advanced Ticket System</li>
+            <li>🛡️ Elite Moderation Tools</li>
+            <li>🔥 Banned Words Filter</li>
+            <li>⚡ Custom Commands</li>
+            <li>💰 Economy & Level System (Optional)</li>
+            <li>🎮 Mini Games (Optional)</li>
+        </ul>
+        <div class="btn-container">
+            <a href="shop.html"><button class="shop-link">Go to Shop</button></a>
+        </div>
     </div>
 
     <footer>
         © 2026 Silver Citadel Corporation. All rights reserved.
     </footer>
-
 </div>
 </body>
 </html>
