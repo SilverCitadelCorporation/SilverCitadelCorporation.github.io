@@ -13,6 +13,7 @@ body {
     background-color: #0f0f1a;
     color: #d4af37;
     font-family: 'Cinzel', serif;
+    scroll-behavior: smooth;
 }
 
 /* HEADER */
@@ -23,56 +24,126 @@ header {
     padding: 20px 40px;
     background-color: #1c1330;
     border-bottom: 3px solid #d4af37;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .logo {
-    height: 70px;
+    height: 75px;
+}
+
+nav a {
+    color: #d4af37;
+    text-decoration: none;
+    margin-left: 25px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: #ffffff;
 }
 
 /* HERO */
 .hero {
     height: 90vh;
     background:
-        linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
-        url("./background.png");
+        linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+        url("Background.png") no-repeat center center;
     background-size: cover;
-    background-position: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
+    padding: 20px;
 }
 
 .hero h1 {
-    font-size: 55px;
+    font-size: 60px;
     margin: 0;
+    text-shadow: 0 0 20px black;
 }
 
 .hero p {
     font-size: 22px;
+    margin-top: 15px;
+    margin-bottom: 30px;
 }
 
 .button {
-    margin-top: 20px;
-    background: #d4af37;
+    background: linear-gradient(45deg, #d4af37, #f1c40f);
     color: #1c1330;
-    padding: 14px 30px;
-    border-radius: 6px;
-    text-decoration: none;
+    padding: 15px 35px;
+    border-radius: 8px;
     font-weight: bold;
+    text-decoration: none;
+    transition: 0.3s;
 }
 
+.button:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 20px #d4af37;
+}
+
+/* SECTIONS */
 section {
     padding: 80px 20px;
     text-align: center;
+}
+
+.about {
+    background-color: #1c1330;
+}
+
+.services {
+    background-color: #141424;
+}
+
+.service-box {
+    max-width: 300px;
+    margin: 20px;
+    padding: 30px;
+    background-color: #1c1330;
+    border-radius: 10px;
+    display: inline-block;
+    transition: 0.3s;
+}
+
+.service-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 20px #d4af37;
+}
+
+/* GALLERY */
+.gallery {
     background-color: #141424;
 }
 
 .gallery img {
-    width: 250px;
+    width: 280px;
+    border-radius: 12px;
     margin: 20px;
-    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.gallery img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px #d4af37;
+}
+
+/* FOOTER */
+footer {
+    background-color: #1c1330;
+    padding: 40px;
+    text-align: center;
+    border-top: 3px solid #d4af37;
+}
+
+footer a {
+    color: #d4af37;
+    text-decoration: none;
 }
 </style>
 </head>
@@ -80,24 +151,63 @@ section {
 <body>
 
 <header>
-    <img src="./logo.png" class="logo" alt="Logo">
+    <img src="finally logo.png" class="logo" alt="Silver Citadel Logo">
+    <nav>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#gallery">Gallery</a>
+        <a href="shop.html">Shop</a>
+        <a href="https://discord.gg/silvercitadel" target="_blank">Discord</a>
+    </nav>
 </header>
 
 <section class="hero">
     <h1>Silver Citadel Corporation</h1>
     <p>Forging Digital Power with a Knightly Edge</p>
-    <a href="#" class="button">Enter the Kingdom</a>
+    <a href="https://discord.gg/silvercitadel" target="_blank" class="button">
+        Join the Kingdom
+    </a>
 </section>
 
-<section>
-    <h2>Our Creation</h2>
-    <p>Elite Discord bots built for kingdoms of all sizes.</p>
+<section class="about" id="about">
+    <h2>Who We Are</h2>
+    <p style="max-width: 800px; margin: auto; font-size: 18px;">
+        Silver Citadel Corporation builds powerful Discord bots and custom digital systems
+        designed to elevate your server into a digital kingdom.
+        Precision. Strength. Loyalty.
+    </p>
 </section>
 
-<section class="gallery">
-    <h2>The Arsenal</h2>
-    <img src="./bot.png" alt="Bot Image">
+<section class="services" id="services">
+    <h2>Our Royal Services</h2>
+
+    <div class="service-box">
+        <h3>Custom Discord Bots</h3>
+        <p>Advanced moderation, economy systems, games, and automation tailored to your realm.</p>
+    </div>
+
+    <div class="service-box">
+        <h3>Server Automation</h3>
+        <p>Streamline management and increase engagement with elite bot systems.</p>
+    </div>
+
+    <div class="service-box">
+        <h3>Digital Assets</h3>
+        <p>Custom graphics, banners, branding, and identity creation for your kingdom.</p>
+    </div>
 </section>
+
+<section class="gallery" id="gallery">
+    <h2>The Citadel Arsenal</h2>
+
+    <img src="bot.png" alt="SCK Knight Bot">
+    <img src="Background.png" alt="Battle Banner">
+</section>
+
+<footer>
+    <p>&copy; 2026 Silver Citadel Corporation. All Rights Reserved.</p>
+    <a href="tos.html">Terms of Service</a>
+</footer>
 
 </body>
 </html>
