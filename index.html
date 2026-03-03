@@ -6,29 +6,93 @@
 <title>Silver Citadel Corporation</title>
 <link rel="icon" type="image/png" href="logo.png">
 <link rel="stylesheet" href="css/style.css">
+
+<meta property="og:title" content="Silver Citadel Corporation">
+<meta property="og:description" content="Enter the world of Silver Citadel – medieval, epic, and digital!">
+<meta property="og:image" content="logo.png">
+<meta name="theme-color" content="#d4af37">
 </head>
 <body>
 
 <header>
-    <img src="logo.png" alt="Silver Citadel Logo">
-    <h1>Silver Citadel Corporation</h1>
+    <img src="logo.png" alt="Silver Citadel Logo" style="width:120px; margin-bottom:10px;">
+    <h1>Welcome to Silver Citadel</h1>
 </header>
 
 <nav>
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="shop.html">Shop</a>
-    <a href="contact.html">Contact</a>
+    <a href="index.html">Home</a> |
+    <a href="about.html">About</a> |
+    <a href="shop.html">Shop</a> |
+    <a href="contact.html">Contact</a> |
     <a href="tos.html">Terms of Service</a>
 </nav>
 
-<div class="overlay">
-    <section class="main-content">
-        <h2>Welcome to the Citadel</h2>
-        <p>Step into the kingdom of Silver Citadel. Explore custom bots, epic adventures, and the medieval world we’ve built for you.</p>
-        <a href="shop.html" class="button">Visit Shop</a>
-    </section>
+<div class="overlay" style="background-color: rgba(0,0,0,0.6); padding:50px; text-align:center; min-height:80vh;">
+    <h2 style="font-size:32px; margin-bottom:30px;">Step into the Realm of Silver Citadel</h2>
+    <p style="font-size:18px; max-width:700px; margin:auto; line-height:1.6;">
+        Explore our custom Discord bots, digital creations, and medieval-themed adventures. Join our community and bring the Silver Citadel to life!
+    </p>
+
+    <div style="margin-top:40px;">
+        <a href="shop.html"><button class="button" style="padding:15px 30px; font-size:18px;">Enter the Shop</button></a>
+    </div>
 </div>
+
+<footer style="text-align:center; padding:20px; color:#d4af37;">
+    &copy; 2026 Silver Citadel Corporation. All rights reserved.
+</footer>
+
+<style>
+body {
+    margin:0;
+    font-family:'Garamond', serif;
+    background: url('background.png') no-repeat center center fixed;
+    background-size: cover;
+    color:#d4af37;
+}
+
+header h1 {
+    margin:0;
+    font-size:36px;
+}
+
+nav {
+    text-align:center;
+    background-color: rgba(0,0,0,0.7);
+    padding:10px 0;
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+nav a {
+    color:#d4af37;
+    text-decoration:none;
+    margin:0 15px;
+    font-weight:bold;
+    font-size:16px;
+}
+
+nav a:hover {
+    color:#fff;
+}
+
+.button {
+    background-color:#4a235a;
+    color:#d4af37;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    transition:0.3s;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+.button:hover {
+    background-color:#d4af37;
+    color:#4a235a;
+}
+</style>
 
 </body>
 </html>
