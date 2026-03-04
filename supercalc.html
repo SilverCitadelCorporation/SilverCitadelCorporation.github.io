@@ -6,21 +6,55 @@
 <title>Silver Citadel Arcade</title>
 <link rel="icon" type="image/png" href="logo.png">
 <style>
-body{margin:0;font-family:Garamond,serif;background:#111;color:white;text-align:center;overflow:auto;}
+body {
+    margin:0;
+    font-family:Garamond, serif;
+    background:#111;
+    color:white;
+    text-align:center;
+}
 h1{margin-top:20px;}
-#calculator{margin-top:20px;}
-#calculator input{width:200px;font-size:20px;}
-#calculator button{margin:2px;padding:10px 15px;font-size:16px;}
-#arcade .menu button{margin:5px;padding:10px 20px;font-size:16px;border-radius:6px;cursor:pointer;}
-.game{display:none;margin-top:20px;}
-canvas{border:1px solid white;background:#222;}
+#calculator {
+    margin-top:20px;
+}
+#calculator input{
+    width:200px;
+    font-size:20px;
+    text-align:right;
+}
+#calculator button{
+    margin:2px;
+    padding:10px 15px;
+    font-size:16px;
+    cursor:pointer;
+}
+#arcade {
+    display:none;
+    margin-top:30px;
+}
+.arcade-menu button{
+    margin:5px;
+    padding:10px 20px;
+    font-size:16px;
+    border-radius:6px;
+    cursor:pointer;
+}
+.game{
+    display:none;
+    margin-top:20px;
+}
+canvas{
+    border:1px solid white;
+    background:#222;
+}
 </style>
 </head>
 <body>
 
 <h1>🎮 Silver Citadel Arcade</h1>
-<p>Enter 0000 = in the calculator to unlock!</p>
+<p>Enter <strong>0000 =</strong> in the calculator to unlock!</p>
 
+<!-- Calculator -->
 <div id="calculator">
     <input type="text" id="display" readonly><br>
     <button onclick="press('7')">7</button>
@@ -41,8 +75,9 @@ canvas{border:1px solid white;background:#222;}
     <button onclick="press('+')">+</button>
 </div>
 
+<!-- Arcade Menu -->
 <div id="arcade">
-    <div class="menu">
+    <div class="arcade-menu">
         <button onclick="showGame('clicker')">Focus Clicker</button>
         <button onclick="showGame('obby')">Logic Obby</button>
         <button onclick="showGame('dodge')">Reaction Trainer</button>
@@ -51,6 +86,7 @@ canvas{border:1px solid white;background:#222;}
         <button onclick="showGame('tasks')">Task Challenge</button>
     </div>
 
+    <!-- Games -->
     <div id="clicker" class="game">
         <h2>Focus Clicker</h2>
         Score: <span id="score">0</span><br><br>
@@ -90,28 +126,37 @@ canvas{border:1px solid white;background:#222;}
 
 <script>
 document.addEventListener("DOMContentLoaded", ()=>{
-    // Calculator
+    // --- Calculator ---
     let input="";
     const display=document.getElementById("display");
-    window.press = val=>{ input+=val; display.value=input; };
-    window.clearDisplay = ()=>{ input=""; display.value=""; };
-    window.unlock = ()=>{
-        if(input==="0000"){ document.getElementById("calculator").style.display="none"; document.getElementById("arcade").style.display="block"; }
-        else{ try{ input=eval(input).toString(); display.value=input; } catch{ display.value="Error"; input=""; } }
+    window.press=val=>{ input+=val; display.value=input; };
+    window.clearDisplay=()=>{ input=""; display.value=""; };
+    window.unlock=()=>{
+        if(input==="0000"){ 
+            document.getElementById("calculator").style.display="none";
+            document.getElementById("arcade").style.display="block";
+        } else {
+            try{ input=eval(input).toString(); display.value=input; } 
+            catch{ display.value="Error"; input=""; }
+        }
     };
 
-    // Arcade Menu
-    window.showGame = id=>{
+    // --- Arcade Menu ---
+    window.showGame=id=>{
         document.querySelectorAll('.game').forEach(g=>g.style.display="none");
         document.getElementById(id).style.display="block";
     };
 
-    // Clicker
-    let score = localStorage.getItem("score")||0;
+    // --- Clicker Game ---
+    let score=Number(localStorage.getItem("score")||0);
     document.getElementById("score").innerText=score;
-    window.addScore=()=>{ score++; localStorage.setItem("score",score); document.getElementById("score").innerText=score; };
+    window.addScore=()=>{
+        score++;
+        localStorage.setItem("score",score);
+        document.getElementById("score").innerText=score;
+    };
 
-    // Obby
+    // --- Obby ---
     const oCanvas=document.getElementById("obbyCanvas");
     const oCtx=oCanvas.getContext("2d");
     const player={x:20,y:150,size:20};
@@ -127,12 +172,15 @@ document.addEventListener("DOMContentLoaded", ()=>{
         oCtx.clearRect(0,0,500,300);
         oCtx.fillStyle="blue"; oCtx.fillRect(player.x,player.y,player.size,player.size);
         oCtx.fillStyle="green"; oCtx.fillRect(goal.x,goal.y,goal.size,goal.size);
-        if(player.x<goal.x+goal.size && player.x+player.size>goal.x && player.y<goal.y+goal.size && player.y+player.size>goal.y){ alert("You Win!"); player.x=20; player.y=150; }
+        if(player.x<goal.x+goal.size && player.x+player.size>goal.x &&
+           player.y<goal.y+goal.size && player.y+player.size>goal.y){
+            alert("You Win!"); player.x=20; player.y=150;
+        }
         requestAnimationFrame(drawObby);
     }
     drawObby();
 
-    // Dodge
+    // --- Dodge ---
     const dCanvas=document.getElementById("dodgeCanvas");
     const dCtx=dCanvas.getContext("2d");
     const dPlayer={x:250,y:250,size:20};
@@ -148,29 +196,40 @@ document.addEventListener("DOMContentLoaded", ()=>{
         dCtx.fillStyle="red"; dCtx.fillRect(enemy.x,enemy.y,enemy.size,enemy.size);
         enemy.y+=5;
         if(enemy.y>300){ enemy.y=0; enemy.x=Math.random()*480; }
-        if(dPlayer.x<enemy.x+enemy.size && dPlayer.x+dPlayer.size>enemy.x && dPlayer.y<enemy.y+enemy.size && dPlayer.y+dPlayer.size>enemy.y){ alert("Game Over!"); enemy.y=0; }
+        if(dPlayer.x<enemy.x+enemy.size && dPlayer.x+dPlayer.size>enemy.x &&
+           dPlayer.y<enemy.y+enemy.size && dPlayer.y+dPlayer.size>enemy.y){
+            alert("Game Over!"); enemy.y=0;
+        }
         requestAnimationFrame(drawDodge);
     }
     drawDodge();
 
-    // Night Survival
+    // --- Night Survival ---
     let power=100;
-    window.useDoor=()=>{ if(power<=0){ alert("Power Out! Game Over."); power=100; } else power-=10; document.getElementById("powerText").innerText="Power: "+power+"%"; };
+    window.useDoor=()=>{ 
+        if(power<=0){ alert("Power Out! Game Over."); power=100; } 
+        else power-=10; 
+        document.getElementById("powerText").innerText="Power: "+power+"%"; 
+    };
 
-    // Block Builder
+    // --- Block Builder ---
     const bCanvas=document.getElementById("buildCanvas");
     const bCtx=bCanvas.getContext("2d");
     bCanvas.addEventListener("click", e=>{
-        let rect=bCanvas.getBoundingClientRect();
-        let x=e.clientX-rect.left;
-        let y=e.clientY-rect.top;
+        const rect=bCanvas.getBoundingClientRect();
+        const x=e.clientX-rect.left;
+        const y=e.clientY-rect.top;
         bCtx.fillStyle="lime"; bCtx.fillRect(x,y,20,20);
     });
 
-    // Tasks
+    // --- Task Challenge ---
     let tasks=0;
-    window.completeTask=()=>{ if(tasks<3){ tasks++; document.getElementById("taskStatus").innerText="Tasks Done: "+tasks+"/3"; if(tasks===3) alert("All Tasks Complete!"); } };
-
+    window.completeTask=()=>{
+        if(tasks<3){ tasks++; 
+            document.getElementById("taskStatus").innerText="Tasks Done: "+tasks+"/3";
+            if(tasks===3) alert("All Tasks Complete!");
+        }
+    };
 });
 </script>
 </body>
