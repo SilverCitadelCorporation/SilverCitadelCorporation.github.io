@@ -3,73 +3,91 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SuperCalc</title>
+<title>Calculator</title>
 
 <style>
-body {
+body{
     margin:0;
     background:#111;
     display:flex;
     justify-content:center;
     align-items:center;
     height:100vh;
-    font-family:'Arial', sans-serif;
+    font-family:Arial, sans-serif;
 }
 
-#calculator {
-    width:320px;
-    background:#2d2d2d;
-    padding:20px;
-    border-radius:20px;
-    box-shadow:0 10px 40px rgba(0,0,0,0.6);
+#calculator{
+    width:340px;
+    background:#2c2c2c;
+    padding:25px;
+    border-radius:25px;
+    box-shadow:0 15px 50px rgba(0,0,0,0.7);
 }
 
-#display {
+#display{
     width:100%;
-    height:70px;
-    font-size:32px;
+    height:80px;
+    font-size:36px;
     text-align:right;
-    padding:10px;
+    padding:15px;
     border:none;
-    border-radius:10px;
-    margin-bottom:15px;
-    background:#111;
+    border-radius:15px;
+    margin-bottom:20px;
+    background:#0d0d0d;
     color:#00ff99;
+    box-sizing:border-box;
 }
 
-.buttons {
+.buttons{
     display:grid;
     grid-template-columns:repeat(4,1fr);
-    gap:10px;
+    gap:12px;
 }
 
-button {
-    height:60px;
+button{
+    height:65px;
     font-size:22px;
     border:none;
-    border-radius:12px;
+    border-radius:15px;
     background:#3a3a3a;
     color:white;
     cursor:pointer;
-    transition:0.2s;
+    transition:0.15s;
 }
 
-button:hover { background:#4a4a4a; }
+button:hover{
+    background:#4a4a4a;
+}
 
-.operator {
+.operator{
     background:#ff9500;
 }
 
-.operator:hover { background:#ffaa33; }
+.operator:hover{
+    background:#ffaa33;
+}
 
-#arcade {
+.equal{
+    background:#00c853;
+}
+
+.equal:hover{
+    background:#00e676;
+}
+
+.zero{
+    grid-column:span 2;
+}
+#arcade{
     display:none;
     position:fixed;
     inset:0;
     background:black;
     color:white;
-    text-align:center;
-    padding-top:100px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:32px;
 }
 </style>
 </head>
@@ -80,68 +98,66 @@ button:hover { background:#4a4a4a; }
     <input id="display" readonly>
 
     <div class="buttons">
+        <button onclick="clearDisplay()">C</button>
+        <button onclick="press('/')">÷</button>
+        <button onclick="press('*')">×</button>
+        <button onclick="press('-')" class="operator">−</button>
+
         <button onclick="press('7')">7</button>
         <button onclick="press('8')">8</button>
         <button onclick="press('9')">9</button>
-        <button class="operator" onclick="press('/')">÷</button>
+        <button onclick="press('+')" class="operator">+</button>
 
         <button onclick="press('4')">4</button>
         <button onclick="press('5')">5</button>
         <button onclick="press('6')">6</button>
-        <button class="operator" onclick="press('*')">×</button>
+        <button onclick="calculate()" class="equal">=</button>
 
         <button onclick="press('1')">1</button>
         <button onclick="press('2')">2</button>
         <button onclick="press('3')">3</button>
-        <button class="operator" onclick="press('-')">−</button>
-
-        <button onclick="press('0')">0</button>
         <button onclick="press('.')">.</button>
-        <button class="operator" onclick="calculate()">=</button>
-        <button class="operator" onclick="press('+')">+</button>
 
-        <button onclick="clearDisplay()" style="grid-column: span 4; background:#555;">C</button>
+        <button onclick="press('0')" class="zero">0</button>
     </div>
 </div>
 
 <div id="arcade">
-    <h1>🎮 Arcade Unlocked!</h1>
-    <p>You entered the secret code.</p>
+    🎮 Arcade Unlocked
 </div>
 
 <script>
-let input = "";
+let input="";
 
 function press(val){
-    input += val;
-    document.getElementById("display").value = input;
+    input+=val;
+    document.getElementById("display").value=input;
 }
 
 function clearDisplay(){
-    input = "";
-    document.getElementById("display").value = "";
+    input="";
+    document.getElementById("display").value="";
 }
 
 function calculate(){
-    if(input === "0000"){
+    if(input==="0000"){
         document.getElementById("calculator").style.display="none";
-        document.getElementById("arcade").style.display="block";
+        document.getElementById("arcade").style.display="flex";
         input="";
         document.getElementById("display").value="";
         return;
     }
     try{
-        input = eval(input).toString();
-        document.getElementById("display").value = input;
-    } catch{
+        input=eval(input).toString();
+        document.getElementById("display").value=input;
+    }catch{
         document.getElementById("display").value="Error";
         input="";
     }
 }
 
-// ENTER key works
-document.addEventListener("keydown", function(e){
-    if(e.key === "Enter") calculate();
+document.addEventListener("keydown",function(e){
+    if(e.key==="Enter") calculate();
 });
 </script>
 
