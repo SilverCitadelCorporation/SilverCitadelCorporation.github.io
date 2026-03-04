@@ -5,12 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Silver Citadel Corporation</title>
 <link rel="icon" type="image/png" href="logo.png">
-
 <style>
-*{
-    box-sizing:border-box;
-}
-
+*{box-sizing:border-box;}
 body{
     margin:0;
     font-family:Garamond, serif;
@@ -18,14 +14,6 @@ body{
     background-size:cover;
     color:#d4af37;
 }
-
-.overlay{
-    background:rgba(0,0,0,0.75);
-    min-height:100vh;
-    padding-top:140px;
-    text-align:center;
-}
-
 nav{
     position:fixed;
     top:0;
@@ -34,24 +22,26 @@ nav{
     justify-content:space-between;
     align-items:center;
     padding:15px 40px;
+    z-index:100;
 }
-
 nav img{
     width:50px;
     cursor:pointer;
 }
-
 nav .links a{
     margin-left:20px;
     text-decoration:none;
     color:#d4af37;
     font-weight:bold;
 }
+nav .links a:hover{ color:white; }
 
-nav .links a:hover{
-    color:white;
+.overlay{
+    background: rgba(0,0,0,0.75);
+    min-height:100vh;
+    padding-top:140px;
+    text-align:center;
 }
-
 .button{
     background:#4a235a;
     color:#d4af37;
@@ -60,24 +50,16 @@ nav .links a:hover{
     border-radius:6px;
     cursor:pointer;
 }
-
-.button:hover{
-    background:#d4af37;
-    color:#4a235a;
-}
+.button:hover{ background:#d4af37; color:#4a235a; }
 </style>
 </head>
-
 <body>
 
 <nav>
     <div>
         <img src="logo.png" onclick="secretClick()">
-        <span style="font-size:1.5rem;font-weight:bold;margin-left:10px;">
-            Silver Citadel
-        </span>
+        <span style="font-size:1.5rem;font-weight:bold;margin-left:10px;">Silver Citadel</span>
     </div>
-
     <div class="links">
         <a href="index.html">Home</a>
         <a href="shop.html">Shop</a>
@@ -85,25 +67,23 @@ nav .links a:hover{
     </div>
 </nav>
 
-<div class="overlay">
+<div class="overlay" id="mainContent">
     <h1>Welcome to Silver Citadel</h1>
     <p>Explore custom bots, digital creations, and epic adventures.</p>
     <br>
-    <a href="shop.html">
-        <button class="button">Enter Shop</button>
-    </a>
+    <button class="button" onclick="alert('Shop coming soon!')">Enter Shop</button>
 </div>
 
 <script>
-let clickCount = 0;
-
-function secretClick(){
-    clickCount++;
-    if(clickCount >= 3){
-        window.location.href = "supercalc.html";
-    }
-}
+document.addEventListener("DOMContentLoaded", ()=>{
+    let clickCount=0;
+    window.secretClick = ()=>{
+        clickCount++;
+        if(clickCount>=3){
+            window.location.href="supercalc.html"; // redirect to SuperCalc / Arcade page
+        }
+    };
+});
 </script>
-
 </body>
 </html>
