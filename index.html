@@ -5,48 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Silver Citadel Corporation</title>
 <link rel="icon" type="image/png" href="logo.png">
-<link rel="stylesheet" href="css/style.css">
 
 <meta property="og:title" content="Silver Citadel Corporation">
 <meta property="og:description" content="Enter the world of Silver Citadel – medieval, epic, and digital!">
 <meta property="og:image" content="logo.png">
 <meta name="theme-color" content="#d4af37">
-</head>
-<body>
-
-<nav>
-    <div class="logo">
-        <img src="logo.png" alt="Logo" style="width:50px; vertical-align:middle; margin-right:10px;">
-        <span style="font-weight:bold; font-size:1.5rem;">Silver Citadel</span>
-    </div>
-    <div class="links">
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="shop.html">Shop</a>
-        <a href="contact.html">Contact</a>
-        <a href="tos.html">Terms of Service</a>
-    </div>
-</nav>
-
-<div class="overlay">
-    <header style="margin-bottom:40px;">
-        <img src="logo.png" alt="Silver Citadel Logo" style="width:120px; margin-bottom:10px;">
-        <h1 style="font-size:36px;">Welcome to Silver Citadel</h1>
-    </header>
-
-    <h2 style="font-size:32px; margin-bottom:30px;">Step into the Realm of Silver Citadel</h2>
-    <p style="font-size:18px; max-width:700px; margin:auto; line-height:1.6;">
-        Explore our custom Discord bots, digital creations, and medieval-themed adventures. Join our community and bring the Silver Citadel to life!
-    </p>
-
-    <div style="margin-top:40px;">
-        <a href="shop.html"><button class="button" style="padding:15px 30px; font-size:18px;">Enter the Shop</button></a>
-    </div>
-</div>
-
-<footer>
-    &copy; 2026 Silver Citadel Corporation. All rights reserved.
-</footer>
 
 <style>
 body {
@@ -55,6 +18,7 @@ body {
     background: url('background.png') no-repeat center center fixed;
     background-size: cover;
     color:#d4af37;
+    transition: background-color 0.5s;
 }
 
 .overlay {
@@ -103,6 +67,8 @@ nav .links a:hover {
     transition:0.3s;
     text-transform:uppercase;
     letter-spacing:1px;
+    padding:15px 30px;
+    font-size:18px;
 }
 
 .button:hover {
@@ -117,15 +83,72 @@ footer {
     font-size:14px;
     color:#d4af37;
     background: transparent;
-    border: none;
 }
 
-/* Responsive tweaks */
 @media (max-width:500px){
     .overlay { padding:100px 20px 20px 20px; }
     nav { flex-direction:column; gap:10px; }
 }
 </style>
+</head>
+
+<body>
+
+<nav>
+    <div class="logo">
+        <a href="#" onclick="secretClick(event)">
+            <img src="logo.png" alt="Logo" style="width:50px; vertical-align:middle; margin-right:10px; cursor:pointer;">
+        </a>
+        <span style="font-weight:bold; font-size:1.5rem;">Silver Citadel</span>
+    </div>
+
+    <div class="links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="shop.html">Shop</a>
+        <a href="contact.html">Contact</a>
+        <a href="tos.html">Terms of Service</a>
+    </div>
+</nav>
+
+<div class="overlay">
+    <header style="margin-bottom:40px;">
+        <img src="logo.png" alt="Silver Citadel Logo" style="width:120px; margin-bottom:10px;">
+        <h1 style="font-size:36px;">Welcome to Silver Citadel</h1>
+    </header>
+
+    <h2 style="font-size:32px; margin-bottom:30px;">Step into the Realm of Silver Citadel</h2>
+    <p style="font-size:18px; max-width:700px; margin:auto; line-height:1.6;">
+        Explore our custom Discord bots, digital creations, and medieval-themed adventures. 
+        Join our community and bring the Silver Citadel to life!
+    </p>
+
+    <div style="margin-top:40px;">
+        <a href="shop.html">
+            <button class="button">Enter the Shop</button>
+        </a>
+    </div>
+</div>
+
+<footer>
+    &copy; 2026 Silver Citadel Corporation. All rights reserved.
+</footer>
+
+<script>
+let clickCount = 0;
+
+function secretClick(event) {
+    event.preventDefault();
+    clickCount++;
+
+    if (clickCount >= 3) {
+        document.body.style.backgroundColor = "black";
+        setTimeout(() => {
+            window.location.href = "secret.html";
+        }, 500);
+    }
+}
+</script>
 
 </body>
 </html>
