@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calculator</title>
+<title>SuperCalc</title>
 
 <style>
 body{
@@ -78,6 +78,7 @@ button:hover{
 .zero{
     grid-column:span 2;
 }
+
 #arcade{
     display:none;
     position:fixed;
@@ -123,7 +124,7 @@ button:hover{
 </div>
 
 <div id="arcade">
-    🎮 Arcade Unlocked
+    🎮 Arcade Unlocked!
 </div>
 
 <script>
@@ -140,6 +141,7 @@ function clearDisplay(){
 }
 
 function calculate(){
+    // Only unlock if user presses "="
     if(input==="0000"){
         document.getElementById("calculator").style.display="none";
         document.getElementById("arcade").style.display="flex";
@@ -156,6 +158,7 @@ function calculate(){
     }
 }
 
+// Pressing Enter triggers "="
 document.addEventListener("keydown",function(e){
     if(e.key==="Enter") calculate();
 });
