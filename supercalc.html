@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Silver Citadel Arcade</title>
+<title>SuperCalc</title>
 <link rel="icon" type="image/png" href="logo.png">
 <style>
 body{margin:0;font-family:Garamond,serif;background:#111;color:white;text-align:center;}
@@ -20,7 +20,7 @@ canvas{border:1px solid white;background:#222;}
 <body>
 
 <h1>SuperCalc</h1>
-<p>A normal calculator for math...</p>
+<!-- No hint about secret code -->
 
 <!-- Calculator -->
 <div id="calculator">
@@ -96,33 +96,30 @@ document.addEventListener("DOMContentLoaded", ()=>{
 let input="";
 const display=document.getElementById("display");
 
-// Calculator functions
+// Calculator functions (stealth)
 window.press=val=>{ input+=val; display.value=input; };
 window.clearDisplay=()=>{ input=""; display.value=""; };
 
 window.calculate=()=>{
-    if(input==="0000"){ // secret arcade unlock
+    // --- secret unlock ---
+    if(input==="0000"){ 
         document.getElementById("calculator").style.display="none";
         document.getElementById("arcade").style.display="block";
         input=""; display.value="";
         return;
     }
-    try{
-        input=eval(input).toString();
-        display.value=input;
-    } catch{
-        display.value="Error";
-        input="";
-    }
+    // normal math evaluation
+    try{ input=eval(input).toString(); display.value=input; } 
+    catch{ display.value="Error"; input=""; }
 };
 
-// Arcade menu functions
+// Arcade menu
 window.showGame=id=>{
     document.querySelectorAll('.game').forEach(g=>g.style.display="none");
     document.getElementById(id).style.display="block";
 };
 
-// Clicker Game
+// Clicker
 let score=Number(localStorage.getItem("score")||0);
 document.getElementById("score").innerText=score;
 window.addScore=()=>{ score++; localStorage.setItem("score",score); document.getElementById("score").innerText=score; };
@@ -175,30 +172,17 @@ drawDodge();
 
 // Night Survival
 let power=100;
-window.useDoor=()=>{ 
-    if(power<=0){ alert("Power Out! Game Over."); power=100; } 
-    else power-=10; 
-    document.getElementById("powerText").innerText="Power: "+power+"%"; 
-};
+window.useDoor=()=>{ if(power<=0){ alert("Power Out! Game Over."); power=100; } else power-=10; document.getElementById("powerText").innerText="Power: "+power+"%"; };
 
 // Block Builder
 const bCanvas=document.getElementById("buildCanvas");
 const bCtx=bCanvas.getContext("2d");
-bCanvas.addEventListener("click", e=>{
-    const rect=bCanvas.getBoundingClientRect();
-    const x=e.clientX-rect.left;
-    const y=e.clientY-rect.top;
-    bCtx.fillStyle="lime"; bCtx.fillRect(x,y,20,20);
-});
+bCanvas.addEventListener("click", e=>{ const rect=bCanvas.getBoundingClientRect(); const x=e.clientX-rect.left; const y=e.clientY-rect.top; bCtx.fillStyle="lime"; bCtx.fillRect(x,y,20,20); });
 
 // Task Challenge
 let tasks=0;
-window.completeTask=()=>{
-    if(tasks<3){ tasks++; 
-        document.getElementById("taskStatus").innerText="Tasks Done: "+tasks+"/3";
-        if(tasks===3) alert("All Tasks Complete!");
-    }
-};
+window.completeTask=()=>{ if(tasks<3){ tasks++; document.getElementById("taskStatus").innerText="Tasks Done: "+tasks+"/3"; if(tasks===3) alert("All Tasks Complete!"); } };
+
 });
 </script>
 </body>
