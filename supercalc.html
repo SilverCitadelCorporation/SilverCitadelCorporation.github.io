@@ -1,103 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SuperCalc</title>
-
-<style>
-body{
-    margin:0;
-    font-family:Arial;
-    background:#f4f4f4;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-}
-
-/* CALCULATOR */
-#calculator{
-    background:#222;
-    padding:20px;
-    border-radius:12px;
-    width:300px;
-}
-
-#display{
-    width:100%;
-    height:50px;
-    font-size:22px;
-    margin-bottom:10px;
-    text-align:right;
-    padding:5px;
-}
-
-.buttons{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:10px;
-}
-
-button{
-    padding:15px;
-    font-size:16px;
-    border:none;
-    border-radius:6px;
-    cursor:pointer;
-}
-
-/* ARCADE */
-#arcade{
-    display:none;
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:#111;
-    color:white;
-    text-align:center;
-    overflow:auto;
-    padding:20px;
-}
-</style>
-</head>
-
-<body>
-
-<div id="calculator">
-    <input type="text" id="display" readonly>
-
-    <div class="buttons">
-        <button onclick="press('7')">7</button>
-        <button onclick="press('8')">8</button>
-        <button onclick="press('9')">9</button>
-        <button onclick="press('/')">/</button>
-
-        <button onclick="press('4')">4</button>
-        <button onclick="press('5')">5</button>
-        <button onclick="press('6')">6</button>
-        <button onclick="press('*')">*</button>
-
-        <button onclick="press('1')">1</button>
-        <button onclick="press('2')">2</button>
-        <button onclick="press('3')">3</button>
-        <button onclick="press('-')">-</button>
-
-        <button onclick="press('0')">0</button>
-        <button onclick="clearDisplay()">C</button>
-        <button onclick="unlock()">=</button>
-        <button onclick="press('+')">+</button>
-    </div>
-</div>
-
-<div id="arcade">
-    <h1>Arcade Unlocked</h1>
-    <p>Welcome.</p>
-</div>
-
 <script>
+// --- Calculator logic ---
 let input = "";
 let display = document.getElementById("display");
 
@@ -105,12 +7,10 @@ function press(val){
     input += val;
     display.value = input;
 }
-
 function clearDisplay(){
     input = "";
     display.value = "";
 }
-
 function unlock(){
     if(input === "0000"){
         document.getElementById("calculator").style.display="none";
@@ -119,13 +19,123 @@ function unlock(){
         try{
             input = eval(input).toString();
             display.value = input;
-        } catch {
-            display.value = "Error";
-            input = "";
+        } catch{
+            display.value="Error";
+            input="";
         }
     }
 }
-</script>
 
-</body>
-</html>
+// --- Arcade Menu ---
+function showGame(id){
+    document.querySelectorAll('.game').forEach(g => g.style.display="none");
+    document.getElementById(id).style.display="block";
+}
+
+// --- Clicker Game ---
+let score = localStorage.getItem("score") || 0;
+document.getElementById("score").innerText = score;
+
+function addScore(){
+    score++;
+    localStorage.setItem("score", score);
+    document.getElementById("score").innerText = score;
+}
+
+// --- Obby Game ---
+let oCanvas = document.getElementById("obbyCanvas");
+let oCtx = oCanvas.getContext("2d");
+let player = {x:20,y:150,size:20};
+let goal = {x:460,y:130,size:30};
+
+document.addEventListener("keydown", e=>{
+    if(document.getElementById('obby').style.display!=='block') return;
+    if(e.key==="ArrowUp") player.y-=10;
+    if(e.key==="ArrowDown") player.y+=10;
+    if(e.key==="ArrowLeft") player.x-=10;
+    if(e.key==="ArrowRight") player.x+=10;
+});
+
+function drawObby(){
+    if(!oCtx) return;
+    oCtx.clearRect(0,0,500,300);
+    oCtx.fillStyle="blue";
+    oCtx.fillRect(player.x,player.y,player.size,player.size);
+    oCtx.fillStyle="green";
+    oCtx.fillRect(goal.x,goal.y,goal.size,goal.size);
+
+    if(player.x < goal.x+goal.size &&
+       player.x+player.size > goal.x &&
+       player.y < goal.y+goal.size &&
+       player.y+player.size > goal.y){
+        alert("You Win!");
+        player.x=20; player.y=150;
+    }
+    requestAnimationFrame(drawObby);
+}
+drawObby();
+
+// --- Dodge Game ---
+let dCanvas = document.getElementById("dodgeCanvas");
+let dCtx = dCanvas.getContext("2d");
+let dPlayer = {x:250,y:250,size:20};
+let enemy = {x:Math.random()*480,y:0,size:20};
+
+document.addEventListener("keydown", e=>{
+    if(document.getElementById('dodge').style.display!=='block') return;
+    if(e.key==="a") dPlayer.x-=10;
+    if(e.key==="d") dPlayer.x+=10;
+});
+
+function drawDodge(){
+    if(!dCtx) return;
+    dCtx.clearRect(0,0,500,300);
+    dCtx.fillStyle="white";
+    dCtx.fillRect(dPlayer.x,dPlayer.y,dPlayer.size,dPlayer.size);
+    dCtx.fillStyle="red";
+    dCtx.fillRect(enemy.x,enemy.y,enemy.size,enemy.size);
+    enemy.y+=5;
+    if(enemy.y>300){
+        enemy.y=0;
+        enemy.x=Math.random()*480;
+    }
+    if(dPlayer.x < enemy.x+enemy.size &&
+       dPlayer.x+dPlayer.size > enemy.x &&
+       dPlayer.y < enemy.y+enemy.size &&
+       dPlayer.y+dPlayer.size > enemy.y){
+        alert("Game Over!");
+        enemy.y=0;
+    }
+    requestAnimationFrame(drawDodge);
+}
+drawDodge();
+
+// --- Night Survival ---
+let power = 100;
+function useDoor(){
+    if(power<=0){ alert("Power Out! Game Over."); power=100; }
+    else power-=10;
+    document.getElementById("powerText").innerText = "Power: "+power+"%";
+}
+
+// --- Block Builder ---
+let bCanvas = document.getElementById("buildCanvas");
+let bCtx = bCanvas.getContext("2d");
+bCanvas.addEventListener("click", e=>{
+    let rect = bCanvas.getBoundingClientRect();
+    let x = e.clientX - rect.left;
+    let y = e.clientY - rect.top;
+    bCtx.fillStyle="lime";
+    bCtx.fillRect(x,y,20,20);
+});
+
+// --- Task System ---
+let tasks = 0;
+function completeTask(){
+    if(tasks<3){
+        tasks++;
+        document.getElementById("taskStatus").innerText = "Tasks Done: "+tasks+"/3";
+        if(tasks===3) alert("All Tasks Complete!");
+    }
+}
+</script>
