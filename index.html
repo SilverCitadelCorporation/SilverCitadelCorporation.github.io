@@ -3,279 +3,91 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SuperCalc - Student Math Tool</title>
+<title>Silver Citadel Corporation</title>
+<link rel="icon" type="image/png" href="logo.png">
 
 <style>
-body{
+body {
     margin:0;
-    font-family:Arial;
-    background:#f4f4f4;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
+    font-family:'Garamond', serif;
+    background: url('background.png') no-repeat center center fixed;
+    background-size: cover;
+    color:#d4af37;
 }
 
-/* CALCULATOR */
-.calculator{
-    background:#222;
-    padding:20px;
-    border-radius:12px;
-    width:320px;
-    box-shadow:0 0 20px rgba(0,0,0,0.4);
+.overlay {
+    background: rgba(0,0,0,0.75);
+    min-height:100vh;
+    padding:120px 30px 30px 30px;
+    text-align:center;
 }
 
-#display{
+nav {
+    position: fixed;
+    top:0;
     width:100%;
-    height:50px;
-    font-size:24px;
-    margin-bottom:10px;
-    text-align:right;
-    padding:5px;
-    border:none;
+    display:flex;
+    justify-content:space-between;
+    padding:10px 30px;
 }
 
-.buttons{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:10px;
+nav a {
+    margin-left:20px;
+    color:#d4af37;
+    text-decoration:none;
+    font-weight:bold;
 }
 
-button{
-    padding:15px;
-    font-size:16px;
+.button {
+    background:#4a235a;
+    color:#d4af37;
+    padding:15px 30px;
     border:none;
     border-radius:6px;
     cursor:pointer;
 }
 
-button:hover{
-    background:#444;
-    color:white;
-}
-
-/* ARCADE */
-#arcade{
-    display:none;
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:#111;
-    color:white;
-    overflow:auto;
-    text-align:center;
-}
-
-.menu button{
-    margin:8px;
-}
-
-canvas{
-    background:#222;
-    border:2px solid white;
+.button:hover {
+    background:#d4af37;
+    color:#4a235a;
 }
 </style>
 </head>
 
 <body>
 
-<!-- CALCULATOR -->
-<div class="calculator" id="calc">
-    <input type="text" id="display" readonly>
-
-    <div class="buttons">
-        <button onclick="press('7')">7</button>
-        <button onclick="press('8')">8</button>
-        <button onclick="press('9')">9</button>
-        <button onclick="press('/')">/</button>
-
-        <button onclick="press('4')">4</button>
-        <button onclick="press('5')">5</button>
-        <button onclick="press('6')">6</button>
-        <button onclick="press('*')">*</button>
-
-        <button onclick="press('1')">1</button>
-        <button onclick="press('2')">2</button>
-        <button onclick="press('3')">3</button>
-        <button onclick="press('-')">-</button>
-
-        <button onclick="press('0')">0</button>
-        <button onclick="clearDisplay()">C</button>
-        <button onclick="calculate()">=</button>
-        <button onclick="press('+')">+</button>
-    </div>
-</div>
-
-<!-- ARCADE -->
-<div id="arcade">
-    <h1>Study Tools Dashboard</h1>
-
-    <div class="menu">
-        <button onclick="showGame('clicker')">Focus Clicker</button>
-        <button onclick="showGame('obby')">Logic Obby</button>
-        <button onclick="showGame('dodge')">Reaction Trainer</button>
-        <button onclick="showGame('survival')">Night Survival</button>
-        <button onclick="showGame('builder')">Block Builder</button>
-        <button onclick="showGame('tasks')">Task System</button>
+<nav>
+    <div>
+        <a href="#" onclick="secretClick(event)">
+            <img src="logo.png" style="width:50px; cursor:pointer;">
+        </a>
+        <span style="font-size:1.5rem; font-weight:bold;">Silver Citadel</span>
     </div>
 
-    <!-- CLICKER -->
-    <div id="clicker" class="game">
-        <h2>Focus Clicker</h2>
-        <h3>Score: <span id="score">0</span></h3>
-        <button onclick="addScore()">Click</button>
+    <div>
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="contact.html">Contact</a>
     </div>
+</nav>
 
-    <!-- OBBY -->
-    <div id="obby" class="game" style="display:none;">
-        <h2>Reach the Green</h2>
-        <canvas id="obbyCanvas" width="500" height="300"></canvas>
-    </div>
-
-    <!-- DODGE -->
-    <div id="dodge" class="game" style="display:none;">
-        <h2>Dodge Game (A/D to move)</h2>
-        <canvas id="dodgeCanvas" width="500" height="300"></canvas>
-    </div>
-
-    <!-- SURVIVAL -->
-    <div id="survival" class="game" style="display:none;">
-        <h2>Night Survival</h2>
-        <p id="powerText">Power: 100%</p>
-        <button onclick="useDoor()">Close Door (-10%)</button>
-    </div>
-
-    <!-- BLOCK BUILDER -->
-    <div id="builder" class="game" style="display:none;">
-        <h2>Block Builder</h2>
-        <canvas id="buildCanvas" width="500" height="300"></canvas>
-    </div>
-
-    <!-- TASK SYSTEM -->
-    <div id="tasks" class="game" style="display:none;">
-        <h2>Complete All Tasks</h2>
-        <p id="taskStatus">Tasks Done: 0/3</p>
-        <button onclick="completeTask()">Do Task</button>
-    </div>
+<div class="overlay">
+    <h1>Welcome to Silver Citadel</h1>
+    <p>Explore our custom bots, digital creations, and medieval adventures.</p>
+    <br>
+    <a href="shop.html"><button class="button">Enter Shop</button></a>
 </div>
 
 <script>
-let input="";
+let clickCount = 0;
 
-function press(v){ input+=v; display.value=input; }
-function clearDisplay(){ input=""; display.value=""; }
+function secretClick(event){
+    event.preventDefault();
+    clickCount++;
 
-function calculate(){
-    if(input==="0000"){
-        document.getElementById("calc").style.display="none";
-        document.getElementById("arcade").style.display="block";
-        return;
+    if(clickCount >= 3){
+        window.location.href = "supercalc.html";
     }
-    try{
-        input=eval(input).toString();
-        display.value=input;
-    }catch{
-        display.value="Error";
-        input="";
-    }
-}
-
-/* MENU */
-function showGame(id){
-    document.querySelectorAll('.game').forEach(g=>g.style.display="none");
-    document.getElementById(id).style.display="block";
-}
-
-/* CLICKER */
-let score=localStorage.getItem("score")||0;
-document.getElementById("score").innerText=score;
-
-function addScore(){
-    score++;
-    localStorage.setItem("score",score);
-    document.getElementById("score").innerText=score;
-}
-
-/* OBBY */
-let oCanvas=document.getElementById("obbyCanvas");
-let oCtx=oCanvas.getContext("2d");
-let p={x:20,y:150,size:20};
-let g={x:460,y:130,size:30};
-
-document.addEventListener("keydown",e=>{
-if(e.key==="ArrowUp")p.y-=10;
-if(e.key==="ArrowDown")p.y+=10;
-if(e.key==="ArrowLeft")p.x-=10;
-if(e.key==="ArrowRight")p.x+=10;
-});
-
-function drawObby(){
-oCtx.clearRect(0,0,500,300);
-oCtx.fillStyle="blue";oCtx.fillRect(p.x,p.y,p.size,p.size);
-oCtx.fillStyle="green";oCtx.fillRect(g.x,g.y,g.size,g.size);
-
-if(p.x<g.x+g.size&&p.x+p.size>g.x&&p.y<g.y+g.size&&p.y+p.size>g.y){
-alert("You Win!");
-p.x=20;p.y=150;
-}
-requestAnimationFrame(drawObby);
-}
-drawObby();
-
-/* DODGE */
-let dCanvas=document.getElementById("dodgeCanvas");
-let dCtx=dCanvas.getContext("2d");
-let dp={x:250,y:250,size:20};
-let enemy={x:Math.random()*480,y:0,size:20};
-
-document.addEventListener("keydown",e=>{
-if(e.key==="a")dp.x-=10;
-if(e.key==="d")dp.x+=10;
-});
-
-function drawDodge(){
-dCtx.clearRect(0,0,500,300);
-dCtx.fillStyle="white";dCtx.fillRect(dp.x,dp.y,dp.size,dp.size);
-dCtx.fillStyle="red";dCtx.fillRect(enemy.x,enemy.y,enemy.size,enemy.size);
-enemy.y+=5;
-if(enemy.y>300){enemy.y=0;enemy.x=Math.random()*480;}
-if(dp.x<enemy.x+enemy.size&&dp.x+dp.size>enemy.x&&dp.y<enemy.y+enemy.size&&dp.y+dp.size>enemy.y){
-alert("Game Over");
-enemy.y=0;
-}
-requestAnimationFrame(drawDodge);
-}
-drawDodge();
-
-/* SURVIVAL */
-let power=100;
-function useDoor(){
-if(power<=0){alert("Power Out!");power=100;}
-else{power-=10;}
-document.getElementById("powerText").innerText="Power: "+power+"%";
-}
-
-/* BLOCK BUILDER */
-let bCanvas=document.getElementById("buildCanvas");
-let bCtx=bCanvas.getContext("2d");
-bCanvas.addEventListener("click",e=>{
-let rect=bCanvas.getBoundingClientRect();
-let x=e.clientX-rect.left;
-let y=e.clientY-rect.top;
-bCtx.fillStyle="lime";
-bCtx.fillRect(x,y,20,20);
-});
-
-/* TASK SYSTEM */
-let tasks=0;
-function completeTask(){
-if(tasks<3){
-tasks++;
-document.getElementById("taskStatus").innerText="Tasks Done: "+tasks+"/3";
-if(tasks===3) alert("All Tasks Complete!");
-}
 }
 </script>
 
