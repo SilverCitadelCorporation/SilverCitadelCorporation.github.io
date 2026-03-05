@@ -10,6 +10,7 @@ canvas{background:#111;}
 button, select{padding:10px 20px;margin:5px;font-size:16px;cursor:pointer;border:none;background:#444;color:white;border-radius:5px;}
 button:hover, select:hover{background:#666;}
 #nextFruitPreview{position:absolute;top:10px;right:10px;font-size:24px;}
+#settingsFruitPreview{margin-left:10px;font-size:24px;}
 </style>
 </head>
 <body>
@@ -20,7 +21,7 @@ button:hover, select:hover{background:#666;}
     <button onclick="toggleSettings()">Settings</button>
     <div id="settingsPanel" style="display:none;margin-top:10px;">
         <label>Fruit:
-            <select id="fruitSelect">
+            <select id="fruitSelect" onchange="updateSettingsPreview()">
                 <option value="apple">🍎 Apple</option>
                 <option value="orange">🍊 Orange</option>
                 <option value="banana">🍌 Banana</option>
@@ -29,6 +30,7 @@ button:hover, select:hover{background:#666;}
                 <option value="watermelon">🍉 Watermelon</option>
                 <option value="random">🎲 Random</option>
             </select>
+            <span id="settingsFruitPreview">🍎</span>
         </label>
         <label>Grid Size:
             <select id="gridSelect">
@@ -66,25 +68,33 @@ let snake=[], dx=1, dy=0, apple={x:5,y:5}, score=0, gameInterval
 let grid=20, mode="classic", fruitType="🍎", randomFruit=false, nextFruit="🍎"
 
 const fruits = ["🍎","🍊","🍌","🍒","🍇","🍉"]
+const fruitMap = {apple:"🍎", orange:"🍊", banana:"🍌", cherry:"🍒", grape:"🍇", watermelon:"🍉"}
 
+// Toggle settings panel
 function toggleSettings(){
     let panel=document.getElementById("settingsPanel")
     panel.style.display=(panel.style.display==="none")?"block":"none"
+    updateSettingsPreview()
 }
 
-// Apply selected settings from dropdowns
+// Update settings preview emoji immediately
+function updateSettingsPreview(){
+    let val=document.getElementById("fruitSelect").value
+    if(val==="random"){
+        document.getElementById("settingsFruitPreview").innerText = "🎲"
+    } else {
+        document.getElementById("settingsFruitPreview").innerText = fruitMap[val]
+    }
+}
+
+// Apply settings before starting
 function applySettings(){
-    let fruitSelect = document.getElementById("fruitSelect").value
-    randomFruit = (fruitSelect==="random")
-    if(!randomFruit){fruitType = fruitSelectEmoji(fruitSelect)}
+    let val=document.getElementById("fruitSelect").value
+    randomFruit = (val==="random")
+    fruitType = randomFruit ? fruits[Math.floor(Math.random()*fruits.length)] : fruitMap[val]
     grid = Number(document.getElementById("gridSelect").value)
     mode = document.getElementById("modeSelect").value
-}
-
-// Convert fruit name to emoji
-function fruitSelectEmoji(name){
-    const map = {apple:"🍎", orange:"🍊", banana:"🍌", cherry:"🍒", grape:"🍇", watermelon:"🍉"}
-    return map[name] || "🍎"
+    updateNextFruitDisplay()
 }
 
 // Start game
@@ -92,31 +102,25 @@ function startGame(){
     applySettings()
     document.getElementById("startScreen").style.display="none"
     document.getElementById("gameScreen").style.display="flex"
-    score=0
-    snake=[{x:8,y:8}]
-    dx=1; dy=0
+    score=0; snake=[{x:8,y:8}]; dx=1; dy=0
     placeApple()
     clearInterval(gameInterval)
     gameInterval=setInterval(gameLoop,100)
-    updateNextFruitDisplay()
 }
 
 // Game loop
 function gameLoop(){
     let head={x:snake[0].x+dx,y:snake[0].y+dy}
-
     if(mode==="classic"){
         if(head.x<0||head.x>=canvas.width/grid||head.y<0||head.y>=canvas.height/grid||snake.some(s=>s.x===head.x&&s.y===head.y)){
             return gameOver()
         }
-    } else if(mode==="wallsOff"){
+    } else {
         head.x=(head.x+canvas.width/grid)%(canvas.width/grid)
         head.y=(head.y+canvas.height/grid)%(canvas.height/grid)
         if(snake.some(s=>s.x===head.x&&s.y===head.y)) return gameOver()
     }
-
     snake.unshift(head)
-
     if(head.x===apple.x && head.y===apple.y){score++; placeApple()}
     else{snake.pop()}
 
@@ -129,18 +133,18 @@ function gameLoop(){
     document.getElementById("score").innerText=score
 }
 
-// Place apple and determine next fruit
+// Place apple & update next fruit
 function placeApple(){
     apple.x=Math.floor(Math.random()*canvas.width/grid)
     apple.y=Math.floor(Math.random()*canvas.height/grid)
     if(randomFruit){
         fruitType = fruits[Math.floor(Math.random()*fruits.length)]
     }
-    // Pick next fruit for preview
     nextFruit = fruits[Math.floor(Math.random()*fruits.length)]
     updateNextFruitDisplay()
 }
 
+// Update in-game preview
 function updateNextFruitDisplay(){
     document.getElementById("nextFruitPreview").innerText = nextFruit
 }
@@ -163,15 +167,8 @@ function gameOver(){
 }
 
 // Restart / exit
-function restartGame(){
-    document.getElementById("gameOverScreen").style.display="none"
-    startGame()
-}
-function exitGame(){
-    document.getElementById("gameOverScreen").style.display="none"
-    window.parent.postMessage({gameName:"Snake Adventure", score:score, coins:Math.floor(score/2)}, "*")
-}
+function restartGame(){document.getElementById("gameOverScreen").style.display="none"; startGame()}
+function exitGame(){document.getElementById("gameOverScreen").style.display="none"; window.parent.postMessage({gameName:"Snake Adventure", score:score, coins:Math.floor(score/2)}, "*")}
 </script>
-
 </body>
 </html>
