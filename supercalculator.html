@@ -1,288 +1,114 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Student Activity Center</title>
+<title>Silver Citadel Arcade</title>
 
 <style>
-
 body{
-font-family:Arial;
-background:#eef2f5;
-margin:0;
-text-align:center;
+    margin:0;
+    font-family:Arial;
+    background:#111;
+    color:white;
+    text-align:center;
 }
 
-header{
-background:#2c3e50;
-color:white;
-padding:15px;
+h1{
+    padding:20px;
 }
 
-#games{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-gap:20px;
-padding:25px;
+.games{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:20px;
+    padding:20px;
 }
 
 .game{
-background:white;
-padding:15px;
-border-radius:10px;
-box-shadow:0 5px 15px rgba(0,0,0,.15);
+    background:#222;
+    padding:20px;
+    border-radius:10px;
+    cursor:pointer;
+    transition:0.2s;
 }
 
-canvas{
-background:#111;
-border-radius:8px;
-cursor:pointer;
+.game:hover{
+    transform:scale(1.05);
+    background:#333;
 }
 
+#player{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:black;
+    display:none;
+}
+
+#player iframe{
+    width:100%;
+    height:100%;
+    border:none;
+}
+
+#close{
+    position:absolute;
+    top:15px;
+    right:20px;
+    font-size:20px;
+    cursor:pointer;
+    background:#222;
+    padding:10px 15px;
+    border-radius:6px;
+}
 </style>
 </head>
 
 <body>
 
-<header>
-<h2>Student Activity Center</h2>
-<p>Interactive Learning Tools</p>
-</header>
+<h1>Silver Citadel Arcade</h1>
 
-<div id="games">
+<div class="games">
 
-<div class="game">
-<h3>Geometry Trainer</h3>
-<canvas id="dash" width="300" height="150"></canvas>
-</div>
-
-<div class="game">
-<h3>Snake Logic</h3>
-<canvas id="snake" width="300" height="150"></canvas>
-</div>
-
-<div class="game">
-<h3>Physics Pong</h3>
-<canvas id="pong" width="300" height="150"></canvas>
-</div>
-
-<div class="game">
+<div class="game" onclick="openGame('https://example.com/game1')">
 <h3>Block Builder</h3>
-<canvas id="builder" width="300" height="150"></canvas>
+<p>Minecraft‑style sandbox</p>
 </div>
 
+<div class="game" onclick="openGame('https://example.com/game2')">
+<h3>Geometry Runner</h3>
+<p>Dash and avoid obstacles</p>
+</div>
+
+<div class="game" onclick="openGame('https://example.com/game3')">
+<h3>Obby Parkour</h3>
+<p>Jump across platforms</p>
+</div>
+
+<div class="game" onclick="openGame('https://example.com/game4')">
+<h3>Clicker Tycoon</h3>
+<p>Earn coins and upgrade</p>
+</div>
+
+</div>
+
+<div id="player">
+<div id="close" onclick="closeGame()">Exit</div>
+<iframe id="frame"></iframe>
 </div>
 
 <script>
-
-let keys={}
-
-document.addEventListener("keydown",e=>keys[e.key.toLowerCase()]=true)
-document.addEventListener("keyup",e=>keys[e.key.toLowerCase()]=false)
-
-function key(k){
-return keys[k]||keys[k.replace("arrow","")]
+function openGame(url){
+    document.getElementById("player").style.display="block";
+    document.getElementById("frame").src=url;
 }
 
-//////////////////////////////////
-// GEOMETRY DASH
-//////////////////////////////////
-
-const dash=document.getElementById("dash")
-const d=dash.getContext("2d")
-
-let player={x:60,y:120,vy:0}
-let obstacles=[]
-let gravity=.6
-let speed=3
-
-dash.onclick=jump
-
-function jump(){
-if(player.y>=120) player.vy=-11
+function closeGame(){
+    document.getElementById("player").style.display="none";
+    document.getElementById("frame").src="";
 }
-
-function spawn(){
-obstacles.push({x:320,y:130,w:20,h:20})
-}
-
-setInterval(spawn,1500)
-
-function dashGame(){
-
-if(key("w")||key(" ")||key("arrowup")) jump()
-
-player.vy+=gravity
-player.y+=player.vy
-
-if(player.y>120){
-player.y=120
-player.vy=0
-}
-
-d.clearRect(0,0,300,150)
-
-d.fillStyle="cyan"
-d.fillRect(player.x,player.y,20,20)
-
-obstacles.forEach(o=>{
-o.x-=speed
-
-d.fillStyle="red"
-d.fillRect(o.x,o.y,o.w,o.h)
-
-if(player.x < o.x+o.w &&
-player.x+20 > o.x &&
-player.y < o.y+o.h &&
-player.y+20 > o.y){
-
-player.y=120
-player.vy=0
-obstacles=[]
-}
-
-})
-
-requestAnimationFrame(dashGame)
-
-}
-
-dashGame()
-
-//////////////////////////////////
-// SNAKE
-//////////////////////////////////
-
-const s=document.getElementById("snake")
-const sc=s.getContext("2d")
-
-let snake=[{x:150,y:80}]
-let dx=10
-let dy=0
-let food={x:100,y:60}
-
-s.onclick=e=>{
-let rect=s.getBoundingClientRect()
-let mx=e.clientX-rect.left
-
-if(mx>150){dx=10;dy=0}
-else{dx=-10;dy=0}
-}
-
-function snakeGame(){
-
-if(key("w")||key("arrowup")){dx=0;dy=-10}
-if(key("s")||key("arrowdown")){dx=0;dy=10}
-if(key("a")||key("arrowleft")){dx=-10;dy=0}
-if(key("d")||key("arrowright")){dx=10;dy=0}
-
-let head={x:snake[0].x+dx,y:snake[0].y+dy}
-
-snake.unshift(head)
-
-if(head.x==food.x && head.y==food.y){
-food.x=Math.floor(Math.random()*30)*10
-food.y=Math.floor(Math.random()*15)*10
-}else{
-snake.pop()
-}
-
-sc.fillStyle="black"
-sc.fillRect(0,0,300,150)
-
-sc.fillStyle="lime"
-
-snake.forEach(p=>{
-sc.fillRect(p.x,p.y,10,10)
-})
-
-sc.fillStyle="red"
-sc.fillRect(food.x,food.y,10,10)
-
-}
-
-setInterval(snakeGame,120)
-
-//////////////////////////////////
-// PONG
-//////////////////////////////////
-
-const p=document.getElementById("pong")
-const pc=p.getContext("2d")
-
-let ball={x:150,y:70,vx:3,vy:2}
-let paddle=60
-
-p.onmousemove=e=>{
-let rect=p.getBoundingClientRect()
-paddle=e.clientY-rect.top-20
-}
-
-function pongGame(){
-
-if(key("w")||key("arrowup")) paddle-=5
-if(key("s")||key("arrowdown")) paddle+=5
-
-pc.fillStyle="black"
-pc.fillRect(0,0,300,150)
-
-pc.fillStyle="white"
-pc.fillRect(10,paddle,10,40)
-
-ball.x+=ball.vx
-ball.y+=ball.vy
-
-if(ball.y<0||ball.y>150) ball.vy*=-1
-
-if(ball.x<20 && ball.y>paddle && ball.y<paddle+40)
-ball.vx*=-1
-
-pc.beginPath()
-pc.arc(ball.x,ball.y,6,0,Math.PI*2)
-pc.fill()
-
-requestAnimationFrame(pongGame)
-
-}
-
-pongGame()
-
-//////////////////////////////////
-// BLOCK BUILDER
-//////////////////////////////////
-
-const b=document.getElementById("builder")
-const bc=b.getContext("2d")
-
-let blocks=[]
-
-b.onclick=e=>{
-
-let rect=b.getBoundingClientRect()
-
-let x=e.clientX-rect.left
-let y=e.clientY-rect.top
-
-blocks.push({x,y})
-
-}
-
-function builderGame(){
-
-bc.fillStyle="#87CEEB"
-bc.fillRect(0,0,300,150)
-
-blocks.forEach(block=>{
-bc.fillStyle="#7a4e2d"
-bc.fillRect(block.x,block.y,20,20)
-})
-
-requestAnimationFrame(builderGame)
-
-}
-
-builderGame()
-
 </script>
 
 </body>
