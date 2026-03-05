@@ -6,13 +6,7 @@
 <title>Silver Citadel Corporation</title>
 <link rel="icon" type="image/png" href="logo.png">
 
-<meta property="og:title" content="Silver Citadel Corporation">
-<meta property="og:description" content="Enter the world of Silver Citadel – medieval, epic, and digital!">
-<meta property="og:image" content="logo.png">
-<meta name="theme-color" content="#d4af37">
-
 <style>
-/* Main styles */
 body {
     margin:0;
     font-family:'Garamond', serif;
@@ -135,14 +129,13 @@ footer {
 </footer>
 
 <script>
-// --- Easter Egg: Triple-click logo opens SuperCalculator ---
+// --- Triple-click logo opens the undercover SuperCalculator page ---
 let logoClickCount = 0;
 function logoEasterEgg(e){
     e.preventDefault();
     logoClickCount++;
     if(logoClickCount >= 3){
-        // Redirect to the undercover "school tool" calculator page
-        window.location.href = "supercalc.html";
+        window.location.href = "supercalc.html"; // Redirect to SuperCalculator page
         logoClickCount = 0;
     }
 }
