@@ -13,8 +13,6 @@ font-family:Arial;
 color:white;
 }
 
-/* HEADER */
-
 header{
 background:#020617;
 padding:15px;
@@ -36,28 +34,43 @@ border-radius:6px;
 border:none;
 }
 
+/* CATEGORY BAR */
+
+#categories{
+display:flex;
+gap:10px;
+padding:10px 20px;
+background:#020617;
+}
+
+.catBtn{
+padding:6px 14px;
+background:#1e293b;
+border-radius:6px;
+cursor:pointer;
+}
+
 /* GRID */
 
 #games{
 display:grid;
 grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
 gap:20px;
-padding:30px;
+padding:25px;
 }
-
-/* GAME CARD */
 
 .card{
 background:#1e293b;
 border-radius:12px;
 overflow:hidden;
 cursor:pointer;
-transition:0.25s;
+transition:.25s;
+position:relative;
 }
 
 .card:hover{
-transform:scale(1.05);
-box-shadow:0 10px 25px rgba(0,0,0,.5);
+transform:scale(1.06);
+box-shadow:0 10px 25px rgba(0,0,0,.6);
 }
 
 .thumb{
@@ -66,12 +79,20 @@ background:#334155;
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:20px;
+font-size:28px;
 }
 
 .title{
 padding:10px;
 text-align:center;
+}
+
+.favorite{
+position:absolute;
+top:6px;
+right:8px;
+cursor:pointer;
+font-size:18px;
 }
 
 /* PLAYER */
@@ -99,14 +120,12 @@ flex:1;
 border:none;
 }
 
-/* LOADING */
-
 #loading{
 position:absolute;
 top:50%;
 left:50%;
 transform:translate(-50%,-50%);
-font-size:24px;
+font-size:26px;
 display:none;
 }
 
@@ -117,78 +136,88 @@ display:none;
 
 <header>
 
-<div id="logo">Arcade Hub</div>
+<div id="logo">🎮 Arcade Hub</div>
 
 <input id="search" placeholder="Search games..." onkeyup="searchGames()">
 
 </header>
 
 
+<div id="categories">
+
+<div class="catBtn" onclick="filterGames('all')">All</div>
+<div class="catBtn" onclick="filterGames('arcade')">Arcade</div>
+<div class="catBtn" onclick="filterGames('puzzle')">Puzzle</div>
+<div class="catBtn" onclick="filterGames('action')">Action</div>
+<div class="catBtn" onclick="filterGames('skill')">Skill</div>
+
+</div>
+
+
 <div id="games">
 
-<div class="card" onclick="openGame('games/snake.html')">
+<div class="card arcade" onclick="openGame('games/snake.html')">
+<div class="favorite" onclick="toggleFav(event,this)">⭐</div>
 <div class="thumb">🐍</div>
 <div class="title">Snake Adventure</div>
 </div>
 
-<div class="card" onclick="openGame('games/breakout.html')">
+<div class="card arcade" onclick="openGame('games/breakout.html')">
+<div class="favorite" onclick="toggleFav(event,this)">⭐</div>
 <div class="thumb">🧱</div>
 <div class="title">Breakout</div>
 </div>
 
-<div class="card" onclick="openGame('games/tetris.html')">
+<div class="card puzzle" onclick="openGame('games/tetris.html')">
+<div class="favorite" onclick="toggleFav(event,this)">⭐</div>
 <div class="thumb">⬛</div>
 <div class="title">Tetris</div>
 </div>
 
-<div class="card" onclick="openGame('games/maze.html')">
-<div class="thumb">🧭</div>
-<div class="title">Maze Escape</div>
-</div>
-
-<div class="card" onclick="openGame('games/reaction.html')">
+<div class="card skill" onclick="openGame('games/reaction.html')">
+<div class="favorite" onclick="toggleFav(event,this)">⭐</div>
 <div class="thumb">⚡</div>
 <div class="title">Reaction Test</div>
 </div>
 
-<div class="card" onclick="openGame('games/runner.html')">
-<div class="thumb">🏃</div>
-<div class="title">Rhythm Runner</div>
-</div>
-
-<div class="card" onclick="openGame('games/platform.html')">
-<div class="thumb">🕹</div>
-<div class="title">Platform Adventure</div>
-</div>
-
-<div class="card" onclick="openGame('games/builder.html')">
-<div class="thumb">🧱</div>
-<div class="title">Block Builder</div>
-</div>
-
-<div class="card" onclick="openGame('games/2048.html')">
-<div class="thumb">🔢</div>
-<div class="title">2048</div>
-</div>
-
-<div class="card" onclick="openGame('games/spaceshooter.html')">
+<div class="card action" onclick="openGame('games/spaceshooter.html')">
+<div class="favorite" onclick="toggleFav(event,this)">⭐</div>
 <div class="thumb">🚀</div>
 <div class="title">Space Shooter</div>
 </div>
 
+<div class="card arcade" onclick="openGame('games/flappy.html')">
+<div class="favorite" onclick="toggleFav(event,this)">⭐</div>
+<div class="thumb">🐦</div>
+<div class="title">Flappy Flight</div>
 </div>
 
+<div class="card arcade" onclick="openGame('games/pacman.html')">
+<div class="favorite" onclick="toggleFav(event,this)">⭐</div>
+<div class="thumb">🟡</div>
+<div class="title">Maze Chaser</div>
+</div>
 
-<!-- GAME PLAYER -->
+<div class="card puzzle" onclick="openGame('games/2048.html')">
+<div class="favorite" onclick="toggleFav(event,this)">⭐</div>
+<div class="thumb">🔢</div>
+<div class="title">2048</div>
+</div>
+
+</div>
+
 
 <div id="player">
 
 <div id="topbar">
-<button onclick="closeGame()">Back</button>
+
+<button onclick="closeGame()">⬅ Back</button>
+
 <div>Game Player</div>
+
 </div>
 
-<div id="loading">Loading...</div>
+<div id="loading">Loading Game...</div>
 
 <iframe id="gameFrame"></iframe>
 
@@ -196,6 +225,8 @@ display:none;
 
 
 <script>
+
+/* OPEN GAME */
 
 function openGame(url){
 
@@ -206,12 +237,17 @@ document.getElementById("loading").style.display="block"
 document.getElementById("gameFrame").src=""
 
 setTimeout(()=>{
+
 document.getElementById("gameFrame").src=url
+
 document.getElementById("loading").style.display="none"
+
 },500)
 
 }
 
+
+/* CLOSE */
 
 function closeGame(){
 
@@ -221,6 +257,8 @@ document.getElementById("gameFrame").src=""
 
 }
 
+
+/* SEARCH */
 
 function searchGames(){
 
@@ -235,6 +273,40 @@ let title=card.innerText.toLowerCase()
 card.style.display = title.includes(input) ? "block":"none"
 
 })
+
+}
+
+
+/* FILTER */
+
+function filterGames(cat){
+
+let cards=document.querySelectorAll(".card")
+
+cards.forEach(card=>{
+
+if(cat=="all"){
+card.style.display="block"
+}else{
+card.style.display = card.classList.contains(cat) ? "block":"none"
+}
+
+})
+
+}
+
+
+/* FAVORITES */
+
+function toggleFav(event,star){
+
+event.stopPropagation()
+
+if(star.innerText=="⭐"){
+star.innerText="🌟"
+}else{
+star.innerText="⭐"
+}
 
 }
 
