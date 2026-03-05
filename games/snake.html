@@ -92,7 +92,6 @@ const nextFruitPreview = document.getElementById("nextFruitPreview");
 
 settingsFruitPreview.innerText = fruitMap[fruitSelect.value];
 
-// Show/hide settings panel
 document.getElementById("settingsBtn").onclick = ()=>{
   settingsPanel.style.display = settingsPanel.style.display==="none"?"block":"none";
   updateFruitPreview();
@@ -104,7 +103,6 @@ function updateFruitPreview(){
   settingsFruitPreview.innerText = val==="random"?"🎲":fruitMap[val];
 }
 
-// Apply settings
 function applySettings(){
   const val = fruitSelect.value;
   randomFruit = val==="random";
@@ -113,7 +111,6 @@ function applySettings(){
   mode = modeSelect.value;
 }
 
-// Start button
 document.getElementById("playBtn").onclick = ()=>{
   applySettings();
   startScreen.style.display="none";
@@ -131,7 +128,6 @@ function startGame(){
   gameInterval = setInterval(gameLoop,100);
 }
 
-// Game loop
 function gameLoop(){
   let head={x:snake[0].x+dx,y:snake[0].y+dy};
   if(mode==="classic"){
@@ -173,13 +169,15 @@ function gameOver(){
   document.getElementById("finalScore").innerText="Score: "+score;
 }
 
+// Restart → go back to Play screen
 document.getElementById("restartBtn").onclick = ()=>{
   gameOverScreen.style.display="none";
-  startGame();
-}
-document.getElementById("exitBtn").onclick = ()=>{
-  gameOverScreen.style.display="none";
   startScreen.style.display="flex";
+}
+
+// Exit → go back to hub (main menu page)
+document.getElementById("exitBtn").onclick = ()=>{
+  window.location.href="index.html"; // <-- change this to your hub URL
 }
 </script>
 </body>
