@@ -10,7 +10,7 @@ canvas{background:#111;}
 button, select{padding:10px 20px;margin:5px;font-size:16px;cursor:pointer;border:none;background:#444;color:white;border-radius:5px;}
 button:hover, select:hover{background:#666;}
 #nextFruitPreview{position:absolute;top:10px;right:10px;font-size:24px;}
-#settingsFruitPreview{margin-left:10px;font-size:24px;}
+#settingsFruitPreview{display:inline-block;margin-left:10px;font-size:24px;width:30px;}
 </style>
 </head>
 <body>
@@ -20,18 +20,18 @@ button:hover, select:hover{background:#666;}
     <button onclick="startGame()">Play</button>
     <button onclick="toggleSettings()">Settings</button>
     <div id="settingsPanel" style="display:none;margin-top:10px;">
-        <label>Fruit:
-            <select id="fruitSelect" onchange="updateSettingsPreview()">
-                <option value="apple">🍎 Apple</option>
-                <option value="orange">🍊 Orange</option>
-                <option value="banana">🍌 Banana</option>
-                <option value="cherry">🍒 Cherry</option>
-                <option value="grape">🍇 Grape</option>
-                <option value="watermelon">🍉 Watermelon</option>
-                <option value="random">🎲 Random</option>
-            </select>
-            <span id="settingsFruitPreview">🍎</span>
-        </label>
+        <label>Fruit:</label>
+        <select id="fruitSelect" onchange="updateSettingsPreview()">
+            <option value="apple">Apple</option>
+            <option value="orange">Orange</option>
+            <option value="banana">Banana</option>
+            <option value="cherry">Cherry</option>
+            <option value="grape">Grape</option>
+            <option value="watermelon">Watermelon</option>
+            <option value="random">Random</option>
+        </select>
+        <span id="settingsFruitPreview">🍎</span>
+        <br>
         <label>Grid Size:
             <select id="gridSelect">
                 <option value="20" selected>20</option>
@@ -70,24 +70,20 @@ let grid=20, mode="classic", fruitType="🍎", randomFruit=false, nextFruit="�
 const fruits = ["🍎","🍊","🍌","🍒","🍇","🍉"]
 const fruitMap = {apple:"🍎", orange:"🍊", banana:"🍌", cherry:"🍒", grape:"🍇", watermelon:"🍉"}
 
-// Toggle settings panel
+// Show/hide settings panel
 function toggleSettings(){
     let panel=document.getElementById("settingsPanel")
     panel.style.display=(panel.style.display==="none")?"block":"none"
     updateSettingsPreview()
 }
 
-// Update settings preview emoji immediately
+// Update the fruit preview in settings
 function updateSettingsPreview(){
     let val=document.getElementById("fruitSelect").value
-    if(val==="random"){
-        document.getElementById("settingsFruitPreview").innerText = "🎲"
-    } else {
-        document.getElementById("settingsFruitPreview").innerText = fruitMap[val]
-    }
+    document.getElementById("settingsFruitPreview").innerText = val==="random" ? "🎲" : fruitMap[val]
 }
 
-// Apply settings before starting
+// Apply settings before game starts
 function applySettings(){
     let val=document.getElementById("fruitSelect").value
     randomFruit = (val==="random")
@@ -124,22 +120,18 @@ function gameLoop(){
     if(head.x===apple.x && head.y===apple.y){score++; placeApple()}
     else{snake.pop()}
 
-    // Draw
     ctx.fillStyle="#111"; ctx.fillRect(0,0,canvas.width,canvas.height)
     ctx.fillStyle="lime"; snake.forEach(s=>ctx.fillRect(s.x*grid,s.y*grid,grid-2,grid-2))
-    ctx.font = grid + "px Arial"
-    ctx.textAlign="center"; ctx.textBaseline="middle"
+    ctx.font = grid + "px Arial"; ctx.textAlign="center"; ctx.textBaseline="middle"
     ctx.fillText(fruitType, apple.x*grid + grid/2, apple.y*grid + grid/2)
     document.getElementById("score").innerText=score
 }
 
-// Place apple & update next fruit
+// Place apple and next fruit
 function placeApple(){
     apple.x=Math.floor(Math.random()*canvas.width/grid)
     apple.y=Math.floor(Math.random()*canvas.height/grid)
-    if(randomFruit){
-        fruitType = fruits[Math.floor(Math.random()*fruits.length)]
-    }
+    if(randomFruit){fruitType = fruits[Math.floor(Math.random()*fruits.length)]}
     nextFruit = fruits[Math.floor(Math.random()*fruits.length)]
     updateNextFruitDisplay()
 }
@@ -163,12 +155,11 @@ function gameOver(){
     document.getElementById("gameScreen").style.display="none"
     document.getElementById("gameOverScreen").style.display="flex"
     document.getElementById("finalScore").innerText="Score: "+score
-    window.parent.postMessage({gameName:"Snake Adventure", score:score, coins:Math.floor(score/2)}, "*")
 }
 
 // Restart / exit
 function restartGame(){document.getElementById("gameOverScreen").style.display="none"; startGame()}
-function exitGame(){document.getElementById("gameOverScreen").style.display="none"; window.parent.postMessage({gameName:"Snake Adventure", score:score, coins:Math.floor(score/2)}, "*")}
+function exitGame(){document.getElementById("gameOverScreen").style.display="none"}
 </script>
 </body>
 </html>
