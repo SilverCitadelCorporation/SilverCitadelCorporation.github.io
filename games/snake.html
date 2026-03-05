@@ -10,8 +10,8 @@ canvas{background:#111;}
 button, select{padding:10px 20px;margin:5px;font-size:16px;cursor:pointer;border:none;background:#444;color:white;border-radius:5px;}
 button:hover, select:hover{background:#666;}
 #nextFruitPreview{position:absolute;top:10px;right:10px;font-size:24px;}
-.settingsRow{margin:10px 0;font-size:18px;}
-#settingsFruitPreview{display:inline-block;width:30px;font-size:24px;margin-left:10px;vertical-align:middle;}
+.settingsRow{display:flex;align-items:center;justify-content:center;margin:10px 0;font-size:18px;}
+#settingsFruitPreview{display:inline-block;width:30px;font-size:24px;margin-left:10px;min-width:30px;}
 </style>
 </head>
 <body>
@@ -77,7 +77,7 @@ const fruitMap = {apple:"🍎", orange:"🍊", banana:"🍌", cherry:"🍒", gra
 // Show/hide settings panel
 function toggleSettings(){
     let panel=document.getElementById("settingsPanel")
-    panel.style.display=(panel.style.display==="none")?"block":"none"
+    panel.style.display=(panel.style.display==="none")?"flex":"none"
     updateSettingsPreview()
 }
 
@@ -137,11 +137,6 @@ function placeApple(){
     apple.y=Math.floor(Math.random()*canvas.height/grid)
     if(randomFruit){fruitType = fruits[Math.floor(Math.random()*fruits.length)]}
     nextFruit = fruits[Math.floor(Math.random()*fruits.length)]
-    updateNextFruitDisplay()
-}
-
-// Update in-game preview
-function updateNextFruitDisplay(){
     document.getElementById("nextFruitPreview").innerText = nextFruit
 }
 
