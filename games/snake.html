@@ -17,7 +17,7 @@ button:hover, select:hover{background:#666;}
 #settingsFruitPreview{display:inline-block;width:30px;font-size:24px;margin-left:10px;min-width:30px;}
 #settingsPanel{
     position:absolute; top:150px; background:#1e293b; padding:20px; border-radius:10px;
-    display:none; z-index:1000; /* ensures panel is above other elements */
+    display:none; z-index:1000;
 }
 </style>
 </head>
@@ -25,15 +25,14 @@ button:hover, select:hover{background:#666;}
 
 <div id="startScreen">
     <h1>Snake Adventure</h1>
-    <button onclick="startGame()">Play</button>
-    <button onclick="toggleSettings()">Settings</button>
+    <button id="playBtn">Play</button>
+    <button id="settingsBtn">Settings</button>
 </div>
 
-<!-- Settings panel outside the buttons to prevent overlap -->
 <div id="settingsPanel">
     <div class="settingsRow">
         <label>Fruit:</label>
-        <select id="fruitSelect" onchange="updateSettingsPreview()">
+        <select id="fruitSelect">
             <option value="apple">Apple</option>
             <option value="orange">Orange</option>
             <option value="banana">Banana</option>
@@ -83,20 +82,25 @@ let grid=20, mode="classic", fruitType="🍎", randomFruit=false, nextFruit="�
 const fruits = ["🍎","🍊","🍌","🍒","🍇","🍉"]
 const fruitMap = {apple:"🍎", orange:"🍊", banana:"🍌", cherry:"🍒", grape:"🍇", watermelon:"🍉"}
 
-// Show/hide settings panel
-function toggleSettings(){
+// Initialize settings on load
+window.onload = () => {
+    updateSettingsPreview()
+}
+
+// Toggle settings panel
+document.getElementById("settingsBtn").onclick = () => {
     let panel=document.getElementById("settingsPanel")
     panel.style.display=(panel.style.display==="none")?"block":"none"
     updateSettingsPreview()
 }
 
-// Update the fruit preview in settings
+// Update fruit preview
 function updateSettingsPreview(){
     let val=document.getElementById("fruitSelect").value
     document.getElementById("settingsFruitPreview").innerText = val==="random" ? "🎲" : fruitMap[val]
 }
 
-// Apply settings before game starts
+// Apply settings
 function applySettings(){
     let val=document.getElementById("fruitSelect").value
     randomFruit = (val==="random")
@@ -107,7 +111,7 @@ function applySettings(){
 }
 
 // Start game
-function startGame(){
+document.getElementById("playBtn").onclick = () => {
     applySettings()
     document.getElementById("startScreen").style.display="none"
     document.getElementById("settingsPanel").style.display="none"
@@ -141,7 +145,7 @@ function gameLoop(){
     document.getElementById("score").innerText=score
 }
 
-// Place apple & update next fruit
+// Place apple & next fruit
 function placeApple(){
     apple.x=Math.floor(Math.random()*canvas.width/grid)
     apple.y=Math.floor(Math.random()*canvas.height/grid)
@@ -167,8 +171,11 @@ function gameOver(){
 }
 
 // Restart / exit
-function restartGame(){document.getElementById("gameOverScreen").style.display="none"; startGame()}
+function restartGame(){document.getElementById("gameOverScreen").style.display="none"; startGameAgain()}
 function exitGame(){document.getElementById("gameOverScreen").style.display="none"}
+
+// Helper to restart from Game Over
+function startGameAgain(){applySettings(); document.getElementById("gameScreen").style.display="flex"; score=0; snake=[{x:8,y:8}]; dx=1; dy=0; placeApple(); clearInterval(gameInterval); gameInterval=setInterval(gameLoop,100);}
 </script>
 </body>
 </html>
