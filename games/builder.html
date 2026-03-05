@@ -1,1 +1,37 @@
+<!DOCTYPE html>
+<html>
+<body style="margin:0;background:black">
 
+<canvas id="game" width="800" height="500"></canvas>
+
+<script>
+
+let c=document.getElementById("game")
+let ctx=c.getContext("2d")
+
+let blocks=[]
+
+c.onclick=e=>{
+blocks.push({x:e.offsetX,y:e.offsetY})
+}
+
+function draw(){
+
+ctx.fillStyle="black"
+ctx.fillRect(0,0,800,500)
+
+ctx.fillStyle="cyan"
+
+blocks.forEach(b=>{
+ctx.fillRect(b.x,b.y,20,20)
+})
+
+requestAnimationFrame(draw)
+
+}
+
+draw()
+
+</script>
+</body>
+</html>
