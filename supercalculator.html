@@ -5,6 +5,7 @@
 <title>Student Resource Hub</title>
 
 <style>
+
 body{
 margin:0;
 font-family:Arial;
@@ -21,21 +22,21 @@ font-size:24px;
 
 #menu{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
 gap:20px;
-padding:20px;
-max-width:1000px;
+padding:25px;
+max-width:1100px;
 margin:auto;
 }
 
 .gameCard{
 background:white;
-padding:15px;
 border-radius:10px;
-text-align:center;
+overflow:hidden;
 cursor:pointer;
 box-shadow:0 4px 10px rgba(0,0,0,0.2);
 transition:0.2s;
+text-align:center;
 }
 
 .gameCard:hover{
@@ -44,8 +45,12 @@ transform:scale(1.05);
 
 .gameCard img{
 width:100%;
-border-radius:8px;
-margin-bottom:10px;
+height:120px;
+object-fit:cover;
+}
+
+.gameCard h3{
+margin:10px;
 }
 
 #player{
@@ -73,10 +78,11 @@ font-size:20px;
 background:red;
 color:white;
 border:none;
-padding:10px 14px;
+padding:10px 15px;
 cursor:pointer;
 border-radius:6px;
 }
+
 </style>
 </head>
 
@@ -86,28 +92,34 @@ border-radius:6px;
 
 <div id="menu">
 
-<div class="gameCard" onclick="openGame('https://example.com/geometry-game')">
-<h3>Geometry Dash</h3>
+<div class="gameCard" onclick="openGame('https://itch.io/embed-upload/10939176?color=333333')">
+<img src="https://img.itch.zone/aW1nLzE0NTQ0NjQ1LnBuZw==/315x250%23c/geometry.png">
+<h3>Geometry Style Runner</h3>
 </div>
 
-<div class="gameCard" onclick="openGame('https://example.com/fnaf-browser')">
-<h3>Five Nights at Freddy's</h3>
+<div class="gameCard" onclick="openGame('https://itch.io/embed-upload/10075892?color=333333')">
+<img src="https://img.itch.zone/aW1nLzEzNjk0NTU2LnBuZw==/315x250%23c/horror.png">
+<h3>Night Shift Horror</h3>
 </div>
 
-<div class="gameCard" onclick="openGame('https://example.com/eaglercraft')">
-<h3>Eaglercraft</h3>
-</div>
-
-<div class="gameCard" onclick="openGame('https://example.com/platformer')">
-<h3>Platform Game</h3>
-</div>
-
-<div class="gameCard" onclick="openGame('https://example.com/reaction')">
-<h3>Reaction Game</h3>
-</div>
-
-<div class="gameCard" onclick="openGame('https://example.com/block-builder')">
+<div class="gameCard" onclick="openGame('https://classic.minecraft.net')">
+<img src="https://upload.wikimedia.org/wikipedia/en/5/51/Minecraft_cover.png">
 <h3>Block Builder</h3>
+</div>
+
+<div class="gameCard" onclick="openGame('https://itch.io/embed-upload/10458993?color=333333')">
+<img src="https://img.itch.zone/aW1nLzEzOTY5MjQxLnBuZw==/315x250%23c/platform.png">
+<h3>Platform Adventure</h3>
+</div>
+
+<div class="gameCard" onclick="openGame('https://itch.io/embed-upload/10593020?color=333333')">
+<img src="https://img.itch.zone/aW1nLzE0MDM1NjQ4LnBuZw==/315x250%23c/reaction.png">
+<h3>Reaction Test</h3>
+</div>
+
+<div class="gameCard" onclick="openGame('https://itch.io/embed-upload/10462889?color=333333')">
+<img src="https://img.itch.zone/aW1nLzEzOTcwMDU1LnBuZw==/315x250%23c/runner.png">
+<h3>Speed Runner</h3>
 </div>
 
 </div>
