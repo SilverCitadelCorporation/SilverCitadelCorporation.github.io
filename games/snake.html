@@ -10,7 +10,8 @@ canvas{background:#111;}
 button, select{padding:10px 20px;margin:5px;font-size:16px;cursor:pointer;border:none;background:#444;color:white;border-radius:5px;}
 button:hover, select:hover{background:#666;}
 #nextFruitPreview{position:absolute;top:10px;right:10px;font-size:24px;}
-#settingsFruitPreview{display:inline-block;margin-left:10px;font-size:24px;width:30px;}
+.settingsRow{margin:10px 0;font-size:18px;}
+#settingsFruitPreview{display:inline-block;width:30px;font-size:24px;margin-left:10px;vertical-align:middle;}
 </style>
 </head>
 <body>
@@ -20,31 +21,34 @@ button:hover, select:hover{background:#666;}
     <button onclick="startGame()">Play</button>
     <button onclick="toggleSettings()">Settings</button>
     <div id="settingsPanel" style="display:none;margin-top:10px;">
-        <label>Fruit:</label>
-        <select id="fruitSelect" onchange="updateSettingsPreview()">
-            <option value="apple">Apple</option>
-            <option value="orange">Orange</option>
-            <option value="banana">Banana</option>
-            <option value="cherry">Cherry</option>
-            <option value="grape">Grape</option>
-            <option value="watermelon">Watermelon</option>
-            <option value="random">Random</option>
-        </select>
-        <span id="settingsFruitPreview">🍎</span>
-        <br>
-        <label>Grid Size:
+        <div class="settingsRow">
+            <label>Fruit:</label>
+            <select id="fruitSelect" onchange="updateSettingsPreview()">
+                <option value="apple">Apple</option>
+                <option value="orange">Orange</option>
+                <option value="banana">Banana</option>
+                <option value="cherry">Cherry</option>
+                <option value="grape">Grape</option>
+                <option value="watermelon">Watermelon</option>
+                <option value="random">Random</option>
+            </select>
+            <span id="settingsFruitPreview">🍎</span>
+        </div>
+        <div class="settingsRow">
+            <label>Grid Size:</label>
             <select id="gridSelect">
                 <option value="20" selected>20</option>
                 <option value="15">15</option>
                 <option value="25">25</option>
             </select>
-        </label>
-        <label>Game Mode:
+        </div>
+        <div class="settingsRow">
+            <label>Game Mode:</label>
             <select id="modeSelect">
                 <option value="classic" selected>Classic</option>
                 <option value="wallsOff">Walls Off</option>
             </select>
-        </label>
+        </div>
     </div>
 </div>
 
@@ -127,7 +131,7 @@ function gameLoop(){
     document.getElementById("score").innerText=score
 }
 
-// Place apple and next fruit
+// Place apple & update next fruit
 function placeApple(){
     apple.x=Math.floor(Math.random()*canvas.width/grid)
     apple.y=Math.floor(Math.random()*canvas.height/grid)
