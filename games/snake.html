@@ -15,7 +15,10 @@ button:hover, select:hover{background:#666;}
 #nextFruitPreview{position:absolute;top:10px;right:10px;font-size:24px;}
 .settingsRow{display:flex;align-items:center;justify-content:center;margin:10px 0;font-size:18px;}
 #settingsFruitPreview{display:inline-block;width:30px;font-size:24px;margin-left:10px;min-width:30px;}
-#settingsPanel{position:absolute;top:150px; background:#1e293b; padding:20px; border-radius:10px;}
+#settingsPanel{
+    position:absolute; top:150px; background:#1e293b; padding:20px; border-radius:10px;
+    display:none; z-index:1000; /* ensures panel is above other elements */
+}
 </style>
 </head>
 <body>
@@ -24,35 +27,37 @@ button:hover, select:hover{background:#666;}
     <h1>Snake Adventure</h1>
     <button onclick="startGame()">Play</button>
     <button onclick="toggleSettings()">Settings</button>
-    <div id="settingsPanel" style="display:none;">
-        <div class="settingsRow">
-            <label>Fruit:</label>
-            <select id="fruitSelect" onchange="updateSettingsPreview()">
-                <option value="apple">Apple</option>
-                <option value="orange">Orange</option>
-                <option value="banana">Banana</option>
-                <option value="cherry">Cherry</option>
-                <option value="grape">Grape</option>
-                <option value="watermelon">Watermelon</option>
-                <option value="random">Random</option>
-            </select>
-            <span id="settingsFruitPreview">🍎</span>
-        </div>
-        <div class="settingsRow">
-            <label>Grid Size:</label>
-            <select id="gridSelect">
-                <option value="20" selected>20</option>
-                <option value="15">15</option>
-                <option value="25">25</option>
-            </select>
-        </div>
-        <div class="settingsRow">
-            <label>Game Mode:</label>
-            <select id="modeSelect">
-                <option value="classic" selected>Classic</option>
-                <option value="wallsOff">Walls Off</option>
-            </select>
-        </div>
+</div>
+
+<!-- Settings panel outside the buttons to prevent overlap -->
+<div id="settingsPanel">
+    <div class="settingsRow">
+        <label>Fruit:</label>
+        <select id="fruitSelect" onchange="updateSettingsPreview()">
+            <option value="apple">Apple</option>
+            <option value="orange">Orange</option>
+            <option value="banana">Banana</option>
+            <option value="cherry">Cherry</option>
+            <option value="grape">Grape</option>
+            <option value="watermelon">Watermelon</option>
+            <option value="random">Random</option>
+        </select>
+        <span id="settingsFruitPreview">🍎</span>
+    </div>
+    <div class="settingsRow">
+        <label>Grid Size:</label>
+        <select id="gridSelect">
+            <option value="20" selected>20</option>
+            <option value="15">15</option>
+            <option value="25">25</option>
+        </select>
+    </div>
+    <div class="settingsRow">
+        <label>Game Mode:</label>
+        <select id="modeSelect">
+            <option value="classic" selected>Classic</option>
+            <option value="wallsOff">Walls Off</option>
+        </select>
     </div>
 </div>
 
@@ -105,6 +110,7 @@ function applySettings(){
 function startGame(){
     applySettings()
     document.getElementById("startScreen").style.display="none"
+    document.getElementById("settingsPanel").style.display="none"
     document.getElementById("gameScreen").style.display="flex"
     score=0; snake=[{x:8,y:8}]; dx=1; dy=0
     placeApple()
