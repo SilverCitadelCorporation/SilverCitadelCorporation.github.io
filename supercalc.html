@@ -13,8 +13,9 @@ body {
     background:#f0f0f0;
     display:flex;
     justify-content:center;
-    align-items:center;
-    height:100vh;
+    align-items:flex-start;
+    padding-top:50px;
+    min-height:100vh;
 }
 
 #calculator{
@@ -23,6 +24,7 @@ body {
     padding:20px;
     border-radius:15px;
     box-shadow:0 10px 30px rgba(0,0,0,0.2);
+    margin-bottom:20px;
 }
 
 #display{
@@ -34,4 +36,111 @@ body {
     margin-bottom:15px;
     border:1px solid #ccc;
     border-radius:8px;
-    box-sizing
+    box-sizing:border-box;
+}
+
+.buttons{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+}
+
+button.calc-btn{
+    height:55px;
+    font-size:20px;
+    border:none;
+    border-radius:8px;
+    background:#e0e0e0;
+    cursor:pointer;
+    transition:0.15s;
+}
+
+button.calc-btn:hover{ background:#d0d0d0; }
+.operator{ background:#f9a825; color:#fff; }
+.operator:hover{ background:#fbc02d; }
+.equal{ background:#43a047; color:#fff; }
+.equal:hover{ background:#66bb6a; }
+.zero{ grid-column: span 2; }
+
+/* Arcade container hidden by default */
+#arcade{
+    display:none;
+    width:90%;
+    max-width:1000px;
+    margin-top:30px;
+    text-align:center;
+}
+
+#arcade h2{ color:#333; margin-bottom:20px; }
+</style>
+</head>
+
+<body>
+
+<div>
+<div id="calculator">
+    <input id="display" readonly placeholder="Enter numbers">
+    <div class="buttons">
+        <button class="calc-btn" onclick="clearDisplay()">C</button>
+        <button class="calc-btn operator" onclick="press('/')">÷</button>
+        <button class="calc-btn operator" onclick="press('*')">×</button>
+        <button class="calc-btn operator" onclick="press('-')">−</button>
+
+        <button class="calc-btn" onclick="press('7')">7</button>
+        <button class="calc-btn" onclick="press('8')">8</button>
+        <button class="calc-btn" onclick="press('9')">9</button>
+        <button class="calc-btn operator" onclick="press('+')">+</button>
+
+        <button class="calc-btn" onclick="press('4')">4</button>
+        <button class="calc-btn" onclick="press('5')">5</button>
+        <button class="calc-btn" onclick="press('6')">6</button>
+        <button class="calc-btn equal" onclick="calculate()">=</button>
+
+        <button class="calc-btn" onclick="press('1')">1</button>
+        <button class="calc-btn" onclick="press('2')">2</button>
+        <button class="calc-btn" onclick="press('3')">3</button>
+        <button class="calc-btn" onclick="press('.')">.</button>
+
+        <button class="calc-btn zero" onclick="press('0')">0</button>
+    </div>
+</div>
+
+<!-- Hidden arcade section -->
+<div id="arcade">
+    <h2>🎮 Welcome to the Secret Arcade! 🎮</h2>
+    <p>Here you can add your mini-games later, like off-brand Minecraft, Clicker, Obby, etc.</p>
+</div>
+</div>
+
+<script>
+let input="";
+
+function press(val){
+    input += val;
+    document.getElementById("display").value = input;
+}
+
+function clearDisplay(){
+    input="";
+    document.getElementById("display").value="";
+}
+
+function calculate(){
+    if(input === "0000"){ // secret code
+        document.getElementById("calculator").style.display="none";
+        document.getElementById("arcade").style.display="block"; // reveal arcade
+        input="";
+        return;
+    }
+    try{
+        input = eval(input).toString();
+        document.getElementById("display").value = input;
+    } catch{
+        document.getElementById("display").value="Error";
+        input="";
+    }
+}
+</script>
+
+</body>
+</html>
