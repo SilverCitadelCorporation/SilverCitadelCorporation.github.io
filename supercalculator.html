@@ -33,7 +33,7 @@ border:none;
 
 #menu{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
 gap:20px;
 padding:25px;
 max-width:1100px;
@@ -43,7 +43,7 @@ margin:auto;
 .gameCard{
 background:white;
 border-radius:10px;
-padding:20px;
+padding:15px;
 cursor:pointer;
 box-shadow:0 4px 10px rgba(0,0,0,0.2);
 transition:0.2s;
@@ -52,6 +52,13 @@ text-align:center;
 
 .gameCard:hover{
 transform:scale(1.05);
+}
+
+.favorite{
+float:right;
+cursor:pointer;
+font-size:18px;
+color:gold;
 }
 
 #player{
@@ -95,28 +102,54 @@ border-radius:6px;
 
 <div id="menu">
 
-<div class="gameCard" onclick="openGame('https://classic.minecraft.net')">
-<h3>Block Builder</h3>
+<div class="gameCard">
+<span class="favorite" onclick="toggleFav(this)">☆</span>
+<h3 onclick="openGame('games/runner.html')">Geometry Runner</h3>
 </div>
 
-<div class="gameCard" onclick="openGame('https://example.com/platformer')">
-<h3>Platform Adventure</h3>
+<div class="gameCard">
+<span class="favorite" onclick="toggleFav(this)">☆</span>
+<h3 onclick="openGame('games/tetris.html')">Tetris</h3>
 </div>
 
-<div class="gameCard" onclick="openGame('https://example.com/runner')">
-<h3>Speed Runner</h3>
+<div class="gameCard">
+<span class="favorite" onclick="toggleFav(this)">☆</span>
+<h3 onclick="openGame('games/snake.html')">Snake</h3>
 </div>
 
-<div class="gameCard" onclick="openGame('https://example.com/reaction')">
-<h3>Reaction Test</h3>
+<div class="gameCard">
+<span class="favorite" onclick="toggleFav(this)">☆</span>
+<h3 onclick="openGame('games/pong.html')">Pong</h3>
 </div>
 
-<div class="gameCard" onclick="openGame('https://example.com/puzzle')">
-<h3>Puzzle Lab</h3>
+<div class="gameCard">
+<span class="favorite" onclick="toggleFav(this)">☆</span>
+<h3 onclick="openGame('games/breakout.html')">Breakout</h3>
 </div>
 
-<div class="gameCard" onclick="openGame('https://example.com/arcade')">
-<h3>Arcade Challenge</h3>
+<div class="gameCard">
+<span class="favorite" onclick="toggleFav(this)">☆</span>
+<h3 onclick="openGame('games/reaction.html')">Reaction Test</h3>
+</div>
+
+<div class="gameCard">
+<span class="favorite" onclick="toggleFav(this)">☆</span>
+<h3 onclick="openGame('games/platform.html')">Platform Adventure</h3>
+</div>
+
+<div class="gameCard">
+<span class="favorite" onclick="toggleFav(this)">☆</span>
+<h3 onclick="openGame('games/builder.html')">Block Builder</h3>
+</div>
+
+<div class="gameCard">
+<span class="favorite" onclick="toggleFav(this)">☆</span>
+<h3 onclick="openGame('games/2048.html')">2048</h3>
+</div>
+
+<div class="gameCard">
+<span class="favorite" onclick="toggleFav(this)">☆</span>
+<h3 onclick="openGame('games/maze.html')">Maze Escape</h3>
 </div>
 
 </div>
@@ -153,6 +186,14 @@ games[i].style.display="block"
 }else{
 games[i].style.display="none"
 }
+}
+}
+
+function toggleFav(el){
+if(el.innerText=="☆"){
+el.innerText="★"
+}else{
+el.innerText="☆"
 }
 }
 
