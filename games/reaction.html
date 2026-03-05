@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<body style="margin:0;background:red;display:flex;align-items:center;justify-content:center;height:100vh;font-family:Arial;color:white">
+
+<h1 id="text">Wait...</h1>
+
+<script>
+
+let ready=false
+let start
+
+setTimeout(()=>{
+document.body.style.background="green"
+document.getElementById("text").innerText="CLICK!"
+ready=true
+start=Date.now()
+},Math.random()*5000+2000)
+
+document.body.onclick=()=>{
+
+if(!ready){
+alert("Too early!")
+location.reload()
+}
+
+else{
+alert("Reaction: "+(Date.now()-start)+" ms")
+location.reload()
+}
+
+}
+
+</script>
+</body>
+</html>
