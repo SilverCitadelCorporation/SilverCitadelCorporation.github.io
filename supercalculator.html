@@ -1,114 +1,277 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Silver Citadel Arcade</title>
+<title>Student Activity Center</title>
 
 <style>
+
 body{
-    margin:0;
-    font-family:Arial;
-    background:#111;
-    color:white;
-    text-align:center;
+margin:0;
+font-family:Arial;
+background:#0f172a;
+color:white;
+text-align:center;
 }
 
 h1{
-    padding:20px;
+margin-top:20px;
 }
 
 .games{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-    gap:20px;
-    padding:20px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+padding:30px;
+max-width:1000px;
+margin:auto;
 }
 
 .game{
-    background:#222;
-    padding:20px;
-    border-radius:10px;
-    cursor:pointer;
-    transition:0.2s;
+background:#1e293b;
+padding:20px;
+border-radius:10px;
+cursor:pointer;
+transition:.2s;
 }
 
 .game:hover{
-    transform:scale(1.05);
-    background:#333;
+transform:scale(1.05);
+background:#334155;
 }
 
 #player{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:black;
-    display:none;
-}
-
-#player iframe{
-    width:100%;
-    height:100%;
-    border:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:black;
+display:none;
+flex-direction:column;
 }
 
 #close{
-    position:absolute;
-    top:15px;
-    right:20px;
-    font-size:20px;
-    cursor:pointer;
-    background:#222;
-    padding:10px 15px;
-    border-radius:6px;
+background:#111;
+padding:10px;
+cursor:pointer;
 }
+
+canvas{
+background:#111;
+margin:auto;
+}
+
 </style>
 </head>
 
 <body>
 
-<h1>Silver Citadel Arcade</h1>
+<h1>Student Activity Center</h1>
 
 <div class="games">
 
-<div class="game" onclick="openGame('https://example.com/game1')">
-<h3>Block Builder</h3>
-<p>Minecraft‑style sandbox</p>
-</div>
-
-<div class="game" onclick="openGame('https://example.com/game2')">
+<div class="game" onclick="startGame('dash')">
 <h3>Geometry Runner</h3>
-<p>Dash and avoid obstacles</p>
+<p>Jump over obstacles</p>
 </div>
 
-<div class="game" onclick="openGame('https://example.com/game3')">
-<h3>Obby Parkour</h3>
-<p>Jump across platforms</p>
+<div class="game" onclick="startGame('obby')">
+<h3>Platform Challenge</h3>
+<p>Reach the goal</p>
 </div>
 
-<div class="game" onclick="openGame('https://example.com/game4')">
-<h3>Clicker Tycoon</h3>
-<p>Earn coins and upgrade</p>
+<div class="game" onclick="startGame('builder')">
+<h3>Block Builder</h3>
+<p>Place blocks freely</p>
 </div>
 
 </div>
+
 
 <div id="player">
-<div id="close" onclick="closeGame()">Exit</div>
-<iframe id="frame"></iframe>
+
+<div id="close" onclick="closeGame()">Exit Game</div>
+
+<canvas id="gameCanvas" width="900" height="500"></canvas>
+
 </div>
 
 <script>
-function openGame(url){
-    document.getElementById("player").style.display="block";
-    document.getElementById("frame").src=url;
+
+let canvas=document.getElementById("gameCanvas")
+let ctx=canvas.getContext("2d")
+
+let game=null
+let keys={}
+
+document.addEventListener("keydown",e=>keys[e.key]=true)
+document.addEventListener("keyup",e=>keys[e.key]=false)
+
+function startGame(type){
+
+document.getElementById("player").style.display="flex"
+
+game=type
+
+if(type==="dash") initDash()
+if(type==="obby") initObby()
+if(type==="builder") initBuilder()
+
 }
 
 function closeGame(){
-    document.getElementById("player").style.display="none";
-    document.getElementById("frame").src="";
+
+document.getElementById("player").style.display="none"
+cancelAnimationFrame(loop)
+
 }
+
+let loop
+
+/* ---------------- DASH GAME ---------------- */
+
+let dashPlayer
+let obstacles
+
+function initDash(){
+
+dashPlayer={x:100,y:400,vy:0}
+obstacles=[{x:800}]
+
+function update(){
+
+ctx.clearRect(0,0,900,500)
+
+dashPlayer.vy+=1
+dashPlayer.y+=dashPlayer.vy
+
+if((keys[" "]||keys["ArrowUp"]||keys["w"]) && dashPlayer.y>=400){
+dashPlayer.vy=-15
+}
+
+ctx.fillStyle="cyan"
+ctx.fillRect(dashPlayer.x,dashPlayer.y,40,40)
+
+obstacles.forEach(o=>{
+
+o.x-=6
+
+ctx.fillStyle="red"
+ctx.fillRect(o.x,420,40,80)
+
+if(o.x<dashPlayer.x+40 && o.x+40>dashPlayer.x && dashPlayer.y+40>420){
+initDash()
+}
+
+})
+
+if(obstacles[0].x<400) obstacles.push({x:900})
+if(obstacles[0].x<-50) obstacles.shift()
+
+loop=requestAnimationFrame(update)
+
+}
+
+update()
+
+}
+
+/* ---------------- OBBY ---------------- */
+
+let player
+let platforms
+
+function initObby(){
+
+player={x:50,y:400,vy:0}
+
+platforms=[
+{x:0,y:450,w:900},
+{x:200,y:380,w:120},
+{x:400,y:320,w:120},
+{x:600,y:260,w:120}
+]
+
+function update(){
+
+ctx.clearRect(0,0,900,500)
+
+if(keys["a"]||keys["ArrowLeft"]) player.x-=5
+if(keys["d"]||keys["ArrowRight"]) player.x+=5
+
+player.vy+=1
+player.y+=player.vy
+
+if((keys[" "]||keys["w"]||keys["ArrowUp"]) && player.y>390){
+player.vy=-15
+}
+
+ctx.fillStyle="yellow"
+ctx.fillRect(player.x,player.y,30,30)
+
+ctx.fillStyle="white"
+
+platforms.forEach(p=>{
+
+ctx.fillRect(p.x,p.y,p.w,20)
+
+if(player.x<p.x+p.w &&
+player.x+30>p.x &&
+player.y+30>p.y &&
+player.y+30<p.y+20 &&
+player.vy>=0){
+
+player.y=p.y-30
+player.vy=0
+
+}
+
+})
+
+loop=requestAnimationFrame(update)
+
+}
+
+update()
+
+}
+
+/* ---------------- BLOCK BUILDER ---------------- */
+
+let blocks=[]
+
+function initBuilder(){
+
+blocks=[]
+
+canvas.onclick=function(e){
+
+let rect=canvas.getBoundingClientRect()
+
+let x=Math.floor((e.clientX-rect.left)/40)*40
+let y=Math.floor((e.clientY-rect.top)/40)*40
+
+blocks.push({x,y})
+
+}
+
+function update(){
+
+ctx.clearRect(0,0,900,500)
+
+blocks.forEach(b=>{
+ctx.fillStyle="lime"
+ctx.fillRect(b.x,b.y,38,38)
+})
+
+loop=requestAnimationFrame(update)
+
+}
+
+update()
+
+}
+
 </script>
 
 </body>
