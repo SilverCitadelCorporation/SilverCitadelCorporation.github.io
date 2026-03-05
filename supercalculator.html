@@ -2,77 +2,112 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Arcade Game</title>
+<title>Arcade Hub</title>
 
 <style>
 
 body{
 margin:0;
-background:#111;
-color:white;
+background:#0f172a;
 font-family:Arial;
+color:white;
+}
+
+/* HEADER */
+
+header{
+background:#020617;
+padding:15px;
 display:flex;
-justify-content:center;
 align-items:center;
-height:100vh;
+justify-content:space-between;
+border-bottom:2px solid #1e293b;
 }
 
-#gameContainer{
-width:100%;
-max-width:1000px;
-height:600px;
-border:8px solid white;
-position:relative;
-background:black;
+#logo{
+font-size:22px;
+font-weight:bold;
 }
 
-canvas{
-width:100%;
-height:100%;
-display:block;
+#search{
+padding:8px;
+width:250px;
+border-radius:6px;
+border:none;
 }
 
-.screen{
-position:absolute;
+/* GRID */
+
+#games{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+gap:20px;
+padding:30px;
+}
+
+/* GAME CARD */
+
+.card{
+background:#1e293b;
+border-radius:12px;
+overflow:hidden;
+cursor:pointer;
+transition:0.25s;
+}
+
+.card:hover{
+transform:scale(1.05);
+box-shadow:0 10px 25px rgba(0,0,0,.5);
+}
+
+.thumb{
+height:120px;
+background:#334155;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:20px;
+}
+
+.title{
+padding:10px;
+text-align:center;
+}
+
+/* PLAYER */
+
+#player{
+position:fixed;
 top:0;
 left:0;
 width:100%;
 height:100%;
-background:rgba(0,0,0,.92);
-display:flex;
+background:black;
+display:none;
 flex-direction:column;
-justify-content:center;
-align-items:center;
-text-align:center;
-padding:30px;
 }
 
-button{
-padding:12px 25px;
-margin:10px;
-font-size:18px;
-cursor:pointer;
+#topbar{
+background:#020617;
+padding:10px;
+display:flex;
+justify-content:space-between;
+}
+
+iframe{
+flex:1;
 border:none;
-background:#444;
-color:white;
 }
 
-button:hover{
-background:#666;
-}
+/* LOADING */
 
-#hud{
+#loading{
 position:absolute;
-top:10px;
-left:10px;
-font-size:18px;
-}
-
-#hudRight{
-position:absolute;
-top:10px;
-right:10px;
-font-size:18px;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+font-size:24px;
+display:none;
 }
 
 </style>
@@ -80,282 +115,126 @@ font-size:18px;
 
 <body>
 
-<div id="gameContainer">
+<header>
 
-<canvas id="game"></canvas>
+<div id="logo">Arcade Hub</div>
 
-<div id="hud">
-Score: <span id="score">0</span>
+<input id="search" placeholder="Search games..." onkeyup="searchGames()">
+
+</header>
+
+
+<div id="games">
+
+<div class="card" onclick="openGame('games/snake.html')">
+<div class="thumb">🐍</div>
+<div class="title">Snake Adventure</div>
 </div>
 
-<div id="hudRight">
-Level: <span id="level">1</span>
+<div class="card" onclick="openGame('games/breakout.html')">
+<div class="thumb">🧱</div>
+<div class="title">Breakout</div>
 </div>
 
-<!-- START SCREEN -->
-
-<div id="startScreen" class="screen">
-
-<h1>Snake Adventure</h1>
-
-<p>
-Eat food, grow longer, and survive as long as possible.
-Difficulty increases every level.
-</p>
-
-<p>High Score: <span id="highscore">0</span></p>
-
-<button onclick="startGame()">Play</button>
-<button onclick="openSettings()">Settings</button>
-<button onclick="openBio()">Game Info</button>
-
+<div class="card" onclick="openGame('games/tetris.html')">
+<div class="thumb">⬛</div>
+<div class="title">Tetris</div>
 </div>
 
-
-<!-- SETTINGS -->
-
-<div id="settingsScreen" class="screen" style="display:none">
-
-<h2>Settings</h2>
-
-<label>Difficulty</label>
-
-<select id="difficulty">
-<option value="120">Easy</option>
-<option value="90">Normal</option>
-<option value="60">Hard</option>
-</select>
-
-<button onclick="closeSettings()">Back</button>
-
+<div class="card" onclick="openGame('games/maze.html')">
+<div class="thumb">🧭</div>
+<div class="title">Maze Escape</div>
 </div>
 
+<div class="card" onclick="openGame('games/reaction.html')">
+<div class="thumb">⚡</div>
+<div class="title">Reaction Test</div>
+</div>
 
-<!-- GAME BIO -->
+<div class="card" onclick="openGame('games/runner.html')">
+<div class="thumb">🏃</div>
+<div class="title">Rhythm Runner</div>
+</div>
 
-<div id="bioScreen" class="screen" style="display:none">
+<div class="card" onclick="openGame('games/platform.html')">
+<div class="thumb">🕹</div>
+<div class="title">Platform Adventure</div>
+</div>
 
-<h2>About This Game</h2>
+<div class="card" onclick="openGame('games/builder.html')">
+<div class="thumb">🧱</div>
+<div class="title">Block Builder</div>
+</div>
 
-<p>
-Snake Adventure is a classic arcade survival game.
-Eat food to grow your snake and increase your score.
-Avoid crashing into yourself or the walls.
-</p>
+<div class="card" onclick="openGame('games/2048.html')">
+<div class="thumb">🔢</div>
+<div class="title">2048</div>
+</div>
 
-<p>
-Levels increase difficulty and speed.
-</p>
-
-<button onclick="closeBio()">Back</button>
+<div class="card" onclick="openGame('games/spaceshooter.html')">
+<div class="thumb">🚀</div>
+<div class="title">Space Shooter</div>
+</div>
 
 </div>
 
 
-<!-- GAME OVER -->
+<!-- GAME PLAYER -->
 
-<div id="gameOverScreen" class="screen" style="display:none">
+<div id="player">
 
-<h1>Game Over</h1>
-
-<p>Final Score: <span id="finalScore"></span></p>
-
-<button onclick="restartGame()">Restart</button>
-<button onclick="backToMenu()">Menu</button>
-
+<div id="topbar">
+<button onclick="closeGame()">Back</button>
+<div>Game Player</div>
 </div>
 
+<div id="loading">Loading...</div>
 
-<!-- WIN SCREEN -->
-
-<div id="winScreen" class="screen" style="display:none">
-
-<h1>You Win!</h1>
-
-<p>Score: <span id="winScore"></span></p>
-
-<button onclick="restartGame()">Play Again</button>
-<button onclick="backToMenu()">Menu</button>
-
-</div>
+<iframe id="gameFrame"></iframe>
 
 </div>
 
 
 <script>
 
-const canvas = document.getElementById("game")
-const ctx = canvas.getContext("2d")
+function openGame(url){
 
-canvas.width = 1000
-canvas.height = 600
+document.getElementById("player").style.display="flex"
 
-let score=0
-let level=1
-let gameLoop
-let speed=100
+document.getElementById("loading").style.display="block"
 
-let player={
-x:200,
-y:200,
-size:30
-}
+document.getElementById("gameFrame").src=""
 
-let food={
-x:400,
-y:300,
-size:20
-}
-
-let highscore = localStorage.getItem("snakeHigh") || 0
-document.getElementById("highscore").innerText = highscore
-
-
-function startGame(){
-
-speed=document.getElementById("difficulty").value
-
-document.getElementById("startScreen").style.display="none"
-
-score=0
-level=1
-
-player.x=200
-player.y=200
-
-updateHUD()
-
-gameLoop=setInterval(updateGame,speed)
+setTimeout(()=>{
+document.getElementById("gameFrame").src=url
+document.getElementById("loading").style.display="none"
+},500)
 
 }
 
 
-function updateGame(){
+function closeGame(){
 
-ctx.fillStyle="black"
-ctx.fillRect(0,0,canvas.width,canvas.height)
+document.getElementById("player").style.display="none"
 
-
-ctx.fillStyle="lime"
-ctx.fillRect(player.x,player.y,player.size,player.size)
-
-
-ctx.fillStyle="red"
-ctx.fillRect(food.x,food.y,food.size,food.size)
-
-
-if(
-player.x < food.x+food.size &&
-player.x+player.size > food.x &&
-player.y < food.y+food.size &&
-player.y+player.size > food.y
-){
-
-score += 50
-
-food.x=Math.random()*900
-food.y=Math.random()*500
-
-if(score % 300 == 0){
-level++
-}
-
-updateHUD()
+document.getElementById("gameFrame").src=""
 
 }
 
 
-if(player.x <0 || player.x>970 || player.y<0 || player.y>570){
-gameOver()
-}
+function searchGames(){
 
-}
+let input=document.getElementById("search").value.toLowerCase()
 
+let cards=document.querySelectorAll(".card")
 
-function updateHUD(){
+cards.forEach(card=>{
 
-document.getElementById("score").innerText=score
-document.getElementById("level").innerText=level
+let title=card.innerText.toLowerCase()
 
-}
-
-
-document.addEventListener("keydown", e=>{
-
-if(e.key=="ArrowUp") player.y-=20
-if(e.key=="ArrowDown") player.y+=20
-if(e.key=="ArrowLeft") player.x-=20
-if(e.key=="ArrowRight") player.x+=20
+card.style.display = title.includes(input) ? "block":"none"
 
 })
-
-
-function gameOver(){
-
-clearInterval(gameLoop)
-
-document.getElementById("gameOverScreen").style.display="flex"
-
-document.getElementById("finalScore").innerText=score
-
-if(score>highscore){
-highscore=score
-localStorage.setItem("snakeHigh",score)
-}
-
-}
-
-
-function restartGame(){
-
-document.getElementById("gameOverScreen").style.display="none"
-document.getElementById("winScreen").style.display="none"
-
-startGame()
-
-}
-
-
-function backToMenu(){
-
-clearInterval(gameLoop)
-
-document.getElementById("gameOverScreen").style.display="none"
-document.getElementById("winScreen").style.display="none"
-
-document.getElementById("startScreen").style.display="flex"
-
-}
-
-
-function openSettings(){
-
-document.getElementById("startScreen").style.display="none"
-document.getElementById("settingsScreen").style.display="flex"
-
-}
-
-
-function closeSettings(){
-
-document.getElementById("settingsScreen").style.display="none"
-document.getElementById("startScreen").style.display="flex"
-
-}
-
-
-function openBio(){
-
-document.getElementById("startScreen").style.display="none"
-document.getElementById("bioScreen").style.display="flex"
-
-}
-
-
-function closeBio(){
-
-document.getElementById("bioScreen").style.display="none"
-document.getElementById("startScreen").style.display="flex"
 
 }
 
