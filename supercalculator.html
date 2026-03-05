@@ -18,35 +18,12 @@ header { background:#4a235a; color:#d4af37; text-align:center; padding:15px; fon
 </head>
 <body>
 
-<header>Super Calculator</header>
-
-<!-- Original calculator goes here -->
-<div id="calculator">
-    <input type="text" id="display" readonly>
-    <div>
-        <button onclick="press('7')">7</button>
-        <button onclick="press('8')">8</button>
-        <button onclick="press('9')">9</button>
-        <button onclick="clearDisplay()">C</button>
-
-        <button onclick="press('4')">4</button>
-        <button onclick="press('5')">5</button>
-        <button onclick="press('6')">6</button>
-        <button onclick="press('/')">/</button>
-
-        <button onclick="press('1')">1</button>
-        <button onclick="press('2')">2</button>
-        <button onclick="press('3')">3</button>
-        <button onclick="press('*')">*</button>
-
-        <button onclick="press('0')">0</button>
-        <button onclick="press('.')">.</button>
-        <button onclick="unlock()">=</button>
-        <button onclick="press('-')">-</button>
-
-        <button onclick="press('+')">+</button>
-    </div>
-</div>
+<header>
+    <a href="#" onclick="logoClick(event)">
+        <img src="logo.png" alt="Logo" style="width:50px; vertical-align:middle; margin-right:10px;">
+    </a>
+    Super Calculator
+</header>
 
 <!-- Arcade hidden initially -->
 <div id="arcade">
@@ -62,36 +39,19 @@ header { background:#4a235a; color:#d4af37; text-align:center; padding:15px; fon
 </div>
 
 <script>
-let input = "";
-let display = document.getElementById("display");
+let logoClickCount = 0;
 
-function press(val) {
-    input += val;
-    display.value = input;
-}
-
-function clearDisplay() {
-    input = "";
-    display.value = "";
-}
-
-function unlock() {
-    if(input === "0000") {
-        document.getElementById("calculator").style.display = "none";
+// Triple click logo to unlock arcade
+function logoClick(e) {
+    e.preventDefault();
+    logoClickCount++;
+    if(logoClickCount >= 3) {
         document.getElementById("arcade").style.display = "block";
-        input = "";
-        display.value = "";
-    } else {
-        try {
-            input = eval(input).toString();
-            display.value = input;
-        } catch {
-            display.value = "Error";
-            input = "";
-        }
+        logoClickCount = 0;
     }
 }
 
+// Open selected game in iframe
 function openGame(url) {
     let frame = document.getElementById("gameFrame");
     frame.src = url;
