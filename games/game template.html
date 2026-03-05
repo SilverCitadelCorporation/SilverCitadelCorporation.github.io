@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<style>
+
+body{
+margin:0;
+background:#111;
+font-family:Arial;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+#gameBox{
+border:6px solid white;
+position:relative;
+}
+
+canvas{
+background:black;
+display:block;
+}
+
+.screen{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.9);
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+}
+
+button{
+padding:10px 20px;
+margin:8px;
+font-size:18px;
+cursor:pointer;
+}
+
+#hud{
+position:absolute;
+top:10px;
+left:10px;
+font-size:18px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="gameBox">
+
+<canvas id="game" width="800" height="500"></canvas>
+
+<div id="hud">
+Score: <span id="score">0</span>
+</div>
+
+<!-- START SCREEN -->
+<div id="startScreen" class="screen">
+
+<h1>Snake Adventure</h1>
+
+<p>
+Eat food, grow longer, and avoid crashing.
+</p>
+
+<button onclick="startGame()">Play</button>
+<button onclick="openSettings()">Settings</button>
+
+<p>High Score: <span id="highscore">0</span></p>
+
+</div>
+
+<!-- SETTINGS -->
+<div id="settingsScreen" class="screen" style="display:none">
+
+<h2>Settings</h2>
+
+<label>Difficulty</label>
+<select id="difficulty">
+<option value="120">Easy</option>
+<option value="90">Normal</option>
+<option value="60">Hard</option>
+</select>
+
+<button onclick="closeSettings()">Back</button>
+
+</div>
+
+<!-- GAME OVER -->
+<div id="gameOver" class="screen" style="display:none">
+
+<h1>Game Over</h1>
+
+<p>Your Score: <span id="finalScore"></span></p>
+
+<button onclick="restart()">Restart</button>
+<button onclick="backToMenu()">Menu</button>
+
+</div>
+
+</div>
+
+<script>
+
+let canvas=document.getElementById("game")
+let ctx=canvas.getContext("2d")
+
+let score=0
+let gameLoop
+let speed=100
+
+let highscore=localStorage.getItem("highscore")||0
+document.getElementById("highscore").innerText=highscore
+
+function startGame(){
+
+speed=document.getElementById("difficulty").value
+
+document.getElementById("startScreen").style.display="none"
+
+score=0
+document.getElementById("score").innerText=score
+
+gameLoop=setInterval(gameUpdate,speed)
+
+}
+
+function gameUpdate(){
+
+ctx.fillStyle="black"
+ctx.fillRect(0,0,800,500)
+
+ctx.fillStyle="lime"
+ctx.fillRect(Math.random()*760,Math.random()*460,40,40)
+
+score++
+
+document.getElementById("score").innerText=score
+
+if(score>200){
+gameOver()
+}
+
+}
+
+function gameOver(){
+
+clearInterval(gameLoop)
+
+document.getElementById("gameOver").style.display="flex"
+
+document.getElementById("finalScore").innerText=score
+
+if(score>highscore){
+highscore=score
+localStorage.setItem("highscore",score)
+}
+
+}
+
+function restart(){
+
+document.getElementById("gameOver").style.display="none"
+
+startGame()
+
+}
+
+function backToMenu(){
+
+document.getElementById("gameOver").style.display="none"
+
+document.getElementById("startScreen").style.display="flex"
+
+}
+
+function openSettings(){
+
+document.getElementById("startScreen").style.display="none"
+document.getElementById("settingsScreen").style.display="flex"
+
+}
+
+function closeSettings(){
+
+document.getElementById("settingsScreen").style.display="none"
+document.getElementById("startScreen").style.display="flex"
+
+}
+
+</script>
+
+</body>
+</html>
