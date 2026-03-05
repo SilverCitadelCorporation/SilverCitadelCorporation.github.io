@@ -5,92 +5,81 @@
 <title>Student Resource Hub</title>
 
 <style>
-
-body{
-margin:0;
-font-family:Arial;
-background:#e0e0e0;
+body {
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#e0e0e0;
 }
-
-header{
-background:#2c3e50;
-color:white;
-padding:15px;
-text-align:center;
-font-size:24px;
+header {
+  background:#2c3e50;
+  color:white;
+  padding:15px;
+  text-align:center;
+  font-size:24px;
 }
-
-#search{
-width:90%;
-max-width:500px;
-margin:20px auto;
-display:block;
-padding:10px;
-font-size:16px;
-border-radius:6px;
-border:none;
+#search {
+  width:90%;
+  max-width:500px;
+  margin:20px auto;
+  display:block;
+  padding:10px;
+  font-size:16px;
+  border-radius:6px;
+  border:none;
 }
-
-#menu{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
-gap:20px;
-padding:25px;
-max-width:1100px;
-margin:auto;
+#menu {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  gap:20px;
+  padding:25px;
+  max-width:1100px;
+  margin:auto;
 }
-
-.gameCard{
-background:white;
-border-radius:10px;
-padding:15px;
-cursor:pointer;
-box-shadow:0 4px 10px rgba(0,0,0,0.2);
-transition:0.2s;
-text-align:center;
+.gameCard {
+  background:white;
+  border-radius:10px;
+  padding:15px;
+  cursor:pointer;
+  box-shadow:0 4px 10px rgba(0,0,0,0.2);
+  transition:0.2s;
+  text-align:center;
 }
-
-.gameCard:hover{
-transform:scale(1.05);
+.gameCard:hover {
+  transform:scale(1.05);
 }
-
-.favorite{
-float:right;
-cursor:pointer;
-font-size:18px;
-color:gold;
+.favorite {
+  float:right;
+  cursor:pointer;
+  font-size:18px;
+  color:gold;
 }
-
-#player{
-display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:black;
-z-index:1000;
+#player {
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:black;
+  z-index:1000;
 }
-
-iframe{
-width:100%;
-height:100%;
-border:none;
+iframe {
+  width:100%;
+  height:100%;
+  border:none;
 }
-
-#closeBtn{
-position:absolute;
-top:15px;
-right:20px;
-font-size:20px;
-background:red;
-color:white;
-border:none;
-padding:10px 15px;
-cursor:pointer;
-border-radius:6px;
+#closeBtn {
+  position:absolute;
+  top:15px;
+  right:20px;
+  font-size:20px;
+  background:red;
+  color:white;
+  border:none;
+  padding:10px 15px;
+  cursor:pointer;
+  border-radius:6px;
 }
-
 </style>
 </head>
 
@@ -102,99 +91,123 @@ border-radius:6px;
 
 <div id="menu">
 
+<!-- GAME CARDS -->
 <div class="gameCard">
-<span class="favorite" onclick="toggleFav(this)">☆</span>
-<h3 onclick="openGame('games/runner.html')">Geometry Runner</h3>
+  <span class="favorite" onclick="toggleFav(this,'games/runner.html')">☆</span>
+  <h3 onclick="openGame('games/runner.html')">Rhythm Runner</h3>
 </div>
 
 <div class="gameCard">
-<span class="favorite" onclick="toggleFav(this)">☆</span>
-<h3 onclick="openGame('games/tetris.html')">Tetris</h3>
+  <span class="favorite" onclick="toggleFav(this,'games/pong.html')">☆</span>
+  <h3 onclick="openGame('games/pong.html')">Pong Classic</h3>
 </div>
 
 <div class="gameCard">
-<span class="favorite" onclick="toggleFav(this)">☆</span>
-<h3 onclick="openGame('games/snake.html')">Snake</h3>
+  <span class="favorite" onclick="toggleFav(this,'games/snake.html')">☆</span>
+  <h3 onclick="openGame('games/snake.html')">Snake</h3>
 </div>
 
 <div class="gameCard">
-<span class="favorite" onclick="toggleFav(this)">☆</span>
-<h3 onclick="openGame('games/pong.html')">Pong</h3>
+  <span class="favorite" onclick="toggleFav(this,'games/tetris.html')">☆</span>
+  <h3 onclick="openGame('games/tetris.html')">Tetris</h3>
 </div>
 
 <div class="gameCard">
-<span class="favorite" onclick="toggleFav(this)">☆</span>
-<h3 onclick="openGame('games/breakout.html')">Breakout</h3>
+  <span class="favorite" onclick="toggleFav(this,'games/breakout.html')">☆</span>
+  <h3 onclick="openGame('games/breakout.html')">Breakout</h3>
 </div>
 
 <div class="gameCard">
-<span class="favorite" onclick="toggleFav(this)">☆</span>
-<h3 onclick="openGame('games/reaction.html')">Reaction Test</h3>
+  <span class="favorite" onclick="toggleFav(this,'games/maze.html')">☆</span>
+  <h3 onclick="openGame('games/maze.html')">Maze Escape</h3>
 </div>
 
 <div class="gameCard">
-<span class="favorite" onclick="toggleFav(this)">☆</span>
-<h3 onclick="openGame('games/platform.html')">Platform Adventure</h3>
+  <span class="favorite" onclick="toggleFav(this,'games/shooter.html')">☆</span>
+  <h3 onclick="openGame('games/shooter.html')">Space Shooter</h3>
 </div>
 
 <div class="gameCard">
-<span class="favorite" onclick="toggleFav(this)">☆</span>
-<h3 onclick="openGame('games/builder.html')">Block Builder</h3>
+  <span class="favorite" onclick="toggleFav(this,'games/match3.html')">☆</span>
+  <h3 onclick="openGame('games/match3.html')">Match 3 Puzzle</h3>
 </div>
 
 <div class="gameCard">
-<span class="favorite" onclick="toggleFav(this)">☆</span>
-<h3 onclick="openGame('games/2048.html')">2048</h3>
+  <span class="favorite" onclick="toggleFav(this,'games/reaction.html')">☆</span>
+  <h3 onclick="openGame('games/reaction.html')">Reaction Test</h3>
 </div>
 
 <div class="gameCard">
-<span class="favorite" onclick="toggleFav(this)">☆</span>
-<h3 onclick="openGame('games/maze.html')">Maze Escape</h3>
+  <span class="favorite" onclick="toggleFav(this,'games/platform.html')">☆</span>
+  <h3 onclick="openGame('games/platform.html')">Platform Adventure</h3>
+</div>
+
+<div class="gameCard">
+  <span class="favorite" onclick="toggleFav(this,'games/2048.html')">☆</span>
+  <h3 onclick="openGame('games/2048.html')">2048 Challenge</h3>
+</div>
+
+<div class="gameCard">
+  <span class="favorite" onclick="toggleFav(this,'games/pace.html')">☆</span>
+  <h3 onclick="openGame('games/pace.html')">Pace Runner</h3>
+</div>
+
+<div class="gameCard">
+  <span class="favorite" onclick="toggleFav(this,'games/builder.html')">☆</span>
+  <h3 onclick="openGame('games/builder.html')">Blockbuilder</h3>
 </div>
 
 </div>
 
 <div id="player">
-
-<button id="closeBtn" onclick="closeGame()">Close</button>
-
-<iframe id="gameFrame"></iframe>
-
+  <button id="closeBtn" onclick="closeGame()">Close</button>
+  <iframe id="gameFrame"></iframe>
 </div>
 
 <script>
 
+// OPEN & CLOSE
 function openGame(url){
-document.getElementById("player").style.display="block"
-document.getElementById("gameFrame").src=url
+  document.getElementById("player").style.display="block";
+  document.getElementById("gameFrame").src=url;
 }
-
 function closeGame(){
-document.getElementById("player").style.display="none"
-document.getElementById("gameFrame").src=""
+  document.getElementById("player").style.display="none";
+  document.getElementById("gameFrame").src="";
 }
 
+// SEARCH
 function searchGames(){
-let input=document.getElementById("search").value.toLowerCase()
-let games=document.getElementsByClassName("gameCard")
-
-for(let i=0;i<games.length;i++){
-let title=games[i].innerText.toLowerCase()
-
-if(title.includes(input)){
-games[i].style.display="block"
-}else{
-games[i].style.display="none"
-}
-}
+  let input = document.getElementById("search").value.toLowerCase();
+  let cards = document.getElementsByClassName("gameCard");
+  for(let card of cards){
+    let title = card.innerText.toLowerCase();
+    card.style.display = title.includes(input) ? "block" : "none";
+  }
 }
 
-function toggleFav(el){
-if(el.innerText=="☆"){
-el.innerText="★"
-}else{
-el.innerText="☆"
+// FAVORITES
+function toggleFav(el,game){
+  let favs = JSON.parse(localStorage.getItem("favorites")||"[]");
+  if(favs.includes(game)){
+    favs = favs.filter(x=>x!==game);
+    el.innerText="☆";
+  } else {
+    favs.push(game);
+    el.innerText="★";
+  }
+  localStorage.setItem("favorites",JSON.stringify(favs));
 }
+window.onload = function(){
+  let favs = JSON.parse(localStorage.getItem("favorites")||"[]");
+  let cards = document.getElementsByClassName("gameCard");
+  for(let card of cards){
+    let text = card.innerText.trim();
+    let gameName = card.querySelector("h3").onclick.toString();
+    if(favs.some(g=>gameName.includes(g))){
+      card.querySelector(".favorite").innerText="★";
+    }
+  }
 }
 
 </script>
