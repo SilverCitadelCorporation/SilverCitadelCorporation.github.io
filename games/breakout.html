@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<body style="margin:0;overflow:hidden;background:black;">
+<canvas id="game"></canvas>
+<script>
+let canvas=document.getElementById("game");
+let ctx=canvas.getContext("2d");
+canvas.width=600; canvas.height=400;
+
+let ball={x:300,y:200,r:10,dx:4,dy:-4};
+let paddle={x:250,y:380,w:100,h:10};
+let bricks=[];
+let rows=5,cols=8,brickW=70,brickH=20,brickP=10;
+let score=0;
+
+// Initialize bricks
+for(let r=0;r<rows;r++){
+  for(let c=0;c<cols;c++){
+    bricks.push({x:c*(brickW+brickP)+35,y:r*(brickH+brickP)+30,status:1});
+  }
+}
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  
+  // Draw ball
+  ctx.beginPath();
+  ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2);
+  ctx.fillStyle="red";
+  ctx.fill(); ctx.closePath();
+  
+  // Draw paddle
+  ctx.fillStyle="lime";
+  ctx.fillRect(paddle.x,paddle.y,paddle.w,paddle.h);
+  
+  // Draw bricks
+  bricks.forEach(b=>{
+    if(b.status){
+      ctx.fillStyle="orange";
+      ctx.fillRect(b.x,b.y,brickW,brickH);
+    }
+  });
+  
+  // Ball movement
+  ball.x+=ball.dx; ball.y+=ball.dy;
+  
+  // Wall collision
+  if(ball.x<ball.r||ball.x>canvas.width-ball.r) ball.dx*=-1;
+  if(ball.y<ball.r) ball.dy*=-1;
+  
+  // Paddle collision
+  if(ball.y+ball.r>paddle.y && ball.x>paddle.x && ball.x<paddle.x+paddle.w){
+    ball.dy*=-1;
+  }
+  
+  // Brick collision
+  bricks.forEach(b=>{
+    if(b.status && ball.x>b.x && ball.x<b.x+brickW && ball.y-b.r<b.y+brickH && ball.y+ball.r>b.y){
+      ball.dy*=-1;
+      b.status=0;
+      score++;
+    }
+  });
+  
+  // Score
+  ctx.fillStyle="white"; ctx.font="16px Arial"; ctx.fillText("Score: "+score,10,20);
+  
+  // Game over
+  if(ball.y>canvas.height){
+    alert("Game Over! Score: "+score);
+    document.location.reload();
+  }
+  
+  requestAnimationFrame(draw);
+}
+
+// Paddle control
+document.addEventListener("mousemove",e=>{
+  let relativeX = e.clientX - canvas.offsetLeft;
+  if(relativeX>0 && relativeX<canvas.width) paddle.x=relativeX-paddle.w/2;
+});
+
+draw();
+</script>
+</body>
+</html>
