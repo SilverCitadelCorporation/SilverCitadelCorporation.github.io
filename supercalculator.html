@@ -5,146 +5,214 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Student Resource Hub</title>
 <link rel="icon" href="logo.png">
-
 <style>
-
-body{
-margin:0;
-font-family:Arial;
-background:#e8edf3;
+body {
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f0f3f7;
 }
-
-header{
-background:#2c3e50;
-color:white;
-text-align:center;
-padding:20px;
-font-size:24px;
-font-weight:bold;
+header {
+    background:#2c3e50;
+    color:white;
+    text-align:center;
+    padding:20px;
+    font-size:24px;
+    font-weight:bold;
 }
-
-#games{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:20px;
-padding:30px;
-max-width:1000px;
-margin:auto;
+#calculator {
+    max-width:400px;
+    margin:50px auto;
+    background:white;
+    border-radius:15px;
+    padding:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
 }
-
-.game{
-background:white;
-border-radius:12px;
-box-shadow:0 5px 15px rgba(0,0,0,0.2);
-cursor:pointer;
-text-align:center;
-padding:15px;
-transition:.2s;
+#display {
+    width:100%;
+    height:50px;
+    font-size:24px;
+    text-align:right;
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    box-sizing:border-box;
+    margin-bottom:15px;
 }
-
-.game:hover{
-transform:scale(1.05);
+button {
+    width:22%;
+    margin:1%;
+    padding:15px 0;
+    font-size:18px;
+    border:none;
+    border-radius:8px;
+    background:#4a235a;
+    color:#d4af37;
+    cursor:pointer;
+    transition:.2s;
 }
-
-.game img{
-width:100%;
-border-radius:10px;
+button:hover {
+    background:#d4af37;
+    color:#4a235a;
 }
-
-#player{
-display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:black;
-z-index:999;
+#arcade {
+    display:none;
+    max-width:1200px;
+    margin:20px auto;
 }
-
-#player iframe{
-width:100%;
-height:100%;
-border:none;
+#tabs {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:20px;
 }
-
-#close{
-position:absolute;
-top:10px;
-right:20px;
-background:red;
-color:white;
-border:none;
-padding:10px 15px;
-font-size:16px;
-cursor:pointer;
-border-radius:6px;
+.game {
+    background:white;
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+    cursor:pointer;
+    text-align:center;
+    padding:15px;
+    transition:.2s;
 }
-
+.game:hover {
+    transform:scale(1.05);
+}
+.game img {
+    width:100%;
+    border-radius:10px;
+}
+#player {
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:black;
+    z-index:999;
+}
+#player iframe {
+    width:100%;
+    height:100%;
+    border:none;
+}
+#close {
+    position:absolute;
+    top:10px;
+    right:20px;
+    background:red;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    font-size:16px;
+    cursor:pointer;
+    border-radius:6px;
+}
 </style>
 </head>
-
 <body>
 
-<header>
-Student Learning Portal
-</header>
+<header>Student Learning Portal</header>
 
-<div id="games">
+<!-- Calculator -->
+<div id="calculator">
+<input type="text" id="display" readonly>
+<div>
+<button onclick="press('7')">7</button>
+<button onclick="press('8')">8</button>
+<button onclick="press('9')">9</button>
+<button onclick="clearDisplay()">C</button>
+</div>
+<div>
+<button onclick="press('4')">4</button>
+<button onclick="press('5')">5</button>
+<button onclick="press('6')">6</button>
+<button onclick="press('/')">/</button>
+</div>
+<div>
+<button onclick="press('1')">1</button>
+<button onclick="press('2')">2</button>
+<button onclick="press('3')">3</button>
+<button onclick="press('*')">*</button>
+</div>
+<div>
+<button onclick="press('0')">0</button>
+<button onclick="press('.')">.</button>
+<button onclick="unlock()">=</button>
+<button onclick="press('-')">-</button>
+</div>
+<div>
+<button onclick="press('+')">+</button>
+</div>
+</div>
 
+<!-- Arcade -->
+<div id="arcade">
+<div id="tabs">
+<!-- Example games -->
 <div class="game" onclick="play('https://eaglercraft.com/mc/1.8.8/')">
 <img src="https://i.imgur.com/W5b8E6A.png">
 <h3>Block Builder</h3>
 </div>
-
 <div class="game" onclick="play('https://geometrydashlite.co/')">
 <img src="https://i.imgur.com/y0Y5K2L.png">
-<h3>Geometry Shapes</h3>
+<h3>Geometry Dash</h3>
 </div>
-
 <div class="game" onclick="play('https://classic.minecraft.net/')">
 <img src="https://i.imgur.com/V0qK6bM.png">
 <h3>3D Builder</h3>
 </div>
-
 <div class="game" onclick="play('https://ubg44.github.io/roblox-obby/')">
 <img src="https://i.imgur.com/W0sYh5E.png">
 <h3>Platform Challenge</h3>
 </div>
-
 <div class="game" onclick="play('https://ubg44.github.io/slope/')">
 <img src="https://i.imgur.com/QP6Qp0k.png">
 <h3>Slope Math</h3>
 </div>
-
 <div class="game" onclick="play('https://ubg44.github.io/run3/')">
 <img src="https://i.imgur.com/j9y6G7E.png">
 <h3>Run 3</h3>
 </div>
-
+</div>
 </div>
 
+<!-- Fullscreen player -->
 <div id="player">
-
 <button id="close" onclick="closeGame()">Exit</button>
-
 <iframe id="gameframe"></iframe>
-
 </div>
 
 <script>
+let input="";
+let display=document.getElementById("display");
 
+function press(val){input+=val;display.value=input;}
+function clearDisplay(){input="";display.value="";}
+
+function unlock(){
+if(input==="0000"){ 
+    document.getElementById("calculator").style.display="none";
+    document.getElementById("arcade").style.display="block";
+}else{
+    try{
+        input=eval(input).toString();
+        display.value=input;
+    }catch{
+        display.value="Error";
+        input="";
+    }
+}
+}
+
+// Arcade full screen
 function play(url){
 document.getElementById("player").style.display="block";
 document.getElementById("gameframe").src=url;
 }
-
 function closeGame(){
 document.getElementById("player").style.display="none";
 document.getElementById("gameframe").src="";
 }
-
 </script>
-
 </body>
 </html>
