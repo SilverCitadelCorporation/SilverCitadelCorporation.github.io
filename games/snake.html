@@ -1,61 +1,27 @@
 <!DOCTYPE html>
-<html>
-<body style="margin:0;background:black;overflow:hidden;">
-
-<canvas id="game"></canvas>
-
+<html><body style="margin:0;overflow:hidden">
+<canvas id="c"></canvas>
 <script>
-
-let canvas=document.getElementById("game")
-let ctx=canvas.getContext("2d")
-
-canvas.width=800
-canvas.height=600
-
-let snake=[{x:200,y:200}]
-let food={x:300,y:300}
-let dx=20
-let dy=0
-
+let c=document.getElementById("c"),ctx=c.getContext("2d");
+c.width=400;c.height=400;
+let px=20,py=20,dx=20,dy=0,s=[{x:px,y:py}],food={x:100,y:100};
 function game(){
-
-let head={x:snake[0].x+dx,y:snake[0].y+dy}
-
-snake.unshift(head)
-
-if(head.x==food.x && head.y==food.y){
-food.x=Math.floor(Math.random()*40)*20
-food.y=Math.floor(Math.random()*30)*20
-}else{
-snake.pop()
+ctx.fillStyle="black";ctx.fillRect(0,0,400,400);
+ctx.fillStyle="red";ctx.fillRect(food.x,food.y,20,20);
+let head={x: s[0].x+dx, y: s[0].y+dy};
+s.unshift(head);
+if(head.x==food.x&&head.y==food.y){
+food={x:Math.floor(Math.random()*20)*20,y:Math.floor(Math.random()*20)*20};
+} else { s.pop(); }
+ctx.fillStyle="lime";
+s.forEach(p=>ctx.fillRect(p.x,p.y,20,20));
 }
-
-ctx.fillStyle="black"
-ctx.fillRect(0,0,800,600)
-
-ctx.fillStyle="lime"
-
-snake.forEach(s=>{
-ctx.fillRect(s.x,s.y,20,20)
-})
-
-ctx.fillStyle="red"
-ctx.fillRect(food.x,food.y,20,20)
-
-}
-
-document.addEventListener("keydown",e=>{
-
-if(e.key=="ArrowUp"){dx=0;dy=-20}
-if(e.key=="ArrowDown"){dx=0;dy=20}
-if(e.key=="ArrowLeft"){dx=-20;dy=0}
-if(e.key=="ArrowRight"){dx=20;dy=0}
-
-})
-
-setInterval(game,100)
-
+document.onkeydown=e=>{
+if(e.key=="ArrowUp"){dx=0;dy=-20;}
+if(e.key=="ArrowDown"){dx=0;dy=20;}
+if(e.key=="ArrowLeft"){dx=-20;dy=0;}
+if(e.key=="ArrowRight"){dx=20;dy=0;}
+};
+setInterval(game,100);
 </script>
-
-</body>
-</html>
+</body></html>
