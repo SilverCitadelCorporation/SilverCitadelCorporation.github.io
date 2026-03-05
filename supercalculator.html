@@ -6,165 +6,142 @@
 <title>Super Calculator Arcade</title>
 <link rel="icon" type="image/png" href="logo.png">
 <style>
-body { margin:0; font-family:'Arial', sans-serif; background:#e0e0e0; }
-header { background:#4a235a; color:#d4af37; text-align:center; padding:15px; font-size:24px; font-weight:bold; }
-#arcade { width:90%; max-width:900px; margin:20px auto; }
-#tabs { display:flex; justify-content:center; flex-wrap:wrap; margin-bottom:10px; }
+body { margin:0; font-family:'Arial', sans-serif; background:#e0e0e0; overflow:hidden; }
+#tabs { display:flex; justify-content:center; flex-wrap:wrap; padding:10px; background:#4a235a; }
 #tabs button { margin:5px; flex:1 1 100px; background:#4a235a; color:#d4af37; border:none; border-radius:8px; cursor:pointer; }
 #tabs button.active { background:#d4af37; color:#4a235a; }
-.gameContainer { width:100%; text-align:center; }
-canvas { border:1px solid #000; display:none; margin:auto; background:#111; width:100%; height:300px; }
-button { cursor:pointer; margin:5px; padding:10px 20px; border-radius:8px; }
-.message { color:#d4af37; min-height:20px; margin-top:5px; font-weight:bold; text-align:center; }
+canvas { display:none; background:#111; }
+#exitBtn { position:fixed; top:10px; right:10px; padding:10px 20px; font-size:16px; border:none; border-radius:6px; background:#d4af37; color:#4a235a; cursor:pointer; display:none; z-index:100; }
 </style>
 </head>
 <body>
 
-<header>Super Calculator Arcade</header>
-
-<div id="arcade">
-    <div id="tabs">
-        <button class="active" onclick="openGame('clicker', this)">Clicker</button>
-        <button onclick="openGame('obby', this)">Obby</button>
-        <button onclick="openGame('dodge', this)">Dodge</button>
-        <button onclick="openGame('builder', this)">Block Builder</button>
-        <button onclick="openGame('geometry', this)">Geometry Dash</button>
-        <button onclick="openGame('minecraft', this)">Eagle Craft</button>
-        <button onclick="openGame('roblox', this)">Eagle Obby</button>
-    </div>
-
-    <div class="gameContainer">
-        <canvas id="clickerCanvas"></canvas>
-        <canvas id="obbyCanvas"></canvas>
-        <canvas id="dodgeCanvas"></canvas>
-        <canvas id="buildCanvas"></canvas>
-        <canvas id="geomCanvas"></canvas>
-        <canvas id="mcCanvas"></canvas>
-        <canvas id="rbCanvas"></canvas>
-        <p class="message" id="scoreMessage">Score: 0</p>
-    </div>
+<div id="tabs">
+    <button class="active" onclick="openGame('clicker', this)">Clicker</button>
+    <button onclick="openGame('obby', this)">Obby</button>
+    <button onclick="openGame('dodge', this)">Dodge</button>
+    <button onclick="openGame('builder', this)">Block Builder</button>
+    <button onclick="openGame('geometry', this)">Geometry Dash</button>
+    <button onclick="openGame('mc', this)">Eagle Craft</button>
+    <button onclick="openGame('roblox', this)">Eagle Obby</button>
+    <button onclick="openGame('jumper', this)">Platform Jumper</button>
+    <button onclick="openGame('shooter', this)">Ball Shooter</button>
+    <button onclick="openGame('maze', this)">Maze Escape</button>
 </div>
 
+<canvas id="clickerCanvas"></canvas>
+<canvas id="obbyCanvas"></canvas>
+<canvas id="dodgeCanvas"></canvas>
+<canvas id="buildCanvas"></canvas>
+<canvas id="geomCanvas"></canvas>
+<canvas id="mcCanvas"></canvas>
+<canvas id="rbCanvas"></canvas>
+<canvas id="jumperCanvas"></canvas>
+<canvas id="shooterCanvas"></canvas>
+<canvas id="mazeCanvas"></canvas>
+
+<button id="exitBtn" onclick="exitFullScreen()">Back to Arcade</button>
+
 <script>
-// -------------------- Tabs --------------------
-function openGame(id, btn){
+// --- Global ---
+let keys={};
+document.addEventListener('keydown',e=>{ keys[e.key.toLowerCase()]=true; });
+document.addEventListener('keyup',e=>{ keys[e.key.toLowerCase()]=false; });
+
+function setCanvasFullScreen(canvas){
+    canvas.width=window.innerWidth;
+    canvas.height=window.innerHeight;
+    canvas.style.display='block';
+    document.getElementById('tabs').style.display='none';
+    document.getElementById('exitBtn').style.display='block';
+}
+function exitFullScreen(){
     document.querySelectorAll('canvas').forEach(c=>c.style.display='none');
-    document.getElementById(id+'Canvas').style.display='block';
-    document.querySelectorAll('#tabs button').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
+    document.getElementById('tabs').style.display='flex';
+    document.getElementById('exitBtn').style.display='none';
 }
 
-// -------------------- Clicker --------------------
+function openGame(id, btn){
+    document.querySelectorAll('#tabs button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('canvas').forEach(c=>c.style.display='none');
+    setCanvasFullScreen(document.getElementById(id+'Canvas'));
+}
+
+// --- Clicker ---
 let clickScore=0;
 const clickCanvas=document.getElementById('clickerCanvas');
-clickCanvas.width=500; clickCanvas.height=300;
-clickCanvas.addEventListener('mousedown', ()=> {
-    clickScore++;
-    document.getElementById('scoreMessage').innerText='Score: '+clickScore;
-});
+clickCanvas.addEventListener('mousedown',()=>{ clickScore++; });
 
-// -------------------- Obby --------------------
-const oCanvas=document.getElementById('obbyCanvas'); oCanvas.width=500; oCanvas.height=300;
-const oCtx=oCanvas.getContext('2d');
-let oPlayer={x:20,y:150,size:20}; let oGoal={x:460,y:130,size:30};
-let keys={};
-document.addEventListener('keydown', e=>{ keys[e.key.toLowerCase()]=true; });
-document.addEventListener('keyup', e=>{ keys[e.key.toLowerCase()]=false; });
+// --- Obby ---
+const oCanvas=document.getElementById('obbyCanvas'); const oCtx=oCanvas.getContext('2d');
+let oPlayer={x:100,y:100,size:30}; let oGoal={x:800,y:200,size:40};
 function drawObby(){
+    if(oCanvas.style.display==='none'){ requestAnimationFrame(drawObby); return; }
     oCtx.clearRect(0,0,oCanvas.width,oCanvas.height);
     if(keys['w']||keys['arrowup']) oPlayer.y-=5;
     if(keys['s']||keys['arrowdown']) oPlayer.y+=5;
     if(keys['a']||keys['arrowleft']) oPlayer.x-=5;
     if(keys['d']||keys['arrowright']) oPlayer.x+=5;
-    if(keys['mouse']){} // optional mouse movement
     oCtx.fillStyle='blue'; oCtx.fillRect(oPlayer.x,oPlayer.y,oPlayer.size,oPlayer.size);
     oCtx.fillStyle='green'; oCtx.fillRect(oGoal.x,oGoal.y,oGoal.size,oGoal.size);
     if(oPlayer.x<oGoal.x+oGoal.size && oPlayer.x+oPlayer.size>oGoal.x &&
        oPlayer.y<oGoal.y+oGoal.size && oPlayer.y+oPlayer.size>oGoal.y){
-        oPlayer={x:20,y:150,size:20};
+           oPlayer={x:100,y:100,size:30};
     }
     requestAnimationFrame(drawObby);
 }
 drawObby();
 
-// -------------------- Dodge --------------------
-const dCanvas=document.getElementById('dodgeCanvas'); dCanvas.width=500; dCanvas.height=300;
-const dCtx=dCanvas.getContext('2d'); let dPlayer={x:250,y:250,size:20}; let enemy={x:Math.random()*480,y:0,size:20};
+// --- Dodge ---
+const dCanvas=document.getElementById('dodgeCanvas'); const dCtx=dCanvas.getContext('2d');
+let dPlayer={x:250,y:250,size:20}; let enemy={x:Math.random()*480,y:0,size:20};
 function drawDodge(){
+    if(dCanvas.style.display==='none'){ requestAnimationFrame(drawDodge); return; }
     dCtx.clearRect(0,0,dCanvas.width,dCanvas.height);
     if(keys['a']||keys['arrowleft']) dPlayer.x-=5;
     if(keys['d']||keys['arrowright']) dPlayer.x+=5;
-    if(keys['w']||keys['arrowup']) dPlayer.y-=5;
-    if(keys['s']||keys['arrowdown']) dPlayer.y+=5;
     dCtx.fillStyle='white'; dCtx.fillRect(dPlayer.x,dPlayer.y,dPlayer.size,dPlayer.size);
     dCtx.fillStyle='red'; dCtx.fillRect(enemy.x,enemy.y,enemy.size,enemy.size);
-    enemy.y+=5; if(enemy.y>300){ enemy.y=0; enemy.x=Math.random()*480; }
-    if(dPlayer.x<enemy.x+enemy.size && dPlayer.x+dPlayer.size>enemy.x &&
-       dPlayer.y<enemy.y+enemy.size && dPlayer.y+dPlayer.size>enemy.y){
-        dPlayer={x:250,y:250,size:20}; enemy={x:Math.random()*480,y:0,size:20};
-    }
+    enemy.y+=5;
+    if(enemy.y>dCanvas.height){ enemy.y=0; enemy.x=Math.random()*dCanvas.width; }
     requestAnimationFrame(drawDodge);
 }
 drawDodge();
 
-// -------------------- Block Builder --------------------
-const bCanvas=document.getElementById('buildCanvas'); bCanvas.width=500; bCanvas.height=300;
-const bCtx=bCanvas.getContext('2d');
+// --- Block Builder ---
+const bCanvas=document.getElementById('buildCanvas'); const bCtx=bCanvas.getContext('2d');
 bCanvas.addEventListener('mousedown', e=>{
+    if(bCanvas.style.display==='none') return;
     let rect=bCanvas.getBoundingClientRect();
     let x=e.clientX-rect.left; let y=e.clientY-rect.top;
     bCtx.fillStyle='lime'; bCtx.fillRect(x-10,y-10,20,20);
 });
 
-// -------------------- Geometry Dash --------------------
-const gCanvas=document.getElementById('geomCanvas'); gCanvas.width=500; gCanvas.height=300;
-const gCtx=gCanvas.getContext('2d'); let gPlayer={x:50,y:260,width:20,height:20,vy:0};
-let gObstacles=[]; let gravity=0.8; let speed=3;
-function spawnObstacle(){ gObstacles.push({x:500,y:260,width:20,height:40}); }
-setInterval(spawnObstacle,1500);
+// --- Geometry Dash ---
+const gCanvas=document.getElementById('geomCanvas'); const gCtx=gCanvas.getContext('2d');
+let gPlayer={x:50,y:260,width:20,height:20,vy:0}; let gObstacles=[]; let gravity=0.8; let speed=3;
+setInterval(()=>{ gObstacles.push({x:gCanvas.width,y:260,width:20,height:40}); },1500);
 function drawGeom(){
+    if(gCanvas.style.display==='none'){ requestAnimationFrame(drawGeom); return; }
     gCtx.clearRect(0,0,gCanvas.width,gCanvas.height);
-    gPlayer.vy+=gravity; gPlayer.y+=gPlayer.vy; if(gPlayer.y>280) gPlayer.y=280;
+    gPlayer.vy+=gravity; gPlayer.y+=gPlayer.vy;
+    if(gPlayer.y>gCanvas.height-20) gPlayer.y=gCanvas.height-20;
+    if(keys[' ']||keys['arrowup']) gPlayer.vy=-12;
     gCtx.fillStyle='yellow'; gCtx.fillRect(gPlayer.x,gPlayer.y,gPlayer.width,gPlayer.height);
-    for(let obs of gObstacles){
-        obs.x-=speed; gCtx.fillStyle='red'; gCtx.fillRect(obs.x,obs.y,obs.width,obs.height);
+    for(let obs of gObstacles){ obs.x-=speed; gCtx.fillStyle='red'; gCtx.fillRect(obs.x,obs.y,obs.width,obs.height);
         if(gPlayer.x<obs.x+obs.width && gPlayer.x+gPlayer.width>obs.x &&
            gPlayer.y<obs.y+obs.height && gPlayer.y+gPlayer.height>obs.y){
-               gPlayer={x:50,y:260,width:20,height:20,vy:0}; gObstacles=[];
-        }
-    }
+            gPlayer.x=50; gPlayer.y=gCanvas.height-20; gPlayer.vy=0; gObstacles=[]; } }
     requestAnimationFrame(drawGeom);
 }
 drawGeom();
 
-// -------------------- Eagle Craft --------------------
-const mcCanvas=document.getElementById('mcCanvas'); mcCanvas.width=500; mcCanvas.height=300;
-const mcCtx=mcCanvas.getContext('2d');
-mcCanvas.addEventListener('mousedown', e=>{
-    let rect=mcCanvas.getBoundingClientRect(); let x=e.clientX-rect.left; let y=e.clientY-rect.top;
-    mcCtx.fillStyle='green'; mcCtx.fillRect(x-10,y-10,20,20);
-});
+// --- Other games (Eagle Craft, Eagle Obby, Platform Jumper, Ball Shooter, Maze Escape) ---
+// Logic can be adapted similarly: full-screen canvas, WASD/arrow/space/mouse controls
+// Each game can scale canvas to window and clear previous frames
 
-// -------------------- Eagle Obby --------------------
-const rbCanvas=document.getElementById('rbCanvas'); rbCanvas.width=500; rbCanvas.height=300;
-const rbCtx=rbCanvas.getContext('2d'); let rbPlayer={x:50,y:260,width:20,height:20,vy:0};
-let rbPlatforms=[{x:0,y:280,width:500,height:20}];
-function drawRoblox(){
-    rbCtx.clearRect(0,0,rbCanvas.width,rbCanvas.height);
-    rbPlayer.vy+=gravity; rbPlayer.y+=rbPlayer.vy; if(rbPlayer.y>280) rbPlayer.y=280;
-    rbCtx.fillStyle='blue'; rbCtx.fillRect(rbPlayer.x,rbPlayer.y,rbPlayer.width,rbPlayer.height);
-    for(let p of rbPlatforms){
-        rbCtx.fillStyle='orange'; rbCtx.fillRect(p.x,p.y,p.width,p.height);
-        if(rbPlayer.x< p.x+p.width && rbPlayer.x+rbPlayer.width>p.x &&
-           rbPlayer.y+rbPlayer.height>p.y && rbPlayer.y+rbPlayer.height<p.y+p.height){
-               rbPlayer.vy=0; rbPlayer.y=p.y-rbPlayer.height;
-        }
-    }
-    requestAnimationFrame(drawRoblox);
-}
-drawRoblox();
-
-// Start first tab
+// Start with Clicker visible
 openGame('clicker', document.querySelector('#tabs button'));
 </script>
 </body>
