@@ -3,216 +3,169 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Student Resource Hub</title>
-<link rel="icon" href="logo.png">
+<title>Super Calculator Arcade</title>
+<link rel="icon" type="image/png" href="logo.png">
 <style>
-body {
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#f0f3f7;
-}
-header {
-    background:#2c3e50;
-    color:white;
-    text-align:center;
-    padding:20px;
-    font-size:24px;
-    font-weight:bold;
-}
-#calculator {
-    max-width:400px;
-    margin:50px auto;
-    background:white;
-    border-radius:15px;
-    padding:20px;
-    box-shadow:0 10px 25px rgba(0,0,0,0.2);
-}
-#display {
-    width:100%;
-    height:50px;
-    font-size:24px;
-    text-align:right;
-    padding:10px;
-    border-radius:8px;
-    border:1px solid #ccc;
-    box-sizing:border-box;
-    margin-bottom:15px;
-}
-button {
-    width:22%;
-    margin:1%;
-    padding:15px 0;
-    font-size:18px;
-    border:none;
-    border-radius:8px;
-    background:#4a235a;
-    color:#d4af37;
-    cursor:pointer;
-    transition:.2s;
-}
-button:hover {
-    background:#d4af37;
-    color:#4a235a;
-}
-#arcade {
-    display:none;
-    max-width:1200px;
-    margin:20px auto;
-}
-#tabs {
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-    gap:20px;
-}
-.game {
-    background:white;
-    border-radius:12px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.2);
-    cursor:pointer;
-    text-align:center;
-    padding:15px;
-    transition:.2s;
-}
-.game:hover {
-    transform:scale(1.05);
-}
-.game img {
-    width:100%;
-    border-radius:10px;
-}
-#player {
-    display:none;
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:black;
-    z-index:999;
-}
-#player iframe {
-    width:100%;
-    height:100%;
-    border:none;
-}
-#close {
-    position:absolute;
-    top:10px;
-    right:20px;
-    background:red;
-    color:white;
-    border:none;
-    padding:10px 15px;
-    font-size:16px;
-    cursor:pointer;
-    border-radius:6px;
-}
+body { margin:0; font-family:'Arial', sans-serif; background:#e0e0e0; }
+header { background:#4a235a; color:#d4af37; text-align:center; padding:15px; font-size:24px; font-weight:bold; }
+#arcade { width:90%; max-width:900px; margin:20px auto; }
+#tabs { display:flex; justify-content:center; flex-wrap:wrap; margin-bottom:10px; }
+#tabs button { margin:5px; flex:1 1 100px; background:#4a235a; color:#d4af37; border:none; border-radius:8px; cursor:pointer; }
+#tabs button.active { background:#d4af37; color:#4a235a; }
+.gameContainer { width:100%; text-align:center; }
+canvas { border:1px solid #000; display:none; margin:auto; background:#111; width:100%; height:300px; }
+button { cursor:pointer; margin:5px; padding:10px 20px; border-radius:8px; }
+.message { color:#d4af37; min-height:20px; margin-top:5px; font-weight:bold; text-align:center; }
 </style>
 </head>
 <body>
 
-<header>Student Learning Portal</header>
+<header>Super Calculator Arcade</header>
 
-<!-- Calculator -->
-<div id="calculator">
-<input type="text" id="display" readonly>
-<div>
-<button onclick="press('7')">7</button>
-<button onclick="press('8')">8</button>
-<button onclick="press('9')">9</button>
-<button onclick="clearDisplay()">C</button>
-</div>
-<div>
-<button onclick="press('4')">4</button>
-<button onclick="press('5')">5</button>
-<button onclick="press('6')">6</button>
-<button onclick="press('/')">/</button>
-</div>
-<div>
-<button onclick="press('1')">1</button>
-<button onclick="press('2')">2</button>
-<button onclick="press('3')">3</button>
-<button onclick="press('*')">*</button>
-</div>
-<div>
-<button onclick="press('0')">0</button>
-<button onclick="press('.')">.</button>
-<button onclick="unlock()">=</button>
-<button onclick="press('-')">-</button>
-</div>
-<div>
-<button onclick="press('+')">+</button>
-</div>
-</div>
-
-<!-- Arcade -->
 <div id="arcade">
-<div id="tabs">
-<!-- Example games -->
-<div class="game" onclick="play('https://eaglercraft.com/mc/1.8.8/')">
-<img src="https://i.imgur.com/W5b8E6A.png">
-<h3>Block Builder</h3>
-</div>
-<div class="game" onclick="play('https://geometrydashlite.co/')">
-<img src="https://i.imgur.com/y0Y5K2L.png">
-<h3>Geometry Dash</h3>
-</div>
-<div class="game" onclick="play('https://classic.minecraft.net/')">
-<img src="https://i.imgur.com/V0qK6bM.png">
-<h3>3D Builder</h3>
-</div>
-<div class="game" onclick="play('https://ubg44.github.io/roblox-obby/')">
-<img src="https://i.imgur.com/W0sYh5E.png">
-<h3>Platform Challenge</h3>
-</div>
-<div class="game" onclick="play('https://ubg44.github.io/slope/')">
-<img src="https://i.imgur.com/QP6Qp0k.png">
-<h3>Slope Math</h3>
-</div>
-<div class="game" onclick="play('https://ubg44.github.io/run3/')">
-<img src="https://i.imgur.com/j9y6G7E.png">
-<h3>Run 3</h3>
-</div>
-</div>
-</div>
+    <div id="tabs">
+        <button class="active" onclick="openGame('clicker', this)">Clicker</button>
+        <button onclick="openGame('obby', this)">Obby</button>
+        <button onclick="openGame('dodge', this)">Dodge</button>
+        <button onclick="openGame('builder', this)">Block Builder</button>
+        <button onclick="openGame('geometry', this)">Geometry Dash</button>
+        <button onclick="openGame('minecraft', this)">Eagle Craft</button>
+        <button onclick="openGame('roblox', this)">Eagle Obby</button>
+    </div>
 
-<!-- Fullscreen player -->
-<div id="player">
-<button id="close" onclick="closeGame()">Exit</button>
-<iframe id="gameframe"></iframe>
+    <div class="gameContainer">
+        <canvas id="clickerCanvas"></canvas>
+        <canvas id="obbyCanvas"></canvas>
+        <canvas id="dodgeCanvas"></canvas>
+        <canvas id="buildCanvas"></canvas>
+        <canvas id="geomCanvas"></canvas>
+        <canvas id="mcCanvas"></canvas>
+        <canvas id="rbCanvas"></canvas>
+        <p class="message" id="scoreMessage">Score: 0</p>
+    </div>
 </div>
 
 <script>
-let input="";
-let display=document.getElementById("display");
+// -------------------- Tabs --------------------
+function openGame(id, btn){
+    document.querySelectorAll('canvas').forEach(c=>c.style.display='none');
+    document.getElementById(id+'Canvas').style.display='block';
+    document.querySelectorAll('#tabs button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+}
 
-function press(val){input+=val;display.value=input;}
-function clearDisplay(){input="";display.value="";}
+// -------------------- Clicker --------------------
+let clickScore=0;
+const clickCanvas=document.getElementById('clickerCanvas');
+clickCanvas.width=500; clickCanvas.height=300;
+clickCanvas.addEventListener('mousedown', ()=> {
+    clickScore++;
+    document.getElementById('scoreMessage').innerText='Score: '+clickScore;
+});
 
-function unlock(){
-if(input==="0000"){ 
-    document.getElementById("calculator").style.display="none";
-    document.getElementById("arcade").style.display="block";
-}else{
-    try{
-        input=eval(input).toString();
-        display.value=input;
-    }catch{
-        display.value="Error";
-        input="";
+// -------------------- Obby --------------------
+const oCanvas=document.getElementById('obbyCanvas'); oCanvas.width=500; oCanvas.height=300;
+const oCtx=oCanvas.getContext('2d');
+let oPlayer={x:20,y:150,size:20}; let oGoal={x:460,y:130,size:30};
+let keys={};
+document.addEventListener('keydown', e=>{ keys[e.key.toLowerCase()]=true; });
+document.addEventListener('keyup', e=>{ keys[e.key.toLowerCase()]=false; });
+function drawObby(){
+    oCtx.clearRect(0,0,oCanvas.width,oCanvas.height);
+    if(keys['w']||keys['arrowup']) oPlayer.y-=5;
+    if(keys['s']||keys['arrowdown']) oPlayer.y+=5;
+    if(keys['a']||keys['arrowleft']) oPlayer.x-=5;
+    if(keys['d']||keys['arrowright']) oPlayer.x+=5;
+    if(keys['mouse']){} // optional mouse movement
+    oCtx.fillStyle='blue'; oCtx.fillRect(oPlayer.x,oPlayer.y,oPlayer.size,oPlayer.size);
+    oCtx.fillStyle='green'; oCtx.fillRect(oGoal.x,oGoal.y,oGoal.size,oGoal.size);
+    if(oPlayer.x<oGoal.x+oGoal.size && oPlayer.x+oPlayer.size>oGoal.x &&
+       oPlayer.y<oGoal.y+oGoal.size && oPlayer.y+oPlayer.size>oGoal.y){
+        oPlayer={x:20,y:150,size:20};
     }
+    requestAnimationFrame(drawObby);
 }
-}
+drawObby();
 
-// Arcade full screen
-function play(url){
-document.getElementById("player").style.display="block";
-document.getElementById("gameframe").src=url;
+// -------------------- Dodge --------------------
+const dCanvas=document.getElementById('dodgeCanvas'); dCanvas.width=500; dCanvas.height=300;
+const dCtx=dCanvas.getContext('2d'); let dPlayer={x:250,y:250,size:20}; let enemy={x:Math.random()*480,y:0,size:20};
+function drawDodge(){
+    dCtx.clearRect(0,0,dCanvas.width,dCanvas.height);
+    if(keys['a']||keys['arrowleft']) dPlayer.x-=5;
+    if(keys['d']||keys['arrowright']) dPlayer.x+=5;
+    if(keys['w']||keys['arrowup']) dPlayer.y-=5;
+    if(keys['s']||keys['arrowdown']) dPlayer.y+=5;
+    dCtx.fillStyle='white'; dCtx.fillRect(dPlayer.x,dPlayer.y,dPlayer.size,dPlayer.size);
+    dCtx.fillStyle='red'; dCtx.fillRect(enemy.x,enemy.y,enemy.size,enemy.size);
+    enemy.y+=5; if(enemy.y>300){ enemy.y=0; enemy.x=Math.random()*480; }
+    if(dPlayer.x<enemy.x+enemy.size && dPlayer.x+dPlayer.size>enemy.x &&
+       dPlayer.y<enemy.y+enemy.size && dPlayer.y+dPlayer.size>enemy.y){
+        dPlayer={x:250,y:250,size:20}; enemy={x:Math.random()*480,y:0,size:20};
+    }
+    requestAnimationFrame(drawDodge);
 }
-function closeGame(){
-document.getElementById("player").style.display="none";
-document.getElementById("gameframe").src="";
+drawDodge();
+
+// -------------------- Block Builder --------------------
+const bCanvas=document.getElementById('buildCanvas'); bCanvas.width=500; bCanvas.height=300;
+const bCtx=bCanvas.getContext('2d');
+bCanvas.addEventListener('mousedown', e=>{
+    let rect=bCanvas.getBoundingClientRect();
+    let x=e.clientX-rect.left; let y=e.clientY-rect.top;
+    bCtx.fillStyle='lime'; bCtx.fillRect(x-10,y-10,20,20);
+});
+
+// -------------------- Geometry Dash --------------------
+const gCanvas=document.getElementById('geomCanvas'); gCanvas.width=500; gCanvas.height=300;
+const gCtx=gCanvas.getContext('2d'); let gPlayer={x:50,y:260,width:20,height:20,vy:0};
+let gObstacles=[]; let gravity=0.8; let speed=3;
+function spawnObstacle(){ gObstacles.push({x:500,y:260,width:20,height:40}); }
+setInterval(spawnObstacle,1500);
+function drawGeom(){
+    gCtx.clearRect(0,0,gCanvas.width,gCanvas.height);
+    gPlayer.vy+=gravity; gPlayer.y+=gPlayer.vy; if(gPlayer.y>280) gPlayer.y=280;
+    gCtx.fillStyle='yellow'; gCtx.fillRect(gPlayer.x,gPlayer.y,gPlayer.width,gPlayer.height);
+    for(let obs of gObstacles){
+        obs.x-=speed; gCtx.fillStyle='red'; gCtx.fillRect(obs.x,obs.y,obs.width,obs.height);
+        if(gPlayer.x<obs.x+obs.width && gPlayer.x+gPlayer.width>obs.x &&
+           gPlayer.y<obs.y+obs.height && gPlayer.y+gPlayer.height>obs.y){
+               gPlayer={x:50,y:260,width:20,height:20,vy:0}; gObstacles=[];
+        }
+    }
+    requestAnimationFrame(drawGeom);
 }
+drawGeom();
+
+// -------------------- Eagle Craft --------------------
+const mcCanvas=document.getElementById('mcCanvas'); mcCanvas.width=500; mcCanvas.height=300;
+const mcCtx=mcCanvas.getContext('2d');
+mcCanvas.addEventListener('mousedown', e=>{
+    let rect=mcCanvas.getBoundingClientRect(); let x=e.clientX-rect.left; let y=e.clientY-rect.top;
+    mcCtx.fillStyle='green'; mcCtx.fillRect(x-10,y-10,20,20);
+});
+
+// -------------------- Eagle Obby --------------------
+const rbCanvas=document.getElementById('rbCanvas'); rbCanvas.width=500; rbCanvas.height=300;
+const rbCtx=rbCanvas.getContext('2d'); let rbPlayer={x:50,y:260,width:20,height:20,vy:0};
+let rbPlatforms=[{x:0,y:280,width:500,height:20}];
+function drawRoblox(){
+    rbCtx.clearRect(0,0,rbCanvas.width,rbCanvas.height);
+    rbPlayer.vy+=gravity; rbPlayer.y+=rbPlayer.vy; if(rbPlayer.y>280) rbPlayer.y=280;
+    rbCtx.fillStyle='blue'; rbCtx.fillRect(rbPlayer.x,rbPlayer.y,rbPlayer.width,rbPlayer.height);
+    for(let p of rbPlatforms){
+        rbCtx.fillStyle='orange'; rbCtx.fillRect(p.x,p.y,p.width,p.height);
+        if(rbPlayer.x< p.x+p.width && rbPlayer.x+rbPlayer.width>p.x &&
+           rbPlayer.y+rbPlayer.height>p.y && rbPlayer.y+rbPlayer.height<p.y+p.height){
+               rbPlayer.vy=0; rbPlayer.y=p.y-rbPlayer.height;
+        }
+    }
+    requestAnimationFrame(drawRoblox);
+}
+drawRoblox();
+
+// Start first tab
+openGame('clicker', document.querySelector('#tabs button'));
 </script>
 </body>
 </html>
