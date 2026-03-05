@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Student Activity Center</title>
+<title>Student Resource Center</title>
 
 <style>
 
@@ -14,29 +14,29 @@ text-align:center;
 }
 
 h1{
-margin-top:20px;
+padding:20px;
 }
 
-.games{
+#library{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
 gap:20px;
-padding:30px;
 max-width:1000px;
 margin:auto;
+padding:20px;
 }
 
 .game{
 background:#1e293b;
-padding:20px;
+padding:25px;
 border-radius:10px;
 cursor:pointer;
 transition:.2s;
 }
 
 .game:hover{
-transform:scale(1.05);
 background:#334155;
+transform:scale(1.05);
 }
 
 #player{
@@ -50,15 +50,20 @@ display:none;
 flex-direction:column;
 }
 
-#close{
+#topbar{
 background:#111;
 padding:10px;
+display:flex;
+justify-content:space-between;
+}
+
+#close{
 cursor:pointer;
 }
 
 canvas{
-background:#111;
 margin:auto;
+background:#111;
 }
 
 </style>
@@ -66,133 +71,142 @@ margin:auto;
 
 <body>
 
-<h1>Student Activity Center</h1>
+<h1>Student Resource Center</h1>
 
-<div class="games">
+<div id="library">
 
-<div class="game" onclick="startGame('dash')">
+<div class="game" onclick="launch('dash')">
 <h3>Geometry Runner</h3>
-<p>Jump over obstacles</p>
+<p>Reaction training</p>
 </div>
 
-<div class="game" onclick="startGame('obby')">
-<h3>Platform Challenge</h3>
-<p>Reach the goal</p>
+<div class="game" onclick="launch('obby')">
+<h3>Platform Logic</h3>
+<p>Movement practice</p>
 </div>
 
-<div class="game" onclick="startGame('builder')">
-<h3>Block Builder</h3>
-<p>Place blocks freely</p>
+<div class="game" onclick="launch('builder')">
+<h3>Block Designer</h3>
+<p>Creative grid builder</p>
 </div>
 
 </div>
-
 
 <div id="player">
 
-<div id="close" onclick="closeGame()">Exit Game</div>
+<div id="topbar">
+<span>Interactive Module</span>
+<span id="close" onclick="closeGame()">Exit</span>
+</div>
 
-<canvas id="gameCanvas" width="900" height="500"></canvas>
+<canvas id="game" width="900" height="500"></canvas>
 
 </div>
 
 <script>
 
-let canvas=document.getElementById("gameCanvas")
+let canvas=document.getElementById("game")
 let ctx=canvas.getContext("2d")
 
-let game=null
 let keys={}
+let gameLoop=null
+let currentGame=null
 
 document.addEventListener("keydown",e=>keys[e.key]=true)
 document.addEventListener("keyup",e=>keys[e.key]=false)
 
-function startGame(type){
+function launch(type){
 
 document.getElementById("player").style.display="flex"
 
-game=type
+if(gameLoop) cancelAnimationFrame(gameLoop)
 
-if(type==="dash") initDash()
-if(type==="obby") initObby()
-if(type==="builder") initBuilder()
+currentGame=type
+
+if(type==="dash") startDash()
+if(type==="obby") startObby()
+if(type==="builder") startBuilder()
 
 }
 
 function closeGame(){
 
 document.getElementById("player").style.display="none"
-cancelAnimationFrame(loop)
+cancelAnimationFrame(gameLoop)
 
 }
 
-let loop
 
-/* ---------------- DASH GAME ---------------- */
 
-let dashPlayer
-let obstacles
 
-function initDash(){
 
-dashPlayer={x:100,y:400,vy:0}
-obstacles=[{x:800}]
 
-function update(){
+
+/* ---------------- GEOMETRY RUNNER ---------------- */
+
+function startDash(){
+
+let player={x:120,y:400,vy:0}
+let obstacles=[{x:900}]
+
+function loop(){
 
 ctx.clearRect(0,0,900,500)
 
-dashPlayer.vy+=1
-dashPlayer.y+=dashPlayer.vy
+player.vy+=1
+player.y+=player.vy
 
-if((keys[" "]||keys["ArrowUp"]||keys["w"]) && dashPlayer.y>=400){
-dashPlayer.vy=-15
+if((keys[" "]||keys["ArrowUp"]||keys["w"]) && player.y>=400){
+player.vy=-15
 }
 
 ctx.fillStyle="cyan"
-ctx.fillRect(dashPlayer.x,dashPlayer.y,40,40)
+ctx.fillRect(player.x,player.y,40,40)
 
 obstacles.forEach(o=>{
 
-o.x-=6
+o.x-=7
 
 ctx.fillStyle="red"
 ctx.fillRect(o.x,420,40,80)
 
-if(o.x<dashPlayer.x+40 && o.x+40>dashPlayer.x && dashPlayer.y+40>420){
-initDash()
+if(o.x<player.x+40 && o.x+40>player.x && player.y+40>420){
+startDash()
 }
 
 })
 
 if(obstacles[0].x<400) obstacles.push({x:900})
-if(obstacles[0].x<-50) obstacles.shift()
+if(obstacles[0].x<-60) obstacles.shift()
 
-loop=requestAnimationFrame(update)
-
-}
-
-update()
+gameLoop=requestAnimationFrame(loop)
 
 }
 
-/* ---------------- OBBY ---------------- */
+loop()
 
-let player
-let platforms
+}
 
-function initObby(){
 
-player={x:50,y:400,vy:0}
 
-platforms=[
+
+
+
+
+/* ---------------- PLATFORM OBBY ---------------- */
+
+function startObby(){
+
+let player={x:50,y:400,vy:0}
+
+let platforms=[
 {x:0,y:450,w:900},
-{x:200,y:380,w:120},
-{x:400,y:320,w:120},
-{x:600,y:260,w:120}
+{x:200,y:380,w:140},
+{x:420,y:310,w:140},
+{x:650,y:250,w:140}
 ]
 
-function update(){
+function loop(){
 
 ctx.clearRect(0,0,900,500)
 
@@ -202,7 +216,7 @@ if(keys["d"]||keys["ArrowRight"]) player.x+=5
 player.vy+=1
 player.y+=player.vy
 
-if((keys[" "]||keys["w"]||keys["ArrowUp"]) && player.y>390){
+if((keys[" "]||keys["ArrowUp"]||keys["w"]) && player.y>=400){
 player.vy=-15
 }
 
@@ -228,21 +242,25 @@ player.vy=0
 
 })
 
-loop=requestAnimationFrame(update)
+gameLoop=requestAnimationFrame(loop)
 
 }
 
-update()
+loop()
 
 }
+
+
+
+
+
+
 
 /* ---------------- BLOCK BUILDER ---------------- */
 
+function startBuilder(){
+
 let blocks=[]
-
-function initBuilder(){
-
-blocks=[]
 
 canvas.onclick=function(e){
 
@@ -255,7 +273,7 @@ blocks.push({x,y})
 
 }
 
-function update(){
+function loop(){
 
 ctx.clearRect(0,0,900,500)
 
@@ -264,11 +282,11 @@ ctx.fillStyle="lime"
 ctx.fillRect(b.x,b.y,38,38)
 })
 
-loop=requestAnimationFrame(update)
+gameLoop=requestAnimationFrame(loop)
 
 }
 
-update()
+loop()
 
 }
 
