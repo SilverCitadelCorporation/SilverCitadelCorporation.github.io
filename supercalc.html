@@ -24,7 +24,6 @@ body {
     padding:20px;
     border-radius:15px;
     box-shadow:0 10px 30px rgba(0,0,0,0.2);
-    margin-bottom:20px;
 }
 
 #display{
@@ -71,13 +70,21 @@ button.calc-btn:hover{ background:#d0d0d0; }
     text-align:center;
 }
 
-#arcade h2{ color:#333; margin-bottom:20px; }
+/* Game styling */
+.game{
+    display:none;
+    margin-top:20px;
+}
+
+#clicker button{ font-size:20px; padding:15px 30px; }
+canvas{ border:2px solid #333; background:#eee; margin-top:10px; }
 </style>
 </head>
 
 <body>
 
 <div>
+<!-- Calculator -->
 <div id="calculator">
     <input id="display" readonly placeholder="Enter numbers">
     <div class="buttons">
@@ -105,10 +112,52 @@ button.calc-btn:hover{ background:#d0d0d0; }
     </div>
 </div>
 
-<!-- Hidden arcade section -->
+<!-- Arcade -->
 <div id="arcade">
     <h2>🎮 Welcome to the Secret Arcade! 🎮</h2>
-    <p>Here you can add your mini-games later, like off-brand Minecraft, Clicker, Obby, etc.</p>
+    <p>Choose a game below:</p>
+    <div style="margin-bottom:20px;">
+        <button onclick="showGame('clicker')">Clicker Game</button>
+        <button onclick="showGame('obby')">Obby Game</button>
+        <button onclick="showGame('dodge')">Dodge Game</button>
+        <button onclick="showGame('builder')">Block Builder</button>
+        <button onclick="showGame('tasks')">Task Game</button>
+    </div>
+
+    <!-- Clicker Game -->
+    <div class="game" id="clicker">
+        <h3>Clicker Game</h3>
+        <p>Score: <span id="score">0</span></p>
+        <button onclick="addScore()">Click Me!</button>
+    </div>
+
+    <!-- Obby Game -->
+    <div class="game" id="obby">
+        <h3>Obby Game</h3>
+        <canvas id="obbyCanvas" width="500" height="300"></canvas>
+        <p>Use arrow keys to move the blue square to the green goal!</p>
+    </div>
+
+    <!-- Dodge Game -->
+    <div class="game" id="dodge">
+        <h3>Dodge Game</h3>
+        <canvas id="dodgeCanvas" width="500" height="300"></canvas>
+        <p>Use A/D keys to move and avoid the red enemies!</p>
+    </div>
+
+    <!-- Block Builder -->
+    <div class="game" id="builder">
+        <h3>Block Builder</h3>
+        <canvas id="buildCanvas" width="500" height="300"></canvas>
+        <p>Click to place blocks!</p>
+    </div>
+
+    <!-- Task Game -->
+    <div class="game" id="tasks">
+        <h3>Task Game</h3>
+        <p id="taskStatus">Tasks Done: 0/3</p>
+        <button onclick="completeTask()">Complete Task</button>
+    </div>
 </div>
 </div>
 
@@ -119,16 +168,14 @@ function press(val){
     input += val;
     document.getElementById("display").value = input;
 }
-
 function clearDisplay(){
     input="";
     document.getElementById("display").value="";
 }
-
 function calculate(){
-    if(input === "0000"){ // secret code
+    if(input === "0000"){ // unlock arcade
         document.getElementById("calculator").style.display="none";
-        document.getElementById("arcade").style.display="block"; // reveal arcade
+        document.getElementById("arcade").style.display="block";
         input="";
         return;
     }
@@ -138,6 +185,108 @@ function calculate(){
     } catch{
         document.getElementById("display").value="Error";
         input="";
+    }
+}
+
+// Arcade functions
+function showGame(id){
+    document.querySelectorAll('.game').forEach(g => g.style.display="none");
+    document.getElementById(id).style.display="block";
+}
+
+// --- Clicker Game ---
+let score = 0;
+function addScore(){
+    score++;
+    document.getElementById("score").innerText = score;
+}
+
+// --- Obby Game ---
+let oCanvas = document.getElementById("obbyCanvas");
+let oCtx = oCanvas.getContext("2d");
+let player = {x:20,y:150,size:20};
+let goal = {x:460,y:130,size:30};
+
+document.addEventListener("keydown", e=>{
+    if(document.getElementById('obby').style.display!=='block') return;
+    if(e.key==="ArrowUp") player.y-=10;
+    if(e.key==="ArrowDown") player.y+=10;
+    if(e.key==="ArrowLeft") player.x-=10;
+    if(e.key==="ArrowRight") player.x+=10;
+});
+
+function drawObby(){
+    if(!oCtx) return;
+    oCtx.clearRect(0,0,500,300);
+    oCtx.fillStyle="blue";
+    oCtx.fillRect(player.x,player.y,player.size,player.size);
+    oCtx.fillStyle="green";
+    oCtx.fillRect(goal.x,goal.y,goal.size,goal.size);
+
+    if(player.x < goal.x+goal.size &&
+       player.x+player.size > goal.x &&
+       player.y < goal.y+goal.size &&
+       player.y+player.size > goal.y){
+        alert("You Win!");
+        player.x=20; player.y=150;
+    }
+    requestAnimationFrame(drawObby);
+}
+drawObby();
+
+// --- Dodge Game ---
+let dCanvas = document.getElementById("dodgeCanvas");
+let dCtx = dCanvas.getContext("2d");
+let dPlayer = {x:250,y:250,size:20};
+let enemy = {x:Math.random()*480,y:0,size:20};
+
+document.addEventListener("keydown", e=>{
+    if(document.getElementById('dodge').style.display!=='block') return;
+    if(e.key==="a") dPlayer.x-=10;
+    if(e.key==="d") dPlayer.x+=10;
+});
+
+function drawDodge(){
+    if(!dCtx) return;
+    dCtx.clearRect(0,0,500,300);
+    dCtx.fillStyle="white";
+    dCtx.fillRect(dPlayer.x,dPlayer.y,dPlayer.size,dPlayer.size);
+    dCtx.fillStyle="red";
+    dCtx.fillRect(enemy.x,enemy.y,enemy.size,enemy.size);
+    enemy.y+=5;
+    if(enemy.y>300){
+        enemy.y=0;
+        enemy.x=Math.random()*480;
+    }
+    if(dPlayer.x < enemy.x+enemy.size &&
+       dPlayer.x+dPlayer.size > enemy.x &&
+       dPlayer.y < enemy.y+enemy.size &&
+       dPlayer.y+dPlayer.size > enemy.y){
+        alert("Game Over!");
+        enemy.y=0;
+    }
+    requestAnimationFrame(drawDodge);
+}
+drawDodge();
+
+// --- Block Builder ---
+let bCanvas = document.getElementById("buildCanvas");
+let bCtx = bCanvas.getContext("2d");
+bCanvas.addEventListener("click", e=>{
+    let rect = bCanvas.getBoundingClientRect();
+    let x = e.clientX - rect.left;
+    let y = e.clientY - rect.top;
+    bCtx.fillStyle="lime";
+    bCtx.fillRect(x,y,20,20);
+});
+
+// --- Task System ---
+let tasks = 0;
+function completeTask(){
+    if(tasks<3){
+        tasks++;
+        document.getElementById("taskStatus").innerText = "Tasks Done: "+tasks+"/3";
+        if(tasks===3) alert("All Tasks Complete!");
     }
 }
 </script>
