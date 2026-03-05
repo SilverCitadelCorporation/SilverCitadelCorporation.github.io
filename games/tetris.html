@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<body style="margin:0;background:black">
+
+<canvas id="game" width="300" height="600"></canvas>
+
+<script>
+
+let c=document.getElementById("game")
+let ctx=c.getContext("2d")
+
+let y=0
+
+function draw(){
+
+ctx.fillStyle="black"
+ctx.fillRect(0,0,300,600)
+
+ctx.fillStyle="cyan"
+ctx.fillRect(140,y,20,20)
+
+y+=2
+
+if(y>600){
+y=0
+}
+
+requestAnimationFrame(draw)
+
+}
+
+draw()
+
+</script>
+</body>
+</html>
