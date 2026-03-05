@@ -19,16 +19,6 @@ button:hover, select:hover{background:#666;}
     <button onclick="startGame()">Play</button>
     <button onclick="toggleSettings()">Settings</button>
     <div id="settingsPanel" style="display:none;margin-top:10px;">
-        <label>Fruit:
-            <select id="fruitSelect">
-                <option value="apple">🍎 Apple</option>
-                <option value="orange">🍊 Orange</option>
-                <option value="banana">🍌 Banana</option>
-                <option value="cherry">🍒 Cherry</option>
-                <option value="grape">🍇 Grape</option>
-                <option value="watermelon">🍉 Watermelon</option>
-            </select>
-        </label>
         <label>Grid Size:
             <select id="gridSelect">
                 <option value="20" selected>20</option>
@@ -63,17 +53,10 @@ button:hover, select:hover{background:#666;}
 let canvas=document.getElementById("gameCanvas")
 let ctx=canvas.getContext("2d")
 let snake=[{x:8,y:8}], dx=1, dy=0, apple={x:5,y:5}, score=0, gameInterval
-let fruitType="apple", grid=20, mode="classic"
+let grid=20, mode="classic", fruitType="apple"
 
-// Emoji mapping for fruits
-const fruitEmoji = {
-    apple: "🍎",
-    orange: "🍊",
-    banana: "🍌",
-    cherry: "🍒",
-    grape: "🍇",
-    watermelon: "🍉"
-}
+// Fruits array (emojis)
+const fruits = ["🍎","🍊","🍌","🍒","🍇","🍉"]
 
 // -------- SETTINGS ----------
 function toggleSettings(){
@@ -81,7 +64,6 @@ function toggleSettings(){
     panel.style.display=(panel.style.display==="none")?"block":"none"
 }
 function applySettings(){
-    fruitType=document.getElementById("fruitSelect").value
     grid=Number(document.getElementById("gridSelect").value)
     mode=document.getElementById("modeSelect").value
 }
@@ -118,22 +100,22 @@ function gameLoop(){
 
     // Draw
     ctx.fillStyle="#111"; ctx.fillRect(0,0,canvas.width,canvas.height)
-    ctx.fillStyle="lime"; snake.forEach(s=>{
-        ctx.fillRect(s.x*grid,s.y*grid,grid-2,grid-2)
-    })
+    ctx.fillStyle="lime"; snake.forEach(s=>ctx.fillRect(s.x*grid,s.y*grid,grid-2,grid-2))
+    
     // Draw fruit emoji
     ctx.font = grid + "px Arial"
     ctx.textAlign="center"
     ctx.textBaseline="middle"
-    ctx.fillText(fruitEmoji[fruitType]||"🍎", apple.x*grid + grid/2, apple.y*grid + grid/2)
+    ctx.fillText(fruitType, apple.x*grid + grid/2, apple.y*grid + grid/2)
     
     document.getElementById("score").innerText=score
 }
 
-// ----------- APPLE -----------
+// ----------- PLACE APPLE / RANDOM FRUIT -----------
 function placeApple(){
     apple.x=Math.floor(Math.random()*canvas.width/grid)
     apple.y=Math.floor(Math.random()*canvas.height/grid)
+    fruitType = fruits[Math.floor(Math.random()*fruits.length)]
 }
 
 // ----------- CONTROLS -----------
