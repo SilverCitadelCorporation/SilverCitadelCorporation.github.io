@@ -11,20 +11,16 @@ body {
     margin:0;
     font-family:'Arial', sans-serif;
     background:#f0f0f0;
-    display:flex;
-    justify-content:center;
-    align-items:flex-start;
-    min-height:100vh;
-    padding-top:20px;
 }
 
 #calculator, #arcade {
-    width:350px;
+    width:90%;
+    max-width:700px;
     background:#fff;
     padding:20px;
     border-radius:15px;
     box-shadow:0 10px 30px rgba(0,0,0,0.2);
-    margin-bottom:20px;
+    margin:20px auto;
 }
 
 #display {
@@ -51,10 +47,12 @@ button {
 button.operator { background:#d4af37; color:#fff; }
 button.equal { background:#4a235a; color:#d4af37; width:150px; }
 
-.game { display:none; margin-top:20px; }
-canvas { border:1px solid #000; display:block; margin:auto; background:#111; }
-#geomDashCanvas { background: #1a1a1a; }
-.message { text-align:center; color:#d4af37; margin-top:5px; min-height:20px; }
+#tabs { display:flex; justify-content:center; margin-bottom:10px; flex-wrap:wrap; }
+#tabs button { margin:5px; flex:1 1 100px; }
+
+.game { display:none; width:100%; text-align:center; }
+canvas { border:1px solid #000; display:block; margin:auto; background:#111; width:100%; height:300px; }
+.message { color:#d4af37; min-height:20px; margin-top:5px; text-align:center; font-weight:bold; }
 </style>
 </head>
 <body>
@@ -89,29 +87,34 @@ canvas { border:1px solid #000; display:block; margin:auto; background:#111; }
 </div>
 
 <!-- Arcade -->
-<div id="arcade">
-    <!-- Clicker Game -->
+<div id="arcade" style="display:none;">
+    <div id="tabs">
+        <button onclick="showGame('clicker')">Clicker</button>
+        <button onclick="showGame('obby')">Obby</button>
+        <button onclick="showGame('dodge')">Dodge</button>
+        <button onclick="showGame('night')">Night Survival</button>
+        <button onclick="showGame('builder')">Block Builder</button>
+        <button onclick="showGame('geometry')">Geometry Dash</button>
+    </div>
+
     <div id="clicker" class="game">
         <h3>Clicker Game</h3>
         <button onclick="addScore()">Click Me!</button>
         <p class="message">Score: <span id="score">0</span></p>
     </div>
 
-    <!-- Obby Game -->
     <div id="obby" class="game">
         <h3>Obby Game</h3>
         <canvas id="obbyCanvas" width="500" height="300"></canvas>
         <p class="message" id="obbyMessage"></p>
     </div>
 
-    <!-- Dodge Game -->
     <div id="dodge" class="game">
         <h3>Dodge Game</h3>
         <canvas id="dodgeCanvas" width="500" height="300"></canvas>
         <p class="message" id="dodgeMessage"></p>
     </div>
 
-    <!-- Night Survival -->
     <div id="night" class="game">
         <h3>Night Survival</h3>
         <p id="powerText">Power: 100%</p>
@@ -119,13 +122,11 @@ canvas { border:1px solid #000; display:block; margin:auto; background:#111; }
         <p class="message" id="nightMessage"></p>
     </div>
 
-    <!-- Block Builder -->
     <div id="builder" class="game">
         <h3>Block Builder</h3>
         <canvas id="buildCanvas" width="500" height="300"></canvas>
     </div>
 
-    <!-- Geometry Dash -->
     <div id="geometry" class="game">
         <h3>Geometry Dash</h3>
         <canvas id="geomDashCanvas" width="500" height="300"></canvas>
@@ -134,25 +135,25 @@ canvas { border:1px solid #000; display:block; margin:auto; background:#111; }
 </div>
 
 <script>
-// Calculator Logic
-let input = "";
-let display = document.getElementById("display");
-function press(val){ input += val; display.value = input; }
+// Calculator
+let input="";
+let display=document.getElementById("display");
+function press(val){ input+=val; display.value=input; }
 function clearDisplay(){ input=""; display.value=""; }
 function unlock(){
-    if(input === "0000"){
+    if(input==="0000"){
         document.getElementById("calculator").style.display="none";
         document.getElementById("arcade").style.display="block";
         startGames();
     } else {
-        try{ input = eval(input).toString(); display.value=input; } 
+        try{ input=eval(input).toString(); display.value=input; } 
         catch{ display.value="Error"; input=""; }
     }
 }
 
-// Arcade Games
+// Tabs
 function showGame(id){
-    document.querySelectorAll('.game').forEach(g => g.style.display="none");
+    document.querySelectorAll('.game').forEach(g=>g.style.display="none");
     document.getElementById(id).style.display="block";
 }
 
@@ -177,8 +178,8 @@ function drawObby(){
     oCtx.clearRect(0,0,oCanvas.width,oCanvas.height);
     oCtx.fillStyle="blue"; oCtx.fillRect(player.x,player.y,player.size,player.size);
     oCtx.fillStyle="green"; oCtx.fillRect(goal.x,goal.y,goal.size,goal.size);
-    if(player.x < goal.x+goal.size && player.x+player.size > goal.x &&
-       player.y < goal.y+goal.size && player.y+player.size > goal.y){
+    if(player.x<goal.x+goal.size && player.x+player.size>goal.x &&
+       player.y<goal.y+goal.size && player.y+player.size>goal.y){
         obbyMessage.innerText="You Win!";
         player.x=20; player.y=150;
         setTimeout(()=>{obbyMessage.innerText="";},2000);
@@ -242,15 +243,12 @@ let gObstacles=[];
 let gravity=0.8;
 let speed=3;
 let geomDashMessage=document.getElementById("geomDashMessage");
-
 function spawnObstacle(){ gObstacles.push({x:500,y:260,width:20,height:40}); }
 setInterval(spawnObstacle,1500);
-
 document.addEventListener("keydown",e=>{
     if(document.getElementById('geometry').style.display!=='block') return;
     if(e.key===" ") gPlayer.vy=-12;
 });
-
 function drawGeomDash(){
     gCtx.clearRect(0,0,gCanvas.width,gCanvas.height);
     gPlayer.vy+=gravity;
@@ -262,14 +260,11 @@ function drawGeomDash(){
         obs.x-=speed;
         gCtx.fillStyle="red";
         gCtx.fillRect(obs.x,obs.y,obs.width,obs.height);
-        // Collision
         if(gPlayer.x < obs.x+obs.width && gPlayer.x+gPlayer.width > obs.x &&
            gPlayer.y < obs.y+obs.height && gPlayer.y+gPlayer.height > obs.y){
-               geomDashMessage.innerText="Hit!";
                gPlayer.x=50; gPlayer.y=260; gPlayer.vy=0;
                gObstacles=[];
-               setTimeout(()=>{geomDashMessage.innerText="";},2000);
-           }
+        }
     }
     requestAnimationFrame(drawGeomDash);
 }
