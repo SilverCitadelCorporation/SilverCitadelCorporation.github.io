@@ -5,6 +5,7 @@
 <title>Student Learning Lab</title>
 
 <style>
+
 body{
 margin:0;
 font-family:Arial;
@@ -12,10 +13,10 @@ background:#f4f6f9;
 }
 
 header{
-background:#34495e;
+background:#2c3e50;
 color:white;
-padding:15px;
 text-align:center;
+padding:15px;
 font-size:22px;
 }
 
@@ -48,7 +49,7 @@ margin-top:20px;
 
 canvas{
 background:#111;
-border:1px solid black;
+border:2px solid black;
 }
 
 </style>
@@ -60,91 +61,152 @@ border:1px solid black;
 
 <div id="tabs">
 
-<button class="active" onclick="show('clicker',this)">Reaction Trainer</button>
-<button onclick="show('geometry',this)">Shape Runner</button>
-<button onclick="show('builder',this)">Block Simulator</button>
+<button class="active" onclick="showGame('clicker',this)">Reaction Trainer</button>
+<button onclick="showGame('geometry',this)">Shape Runner</button>
+<button onclick="showGame('obby',this)">Platform Trainer</button>
+<button onclick="showGame('dodge',this)">Focus Trainer</button>
+<button onclick="showGame('builder',this)">Block Simulator</button>
+<button onclick="showGame('craft',this)">World Builder</button>
 
 </div>
 
+
+<!-- CLICKER -->
 <div class="game" id="clicker">
 
-<h3>Reaction Speed Trainer</h3>
+<h3>Reaction Trainer</h3>
 
 <button onclick="score++">Click</button>
+
 <p id="score">0</p>
 
 </div>
 
+
+<!-- GEOMETRY DASH -->
 <div class="game" id="geometry">
 
 <h3>Shape Runner</h3>
 
-<canvas id="geom" width="500" height="300"></canvas>
+<canvas id="geom" width="600" height="300"></canvas>
 
 </div>
 
+
+<!-- OBBY -->
+<div class="game" id="obby">
+
+<h3>Platform Trainer</h3>
+
+<canvas id="obbyCanvas" width="600" height="300"></canvas>
+
+</div>
+
+
+<!-- DODGE -->
+<div class="game" id="dodge">
+
+<h3>Focus Trainer</h3>
+
+<canvas id="dodgeCanvas" width="600" height="300"></canvas>
+
+</div>
+
+
+<!-- BUILDER -->
 <div class="game" id="builder">
 
 <h3>Block Simulator</h3>
 
-<canvas id="build" width="500" height="300"></canvas>
+<canvas id="buildCanvas" width="600" height="300"></canvas>
 
 </div>
 
+
+<!-- MINECRAFT STYLE -->
+<div class="game" id="craft">
+
+<h3>World Builder</h3>
+
+<canvas id="craftCanvas" width="600" height="300"></canvas>
+
+</div>
+
+
+
 <script>
 
-function show(id,btn){
 
-document.querySelectorAll('.game').forEach(g=>g.style.display='none')
-document.getElementById(id).style.display='block'
+function showGame(id,btn){
 
-document.querySelectorAll('#tabs button').forEach(b=>b.classList.remove('active'))
-btn.classList.add('active')
+document.querySelectorAll(".game").forEach(g=>g.style.display="none")
+document.getElementById(id).style.display="block"
+
+document.querySelectorAll("#tabs button").forEach(b=>b.classList.remove("active"))
+btn.classList.add("active")
 
 }
 
-show("clicker",document.querySelector("#tabs button"))
+showGame("clicker",document.querySelector("#tabs button"))
+
+
+
+/* CLICKER */
 
 let score=0
-setInterval(()=>{document.getElementById("score").innerText=score},100)
+setInterval(()=>{
 
-let canvas=document.getElementById("geom")
-let ctx=canvas.getContext("2d")
+document.getElementById("score").innerText=score
 
-let player={x:50,y:260,vy:0}
+},100)
 
+
+
+/* GEOMETRY DASH */
+
+let gCanvas=document.getElementById("geom")
+let gCtx=gCanvas.getContext("2d")
+
+let player={x:80,y:250,vy:0}
 let obstacles=[]
 
 document.addEventListener("keydown",e=>{
-if(e.key===" ") player.vy=-10
+
+if(document.getElementById("geometry").style.display!=="block") return
+
+if(e.key===" ") player.vy=-12
+
 })
 
 setInterval(()=>{
-obstacles.push({x:500})
-},1500)
 
-function loop(){
+obstacles.push({x:600})
 
-ctx.clearRect(0,0,500,300)
+},1200)
+
+
+function geomLoop(){
+
+gCtx.clearRect(0,0,600,300)
 
 player.vy+=0.8
 player.y+=player.vy
 
-if(player.y>260) player.y=260
+if(player.y>250) player.y=250
 
-ctx.fillStyle="yellow"
-ctx.fillRect(player.x,player.y,20,20)
+gCtx.fillStyle="yellow"
+gCtx.fillRect(player.x,player.y,20,20)
 
 for(let o of obstacles){
 
-o.x-=4
+o.x-=5
 
-ctx.fillStyle="red"
-ctx.fillRect(o.x,260,20,40)
+gCtx.fillStyle="red"
+gCtx.fillRect(o.x,250,20,40)
 
-if(player.x<o.x+20 && player.x+20>o.x && player.y+20>260){
+if(player.x<o.x+20 && player.x+20>o.x && player.y+20>250){
 
-player.y=260
+player.y=250
 player.vy=0
 obstacles=[]
 
@@ -152,26 +214,177 @@ obstacles=[]
 
 }
 
-requestAnimationFrame(loop)
+requestAnimationFrame(geomLoop)
 
 }
 
-loop()
+geomLoop()
 
-let build=document.getElementById("build")
-let bctx=build.getContext("2d")
 
-build.addEventListener("click",e=>{
 
-let r=build.getBoundingClientRect()
+/* OBBY */
+
+let oCanvas=document.getElementById("obbyCanvas")
+let oCtx=oCanvas.getContext("2d")
+
+let op={x:50,y:200,vy:0}
+
+let platforms=[
+{x:0,y:260,w:600,h:20},
+{x:200,y:220,w:100,h:10},
+{x:400,y:180,w:100,h:10}
+]
+
+document.addEventListener("keydown",e=>{
+
+if(document.getElementById("obby").style.display!=="block") return
+
+if(e.key==="ArrowRight") op.x+=10
+if(e.key==="ArrowLeft") op.x-=10
+if(e.key===" ") op.vy=-10
+
+})
+
+
+function obbyLoop(){
+
+oCtx.clearRect(0,0,600,300)
+
+op.vy+=0.8
+op.y+=op.vy
+
+oCtx.fillStyle="blue"
+oCtx.fillRect(op.x,op.y,20,20)
+
+platforms.forEach(p=>{
+
+oCtx.fillStyle="orange"
+oCtx.fillRect(p.x,p.y,p.w,p.h)
+
+if(op.x<p.x+p.w && op.x+20>p.x && op.y+20>p.y && op.y+20<p.y+p.h){
+
+op.vy=0
+op.y=p.y-20
+
+}
+
+})
+
+requestAnimationFrame(obbyLoop)
+
+}
+
+obbyLoop()
+
+
+
+/* DODGE */
+
+let dCanvas=document.getElementById("dodgeCanvas")
+let dCtx=dCanvas.getContext("2d")
+
+let dp={x:300,y:260}
+let enemies=[]
+
+document.addEventListener("keydown",e=>{
+
+if(document.getElementById("dodge").style.display!=="block") return
+
+if(e.key==="a") dp.x-=10
+if(e.key==="d") dp.x+=10
+
+})
+
+setInterval(()=>{
+
+enemies.push({x:Math.random()*580,y:0})
+
+},800)
+
+function dodgeLoop(){
+
+dCtx.clearRect(0,0,600,300)
+
+dCtx.fillStyle="white"
+dCtx.fillRect(dp.x,dp.y,20,20)
+
+for(let e of enemies){
+
+e.y+=6
+
+dCtx.fillStyle="red"
+dCtx.fillRect(e.x,e.y,20,20)
+
+if(dp.x<e.x+20 && dp.x+20>e.x && dp.y<e.y+20 && dp.y+20>e.y){
+
+dp.x=300
+enemies=[]
+
+}
+
+}
+
+requestAnimationFrame(dodgeLoop)
+
+}
+
+dodgeLoop()
+
+
+
+/* BLOCK BUILDER */
+
+let bCanvas=document.getElementById("buildCanvas")
+let bCtx=bCanvas.getContext("2d")
+
+bCanvas.addEventListener("click",e=>{
+
+let r=bCanvas.getBoundingClientRect()
 
 let x=e.clientX-r.left
 let y=e.clientY-r.top
 
-bctx.fillStyle="lime"
-bctx.fillRect(x,y,20,20)
+bCtx.fillStyle="lime"
+bCtx.fillRect(x,y,20,20)
 
 })
+
+
+
+/* EAGLE CRAFT */
+
+let cCanvas=document.getElementById("craftCanvas")
+let cCtx=cCanvas.getContext("2d")
+
+let blocks=[]
+
+cCanvas.addEventListener("click",e=>{
+
+let r=cCanvas.getBoundingClientRect()
+
+let x=Math.floor((e.clientX-r.left)/20)*20
+let y=Math.floor((e.clientY-r.top)/20)*20
+
+blocks.push({x,y})
+
+})
+
+function craftLoop(){
+
+cCtx.clearRect(0,0,600,300)
+
+blocks.forEach(b=>{
+
+cCtx.fillStyle="green"
+cCtx.fillRect(b.x,b.y,20,20)
+
+})
+
+requestAnimationFrame(craftLoop)
+
+}
+
+craftLoop()
 
 </script>
 
