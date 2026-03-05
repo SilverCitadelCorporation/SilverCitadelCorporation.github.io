@@ -6,119 +6,49 @@
 <title>Super Calculator</title>
 <link rel="icon" type="image/png" href="logo.png">
 <style>
-body {
-    margin:0;
-    font-family:'Arial', sans-serif;
-    background:#f0f0f0;
-}
-header {
-    background:#4a235a;
-    color:#d4af37;
-    text-align:center;
-    padding:15px;
-    font-size:24px;
-    font-weight:bold;
-}
-#calculator {
-    max-width:320px;
-    margin:50px auto;
-    background:#fff;
-    padding:20px;
-    border-radius:15px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.2);
-}
-#display {
-    width:100%;
-    height:60px;
-    font-size:28px;
-    text-align:right;
-    padding:10px;
-    margin-bottom:15px;
-    border:1px solid #ccc;
-    border-radius:8px;
-}
-button.calc-btn {
-    width:22%;
-    margin:1%;
-    height:50px;
-    font-size:20px;
-    border-radius:8px;
-    border:none;
-    cursor:pointer;
-    background:#4a235a;
-    color:#d4af37;
-}
-button.calc-btn:hover {
-    background:#d4af37;
-    color:#4a235a;
-}
-#arcade {
-    display:none;
-    padding:20px;
-    max-width:900px;
-    margin:auto;
-}
+body { margin:0; font-family:'Arial', sans-serif; background:#f0f0f0; }
+header { background:#4a235a; color:#d4af37; text-align:center; padding:15px; font-size:24px; font-weight:bold; }
+#arcade { display:none; padding:20px; max-width:900px; margin:auto; }
 #arcade h2 { text-align:center; color:#4a235a; margin-bottom:20px; }
-.games-grid {
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
-    gap:15px;
-}
-.game-tile {
-    background:#4a235a;
-    color:#d4af37;
-    padding:15px;
-    text-align:center;
-    border-radius:10px;
-    cursor:pointer;
-    font-weight:bold;
-    transition:0.3s;
-}
-.game-tile:hover {
-    background:#d4af37;
-    color:#4a235a;
-}
-.game-frame {
-    width:100%;
-    height:500px;
-    border:none;
-    display:none;
-    margin-top:20px;
-    border-radius:10px;
-}
+.games-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:15px; }
+.game-tile { background:#4a235a; color:#d4af37; padding:15px; text-align:center; border-radius:10px; cursor:pointer; font-weight:bold; transition:0.3s; }
+.game-tile:hover { background:#d4af37; color:#4a235a; }
+.game-frame { width:100%; height:500px; border:none; display:none; margin-top:20px; border-radius:10px; }
 </style>
 </head>
 <body>
 
 <header>Super Calculator</header>
 
+<!-- Original calculator goes here -->
 <div id="calculator">
     <input type="text" id="display" readonly>
     <div>
-        <button class="calc-btn" onclick="press('7')">7</button>
-        <button class="calc-btn" onclick="press('8')">8</button>
-        <button class="calc-btn" onclick="press('9')">9</button>
-        <button class="calc-btn" onclick="clearDisplay()">C</button>
+        <button onclick="press('7')">7</button>
+        <button onclick="press('8')">8</button>
+        <button onclick="press('9')">9</button>
+        <button onclick="clearDisplay()">C</button>
 
-        <button class="calc-btn" onclick="press('4')">4</button>
-        <button class="calc-btn" onclick="press('5')">5</button>
-        <button class="calc-btn" onclick="press('6')">6</button>
-        <button class="calc-btn" onclick="press('/')">/</button>
+        <button onclick="press('4')">4</button>
+        <button onclick="press('5')">5</button>
+        <button onclick="press('6')">6</button>
+        <button onclick="press('/')">/</button>
 
-        <button class="calc-btn" onclick="press('1')">1</button>
-        <button class="calc-btn" onclick="press('2')">2</button>
-        <button class="calc-btn" onclick="press('3')">3</button>
-        <button class="calc-btn" onclick="press('*')">*</button>
+        <button onclick="press('1')">1</button>
+        <button onclick="press('2')">2</button>
+        <button onclick="press('3')">3</button>
+        <button onclick="press('*')">*</button>
 
-        <button class="calc-btn" onclick="press('0')">0</button>
-        <button class="calc-btn" onclick="press('.')">.</button>
-        <button class="calc-btn" onclick="unlock()">=</button>
-        <button class="calc-btn" onclick="press('-')">-</button>
+        <button onclick="press('0')">0</button>
+        <button onclick="press('.')">.</button>
+        <button onclick="unlock()">=</button>
+        <button onclick="press('-')">-</button>
 
-        <button class="calc-btn" onclick="press('+')">+</button>
+        <button onclick="press('+')">+</button>
     </div>
 </div>
 
+<!-- Arcade hidden initially -->
 <div id="arcade">
     <h2>Super Calculator Arcade</h2>
     <div class="games-grid">
@@ -146,7 +76,6 @@ function clearDisplay() {
 }
 
 function unlock() {
-    // The secret code to access arcade
     if(input === "0000") {
         document.getElementById("calculator").style.display = "none";
         document.getElementById("arcade").style.display = "block";
