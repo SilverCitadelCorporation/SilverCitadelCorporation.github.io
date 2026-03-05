@@ -129,16 +129,16 @@ footer {
 </footer>
 
 <script>
-// --- Triple-click logo opens the undercover SuperCalculator page ---
+// --- Triple-click logo opens the SuperCalculator page ---
 let logoClickCount = 0;
 function logoEasterEgg(e){
     e.preventDefault();
     logoClickCount++;
     if(logoClickCount >= 3){
-        window.location.href = "supercalc.html"; // Redirect to the undercover calculator
+        window.location.href = "supercalculator.html"; // redirect to calculator
         logoClickCount = 0;
     }
-    // Reset if user clicks too slowly
+    // Reset counter after 2 seconds if slow
     setTimeout(()=>{ logoClickCount = 0; }, 2000);
 }
 </script>
