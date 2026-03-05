@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<body style="margin:0;background:black">
+
+<canvas id="game" width="800" height="500"></canvas>
+
+<script>
+
+let c=document.getElementById("game")
+let ctx=c.getContext("2d")
+
+let player={y:400,vy:0}
+let obstacle={x:800}
+
+function draw(){
+
+ctx.fillStyle="black"
+ctx.fillRect(0,0,800,500)
+
+ctx.fillStyle="lime"
+ctx.fillRect(100,player.y,40,40)
+
+ctx.fillStyle="red"
+ctx.fillRect(obstacle.x,420,40,40)
+
+player.vy+=1
+player.y+=player.vy
+
+if(player.y>400){
+player.y=400
+player.vy=0
+}
+
+obstacle.x-=6
+
+if(obstacle.x<0){
+obstacle.x=800
+}
+
+if(obstacle.x<140 && player.y>380){
+alert("Game Over")
+location.reload()
+}
+
+requestAnimationFrame(draw)
+
+}
+
+document.addEventListener("keydown",e=>{
+if(e.code==="Space") player.vy=-15
+})
+
+draw()
+
+</script>
+</body>
+</html>
