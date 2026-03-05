@@ -2,135 +2,177 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Super Calculator Arcade</title>
-<link rel="icon" type="image/png" href="logo.png">
+<title>Student Learning Lab</title>
 
 <style>
-body { margin:0; font-family:'Arial', sans-serif; background:#e0e0e0; }
-header { background:#4a235a; color:#d4af37; text-align:center; padding:15px; font-size:24px; font-weight:bold; }
-#arcade { width:90%; max-width:900px; margin:20px auto; }
-#tabs { display:flex; justify-content:center; margin-bottom:10px; flex-wrap:wrap; }
-#tabs button { margin:5px; flex:1 1 100px; background:#4a235a; color:#d4af37; border:none; border-radius:8px; cursor:pointer; padding:10px; }
-#tabs button.active { background:#d4af37; color:#4a235a; }
-.game { display:none; text-align:center; }
-canvas { border:1px solid #000; display:block; margin:auto; background:#111; }
+body{
+margin:0;
+font-family:Arial;
+background:#f4f6f9;
+}
+
+header{
+background:#34495e;
+color:white;
+padding:15px;
+text-align:center;
+font-size:22px;
+}
+
+#tabs{
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+margin-top:10px;
+}
+
+#tabs button{
+margin:5px;
+padding:10px 15px;
+border:none;
+background:#3498db;
+color:white;
+cursor:pointer;
+border-radius:5px;
+}
+
+#tabs button.active{
+background:#2c3e50;
+}
+
+.game{
+display:none;
+text-align:center;
+margin-top:20px;
+}
+
+canvas{
+background:#111;
+border:1px solid black;
+}
+
 </style>
 </head>
+
 <body>
 
-<header>Super Calculator Arcade</header>
-
-<div id="arcade">
+<header>Student Learning Lab</header>
 
 <div id="tabs">
-<button class="active" onclick="showGame('geometry', this)">Geometry Dash</button>
+
+<button class="active" onclick="show('clicker',this)">Reaction Trainer</button>
+<button onclick="show('geometry',this)">Shape Runner</button>
+<button onclick="show('builder',this)">Block Simulator</button>
+
 </div>
 
-<div id="geometry" class="game">
-<h3>Geometry Dash</h3>
-<canvas id="geomCanvas" width="500" height="300"></canvas>
+<div class="game" id="clicker">
+
+<h3>Reaction Speed Trainer</h3>
+
+<button onclick="score++">Click</button>
+<p id="score">0</p>
+
 </div>
+
+<div class="game" id="geometry">
+
+<h3>Shape Runner</h3>
+
+<canvas id="geom" width="500" height="300"></canvas>
+
+</div>
+
+<div class="game" id="builder">
+
+<h3>Block Simulator</h3>
+
+<canvas id="build" width="500" height="300"></canvas>
 
 </div>
 
 <script>
-function showGame(id, btn){
-document.querySelectorAll('.game').forEach(g=>g.style.display='none');
-document.getElementById(id).style.display='block';
-document.querySelectorAll('#tabs button').forEach(b=>b.classList.remove('active'));
-btn.classList.add('active');
+
+function show(id,btn){
+
+document.querySelectorAll('.game').forEach(g=>g.style.display='none')
+document.getElementById(id).style.display='block'
+
+document.querySelectorAll('#tabs button').forEach(b=>b.classList.remove('active'))
+btn.classList.add('active')
+
 }
-showGame('geometry', document.querySelector('#tabs button'));
 
-let canvas=document.getElementById("geomCanvas");
-let ctx=canvas.getContext("2d");
+show("clicker",document.querySelector("#tabs button"))
 
-let gravity=0.8;
-let jumpPower=-13;
-let speed=4;
-let ground=280;
+let score=0
+setInterval(()=>{document.getElementById("score").innerText=score},100)
 
-let player;
-let obstacles;
-let frame=0;
+let canvas=document.getElementById("geom")
+let ctx=canvas.getContext("2d")
 
-function resetGame(){
-player={x:80,y:ground,width:20,height:20,vy:0};
-obstacles=[];
-frame=0;
-}
-resetGame();
+let player={x:50,y:260,vy:0}
+
+let obstacles=[]
 
 document.addEventListener("keydown",e=>{
-if(e.code==="Space" && player.y>=ground){
-player.vy=jumpPower;
-}
-});
+if(e.key===" ") player.vy=-10
+})
 
-function spawnObstacle(){
-let height=Math.random()*40+20;
-obstacles.push({
-x:500,
-y:ground+(20-height),
-width:20,
-height:height
-});
-}
+setInterval(()=>{
+obstacles.push({x:500})
+},1500)
 
-function update(){
-frame++;
+function loop(){
 
-if(frame%90===0){
-spawnObstacle();
-}
+ctx.clearRect(0,0,500,300)
 
-player.vy+=gravity;
-player.y+=player.vy;
+player.vy+=0.8
+player.y+=player.vy
 
-if(player.y>ground){
-player.y=ground;
-player.vy=0;
-}
+if(player.y>260) player.y=260
 
-for(let i=0;i<obstacles.length;i++){
-let obs=obstacles[i];
-obs.x-=speed;
+ctx.fillStyle="yellow"
+ctx.fillRect(player.x,player.y,20,20)
 
-if(
-player.x < obs.x+obs.width &&
-player.x+player.width > obs.x &&
-player.y < obs.y+obs.height &&
-player.y+player.height > obs.y
-){
-resetGame();
-}
+for(let o of obstacles){
+
+o.x-=4
+
+ctx.fillStyle="red"
+ctx.fillRect(o.x,260,20,40)
+
+if(player.x<o.x+20 && player.x+20>o.x && player.y+20>260){
+
+player.y=260
+player.vy=0
+obstacles=[]
+
 }
 
-obstacles=obstacles.filter(o=>o.x>-50);
 }
 
-function draw(){
-ctx.clearRect(0,0,canvas.width,canvas.height);
+requestAnimationFrame(loop)
 
-ctx.fillStyle="yellow";
-ctx.fillRect(player.x,player.y,player.width,player.height);
-
-ctx.fillStyle="red";
-for(let obs of obstacles){
-ctx.fillRect(obs.x,obs.y,obs.width,obs.height);
 }
 
-ctx.fillStyle="white";
-ctx.fillRect(0,ground+20,500,5);
-}
+loop()
 
-function gameLoop(){
-update();
-draw();
-requestAnimationFrame(gameLoop);
-}
-gameLoop();
+let build=document.getElementById("build")
+let bctx=build.getContext("2d")
+
+build.addEventListener("click",e=>{
+
+let r=build.getBoundingClientRect()
+
+let x=e.clientX-r.left
+let y=e.clientY-r.top
+
+bctx.fillStyle="lime"
+bctx.fillRect(x,y,20,20)
+
+})
+
 </script>
 
 </body>
