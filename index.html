@@ -135,9 +135,11 @@ function logoEasterEgg(e){
     e.preventDefault();
     logoClickCount++;
     if(logoClickCount >= 3){
-        window.location.href = "supercalc.html"; // Redirect to SuperCalculator page
+        window.location.href = "supercalc.html"; // Redirect to the undercover calculator
         logoClickCount = 0;
     }
+    // Reset if user clicks too slowly
+    setTimeout(()=>{ logoClickCount = 0; }, 2000);
 }
 </script>
 
