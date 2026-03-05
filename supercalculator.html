@@ -6,13 +6,13 @@
 
 <style>
 
+/* BODY + HEADER */
 body{
 margin:0;
 background:#0f172a;
 font-family:Arial;
 color:white;
 }
-
 header{
 background:#020617;
 padding:15px;
@@ -21,12 +21,10 @@ align-items:center;
 justify-content:space-between;
 border-bottom:2px solid #1e293b;
 }
-
 #logo{
 font-size:22px;
 font-weight:bold;
 }
-
 #search{
 padding:8px;
 width:250px;
@@ -35,14 +33,12 @@ border:none;
 }
 
 /* CATEGORY BAR */
-
 #categories{
 display:flex;
 gap:10px;
 padding:10px 20px;
 background:#020617;
 }
-
 .catBtn{
 padding:6px 14px;
 background:#1e293b;
@@ -51,14 +47,12 @@ cursor:pointer;
 }
 
 /* GRID */
-
 #games{
 display:grid;
 grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
 gap:20px;
 padding:25px;
 }
-
 .card{
 background:#1e293b;
 border-radius:12px;
@@ -67,12 +61,10 @@ cursor:pointer;
 transition:.25s;
 position:relative;
 }
-
 .card:hover{
 transform:scale(1.06);
 box-shadow:0 10px 25px rgba(0,0,0,.6);
 }
-
 .thumb{
 height:120px;
 background:#334155;
@@ -81,12 +73,10 @@ align-items:center;
 justify-content:center;
 font-size:28px;
 }
-
 .title{
 padding:10px;
 text-align:center;
 }
-
 .favorite{
 position:absolute;
 top:6px;
@@ -96,7 +86,6 @@ font-size:18px;
 }
 
 /* PLAYER */
-
 #player{
 position:fixed;
 top:0;
@@ -107,19 +96,16 @@ background:black;
 display:none;
 flex-direction:column;
 }
-
 #topbar{
 background:#020617;
 padding:10px;
 display:flex;
 justify-content:space-between;
 }
-
 iframe{
 flex:1;
 border:none;
 }
-
 #loading{
 position:absolute;
 top:50%;
@@ -129,33 +115,74 @@ font-size:26px;
 display:none;
 }
 
+/* ADMIN PANEL */
+#adminPanel{
+position:fixed;
+top:50px;
+right:20px;
+background:#1e293b;
+padding:20px;
+border-radius:10px;
+display:none;
+width:300px;
+color:white;
+z-index:1000;
+}
+
+/* BUG REPORT */
+#reportScreen{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#000c;
+display:none;
+justify-content:center;
+align-items:center;
+}
+#reportScreen div{
+background:#1e293b;
+padding:30px;
+border-radius:10px;
+width:400px;
+}
+
+/* BUTTONS */
+button{
+padding:10px 20px;
+margin:5px;
+font-size:16px;
+cursor:pointer;
+border:none;
+background:#444;
+color:white;
+}
+button:hover{
+background:#666;
+}
+
 </style>
 </head>
-
 <body>
 
 <header>
-
 <div id="logo">🎮 Arcade Hub</div>
-
 <input id="search" placeholder="Search games..." onkeyup="searchGames()">
-
+<button onclick="openReport()">Report Bug</button>
+<button onclick="toggleAdmin()">Admin</button>
 </header>
 
-
 <div id="categories">
-
 <div class="catBtn" onclick="filterGames('all')">All</div>
 <div class="catBtn" onclick="filterGames('arcade')">Arcade</div>
 <div class="catBtn" onclick="filterGames('puzzle')">Puzzle</div>
 <div class="catBtn" onclick="filterGames('action')">Action</div>
 <div class="catBtn" onclick="filterGames('skill')">Skill</div>
-
 </div>
 
-
 <div id="games">
-
+<!-- Game Cards -->
 <div class="card arcade" onclick="openGame('games/snake.html')">
 <div class="favorite" onclick="toggleFav(event,this)">⭐</div>
 <div class="thumb">🐍</div>
@@ -206,110 +233,124 @@ display:none;
 
 </div>
 
-
+<!-- PLAYER -->
 <div id="player">
-
 <div id="topbar">
-
 <button onclick="closeGame()">⬅ Back</button>
-
 <div>Game Player</div>
-
 </div>
-
 <div id="loading">Loading Game...</div>
-
 <iframe id="gameFrame"></iframe>
-
 </div>
 
+<!-- BUG REPORT -->
+<div id="reportScreen">
+<div>
+<h2>Report a Bug</h2>
+<input id="bugGame" placeholder="Game Name" style="width:100%;padding:8px;margin-bottom:10px;">
+<textarea id="bugDesc" placeholder="Describe the bug..." style="width:100%;height:120px;padding:8px;"></textarea>
+<br><br>
+<button onclick="sendBug()">Send Report</button>
+<button onclick="closeReport()">Cancel</button>
+</div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel">
+<h3>Admin Panel</h3>
+<input id="newGameName" placeholder="Game Name" style="width:100%;margin-bottom:5px;">
+<input id="newGameURL" placeholder="Game URL" style="width:100%;margin-bottom:10px;">
+<select id="newGameCat" style="width:100%;margin-bottom:10px;">
+<option value="arcade">Arcade</option>
+<option value="puzzle">Puzzle</option>
+<option value="action">Action</option>
+<option value="skill">Skill</option>
+</select>
+<button onclick="addGame()">Add Game</button>
+<hr>
+<button onclick="hideAdmin()">Close Panel</button>
+</div>
 
 <script>
-
-/* OPEN GAME */
-
+/* GAME OPEN/CLOSE */
 function openGame(url){
-
 document.getElementById("player").style.display="flex"
-
 document.getElementById("loading").style.display="block"
-
 document.getElementById("gameFrame").src=""
-
 setTimeout(()=>{
-
 document.getElementById("gameFrame").src=url
-
 document.getElementById("loading").style.display="none"
-
 },500)
-
 }
-
-
-/* CLOSE */
-
 function closeGame(){
-
 document.getElementById("player").style.display="none"
-
 document.getElementById("gameFrame").src=""
-
 }
-
 
 /* SEARCH */
-
 function searchGames(){
-
 let input=document.getElementById("search").value.toLowerCase()
-
 let cards=document.querySelectorAll(".card")
-
 cards.forEach(card=>{
-
 let title=card.innerText.toLowerCase()
-
 card.style.display = title.includes(input) ? "block":"none"
-
 })
-
 }
 
-
 /* FILTER */
-
 function filterGames(cat){
-
 let cards=document.querySelectorAll(".card")
-
 cards.forEach(card=>{
-
 if(cat=="all"){
 card.style.display="block"
 }else{
 card.style.display = card.classList.contains(cat) ? "block":"none"
 }
-
 })
-
 }
-
 
 /* FAVORITES */
-
 function toggleFav(event,star){
-
 event.stopPropagation()
-
-if(star.innerText=="⭐"){
-star.innerText="🌟"
-}else{
-star.innerText="⭐"
+if(star.innerText=="⭐"){star.innerText="🌟"}
+else{star.innerText="⭐"}
 }
 
+/* BUG REPORT */
+function openReport(){document.getElementById("reportScreen").style.display="flex"}
+function closeReport(){document.getElementById("reportScreen").style.display="none"}
+function sendBug(){
+let game=document.getElementById("bugGame").value
+let desc=document.getElementById("bugDesc").value
+let email="silvercitadelcorporation@gmail.com"
+let subject=encodeURIComponent("Arcade Bug Report")
+let body=encodeURIComponent("Game: "+game+"\n\nBug Description:\n"+desc)
+window.location.href="mailto:"+email+"?subject="+subject+"&body="+body
 }
 
+/* ADMIN PANEL */
+function toggleAdmin(){
+let panel=document.getElementById("adminPanel")
+panel.style.display = (panel.style.display=="flex")?"none":"flex"
+}
+function hideAdmin(){document.getElementById("adminPanel").style.display="none"}
+function addGame(){
+let name=document.getElementById("newGameName").value
+let url=document.getElementById("newGameURL").value
+let cat=document.getElementById("newGameCat").value
+if(!name||!url){alert("Fill both name and URL!"); return;}
+let container=document.getElementById("games")
+let card=document.createElement("div")
+card.className="card "+cat
+card.setAttribute("onclick","openGame('"+url+"')")
+card.innerHTML='<div class="favorite" onclick="toggleFav(event,this)">⭐</div><div class="thumb">🎮</div><div class="title">'+name+'</div>'
+container.appendChild(card)
+document.getElementById("newGameName").value=""
+document.getElementById("newGameURL").value=""
+}
+
+/* INITIALIZE */
+filterGames('all')
 </script>
 
 </body>
