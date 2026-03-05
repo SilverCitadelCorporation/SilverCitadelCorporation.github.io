@@ -3,141 +3,122 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SuperCalc</title>
+<title>Super Calculator</title>
+<link rel="icon" type="image/png" href="logo.png">
+
 <style>
-body{
+body {
     margin:0;
-    background:#111;
+    font-family:'Arial', sans-serif;
+    background:#f0f0f0;
     display:flex;
     justify-content:center;
     align-items:center;
     height:100vh;
-    font-family:Arial,sans-serif;
 }
+
 #calculator{
-    width:340px;
-    background:#2c2c2c;
-    padding:25px;
-    border-radius:25px;
-    box-shadow:0 15px 50px rgba(0,0,0,0.7);
+    width:320px;
+    background:#fff;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
 }
+
 #display{
     width:100%;
-    height:70px;
-    font-size:36px;
+    height:60px;
+    font-size:28px;
     text-align:right;
-    padding:15px;
-    border:none;
-    border-radius:15px;
-    margin-bottom:20px;
-    background:#0d0d0d;
-    color:#00ff99;
+    padding:10px;
+    margin-bottom:15px;
+    border:1px solid #ccc;
+    border-radius:8px;
     box-sizing:border-box;
 }
+
 .buttons{
     display:grid;
     grid-template-columns:repeat(4,1fr);
     gap:10px;
 }
-button{
-    height:60px;
-    font-size:22px;
+
+button.calc-btn{
+    height:55px;
+    font-size:20px;
     border:none;
-    border-radius:12px;
-    background:#3a3a3a;
-    color:white;
+    border-radius:8px;
+    background:#e0e0e0;
     cursor:pointer;
     transition:0.15s;
 }
-button:hover{ background:#4a4a4a; }
-.operator{ background:#ff9500; }
-.operator:hover{ background:#ffaa33; }
-.equal{ background:#00c853; }
-.equal:hover{ background:#00e676; }
+
+button.calc-btn:hover{ background:#d0d0d0; }
+.operator{ background:#f9a825; color:#fff; }
+.operator:hover{ background:#fbc02d; }
+.equal{ background:#43a047; color:#fff; }
+.equal:hover{ background:#66bb6a; }
 .zero{ grid-column: span 2; }
-#arcade{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:black;
-    color:white;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:32px;
-    flex-direction: column;
-}
 </style>
 </head>
 
 <body>
+
 <div id="calculator">
-    <input id="display" readonly>
+    <input id="display" readonly placeholder="Enter numbers">
     <div class="buttons">
-        <button onclick="clearDisplay()">C</button>
-        <button class="operator" onclick="press('/')">÷</button>
-        <button class="operator" onclick="press('*')">×</button>
-        <button class="operator" onclick="press('-')">−</button>
+        <button class="calc-btn" onclick="clearDisplay()">C</button>
+        <button class="calc-btn operator" onclick="press('/')">÷</button>
+        <button class="calc-btn operator" onclick="press('*')">×</button>
+        <button class="calc-btn operator" onclick="press('-')">−</button>
 
-        <button onclick="press('7')">7</button>
-        <button onclick="press('8')">8</button>
-        <button onclick="press('9')">9</button>
-        <button class="operator" onclick="press('+')">+</button>
+        <button class="calc-btn" onclick="press('7')">7</button>
+        <button class="calc-btn" onclick="press('8')">8</button>
+        <button class="calc-btn" onclick="press('9')">9</button>
+        <button class="calc-btn operator" onclick="press('+')">+</button>
 
-        <button onclick="press('4')">4</button>
-        <button onclick="press('5')">5</button>
-        <button onclick="press('6')">6</button>
-        <button class="equal" onclick="calculate()">=</button>
+        <button class="calc-btn" onclick="press('4')">4</button>
+        <button class="calc-btn" onclick="press('5')">5</button>
+        <button class="calc-btn" onclick="press('6')">6</button>
+        <button class="calc-btn equal" onclick="calculate()">=</button>
 
-        <button onclick="press('1')">1</button>
-        <button onclick="press('2')">2</button>
-        <button onclick="press('3')">3</button>
-        <button onclick="press('.')">.</button>
+        <button class="calc-btn" onclick="press('1')">1</button>
+        <button class="calc-btn" onclick="press('2')">2</button>
+        <button class="calc-btn" onclick="press('3')">3</button>
+        <button class="calc-btn" onclick="press('.')">.</button>
 
-        <button onclick="press('0')" class="zero">0</button>
+        <button class="calc-btn zero" onclick="press('0')">0</button>
     </div>
 </div>
 
-<div id="arcade">
-    <h1>🎮 Arcade Unlocked!</h1>
-    <p>Enjoy your secret games.</p>
-</div>
-
 <script>
+// --- Calculator logic ---
 let input = "";
-
 function press(val){
     input += val;
     document.getElementById("display").value = input;
 }
 
 function clearDisplay(){
-    input = "";
-    document.getElementById("display").value = "";
+    input="";
+    document.getElementById("display").value="";
 }
 
 function calculate(){
-    // Only unlock arcade if user presses "="
-    if(input === "0000"){
-        document.getElementById("calculator").style.display = "none";
-        document.getElementById("arcade").style.display = "flex";
-        input = "";
-        document.getElementById("display").value = "";
+    if(input === "0000"){ // secret code unlocks arcade
+        window.location.href="arcade.html"; // hidden arcade page
+        input="";
         return;
     }
-
     try{
         input = eval(input).toString();
         document.getElementById("display").value = input;
-    }catch{
-        document.getElementById("display").value = "Error";
-        input = "";
+    } catch{
+        document.getElementById("display").value="Error";
+        input="";
     }
 }
-
-document.addEventListener("keydown", function(e){
-    if(e.key === "Enter") calculate();
-});
 </script>
+
 </body>
 </html>
