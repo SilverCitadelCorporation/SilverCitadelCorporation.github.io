@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<body style="margin:0;background:black">
+
+<canvas id="game" width="800" height="500"></canvas>
+
+<script>
+
+let c=document.getElementById("game")
+let ctx=c.getContext("2d")
+
+let p={x:100,y:400,vy:0}
+
+function draw(){
+
+ctx.fillStyle="black"
+ctx.fillRect(0,0,800,500)
+
+ctx.fillStyle="white"
+ctx.fillRect(0,440,800,60)
+
+ctx.fillStyle="lime"
+ctx.fillRect(p.x,p.y,40,40)
+
+p.vy+=1
+p.y+=p.vy
+
+if(p.y>400){
+p.y=400
+p.vy=0
+}
+
+requestAnimationFrame(draw)
+
+}
+
+document.addEventListener("keydown",e=>{
+if(e.code==="Space")p.vy=-15
+})
+
+draw()
+
+</script>
+</body>
+</html>
