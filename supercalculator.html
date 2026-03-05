@@ -10,12 +10,21 @@
 body {
     margin:0;
     font-family:'Arial', sans-serif;
-    background:#f0f0f0;
+    background:#e0e0e0;
+}
+
+header {
+    background:#4a235a;
+    color:#d4af37;
+    text-align:center;
+    padding:15px;
+    font-size:24px;
+    font-weight:bold;
 }
 
 #calculator, #arcade {
     width:90%;
-    max-width:700px;
+    max-width:800px;
     background:#fff;
     padding:20px;
     border-radius:15px;
@@ -48,7 +57,8 @@ button.operator { background:#d4af37; color:#fff; }
 button.equal { background:#4a235a; color:#d4af37; width:150px; }
 
 #tabs { display:flex; justify-content:center; margin-bottom:10px; flex-wrap:wrap; }
-#tabs button { margin:5px; flex:1 1 100px; }
+#tabs button { margin:5px; flex:1 1 100px; background:#4a235a; color:#d4af37; border:none; border-radius:8px; cursor:pointer; }
+#tabs button.active { background:#d4af37; color:#4a235a; }
 
 .game { display:none; width:100%; text-align:center; }
 canvas { border:1px solid #000; display:block; margin:auto; background:#111; width:100%; height:300px; }
@@ -56,6 +66,8 @@ canvas { border:1px solid #000; display:block; margin:auto; background:#111; wid
 </style>
 </head>
 <body>
+
+<header>Super Calculator</header>
 
 <!-- Calculator -->
 <div id="calculator">
@@ -89,12 +101,12 @@ canvas { border:1px solid #000; display:block; margin:auto; background:#111; wid
 <!-- Arcade -->
 <div id="arcade" style="display:none;">
     <div id="tabs">
-        <button onclick="showGame('clicker')">Clicker</button>
-        <button onclick="showGame('obby')">Obby</button>
-        <button onclick="showGame('dodge')">Dodge</button>
-        <button onclick="showGame('night')">Night Survival</button>
-        <button onclick="showGame('builder')">Block Builder</button>
-        <button onclick="showGame('geometry')">Geometry Dash</button>
+        <button class="active" onclick="showGame('clicker', this)">Clicker</button>
+        <button onclick="showGame('obby', this)">Obby</button>
+        <button onclick="showGame('dodge', this)">Dodge</button>
+        <button onclick="showGame('night', this)">Night Survival</button>
+        <button onclick="showGame('builder', this)">Block Builder</button>
+        <button onclick="showGame('geometry', this)">Geometry Dash</button>
     </div>
 
     <div id="clicker" class="game">
@@ -130,12 +142,11 @@ canvas { border:1px solid #000; display:block; margin:auto; background:#111; wid
     <div id="geometry" class="game">
         <h3>Geometry Dash</h3>
         <canvas id="geomDashCanvas" width="500" height="300"></canvas>
-        <p class="message" id="geomDashMessage"></p>
     </div>
 </div>
 
 <script>
-// Calculator
+// Calculator logic
 let input="";
 let display=document.getElementById("display");
 function press(val){ input+=val; display.value=input; }
@@ -151,10 +162,12 @@ function unlock(){
     }
 }
 
-// Tabs
-function showGame(id){
+// Tab system
+function showGame(id, btn){
     document.querySelectorAll('.game').forEach(g=>g.style.display="none");
     document.getElementById(id).style.display="block";
+    document.querySelectorAll('#tabs button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
 }
 
 // Clicker
@@ -193,7 +206,6 @@ let dCanvas=document.getElementById("dodgeCanvas");
 let dCtx=dCanvas.getContext("2d");
 let dPlayer={x:250,y:250,size:20};
 let enemy={x:Math.random()*480,y:0,size:20};
-let dodgeMessage=document.getElementById("dodgeMessage");
 document.addEventListener("keydown",e=>{
     if(document.getElementById('dodge').style.display!=='block') return;
     if(e.key==="a") dPlayer.x-=10;
@@ -216,12 +228,10 @@ drawDodge();
 
 // Night Survival
 let power=100;
-let nightMessage=document.getElementById("nightMessage");
 function useDoor(){
-    if(power<=0){ nightMessage.innerText="Power Out! Game Over."; power=100; }
+    if(power<=0){ power=100; }
     else power-=10;
     document.getElementById("powerText").innerText="Power: "+power+"%";
-    setTimeout(()=>{ nightMessage.innerText=""; },2000);
 }
 
 // Block Builder
@@ -242,7 +252,6 @@ let gPlayer={x:50,y:260,width:20,height:20,vy:0};
 let gObstacles=[];
 let gravity=0.8;
 let speed=3;
-let geomDashMessage=document.getElementById("geomDashMessage");
 function spawnObstacle(){ gObstacles.push({x:500,y:260,width:20,height:40}); }
 setInterval(spawnObstacle,1500);
 document.addEventListener("keydown",e=>{
@@ -251,27 +260,23 @@ document.addEventListener("keydown",e=>{
 });
 function drawGeomDash(){
     gCtx.clearRect(0,0,gCanvas.width,gCanvas.height);
-    gPlayer.vy+=gravity;
-    gPlayer.y+=gPlayer.vy;
+    gPlayer.vy+=gravity; gPlayer.y+=gPlayer.vy;
     if(gPlayer.y>280) gPlayer.y=280;
-    gCtx.fillStyle="yellow";
-    gCtx.fillRect(gPlayer.x,gPlayer.y,gPlayer.width,gPlayer.height);
+    gCtx.fillStyle="yellow"; gCtx.fillRect(gPlayer.x,gPlayer.y,gPlayer.width,gPlayer.height);
     for(let obs of gObstacles){
         obs.x-=speed;
         gCtx.fillStyle="red";
         gCtx.fillRect(obs.x,obs.y,obs.width,obs.height);
         if(gPlayer.x < obs.x+obs.width && gPlayer.x+gPlayer.width > obs.x &&
            gPlayer.y < obs.y+obs.height && gPlayer.y+gPlayer.height > obs.y){
-               gPlayer.x=50; gPlayer.y=260; gPlayer.vy=0;
-               gObstacles=[];
+               gPlayer.x=50; gPlayer.y=260; gPlayer.vy=0; gObstacles=[];
         }
     }
     requestAnimationFrame(drawGeomDash);
 }
 drawGeomDash();
 
-function startGames(){ showGame('clicker'); }
-
+function startGames(){ showGame('clicker', document.querySelector('#tabs button')); }
 </script>
 </body>
 </html>
