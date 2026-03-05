@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<body style="margin:0;background:black">
+
+<canvas id="game" width="800" height="500"></canvas>
+
+<script>
+
+let c=document.getElementById("game")
+let ctx=c.getContext("2d")
+
+let player={x:20,y:20}
+
+let goal={x:760,y:460}
+
+function draw(){
+
+ctx.fillStyle="black"
+ctx.fillRect(0,0,800,500)
+
+ctx.fillStyle="green"
+ctx.fillRect(player.x,player.y,20,20)
+
+ctx.fillStyle="yellow"
+ctx.fillRect(goal.x,goal.y,20,20)
+
+if(player.x===goal.x && player.y===goal.y){
+alert("You Win!")
+location.reload()
+}
+
+requestAnimationFrame(draw)
+
+}
+
+document.addEventListener("keydown",e=>{
+
+if(e.key==="ArrowUp")player.y-=20
+if(e.key==="ArrowDown")player.y+=20
+if(e.key==="ArrowLeft")player.x-=20
+if(e.key==="ArrowRight")player.x+=20
+
+})
+
+draw()
+
+</script>
+</body>
+</html>
