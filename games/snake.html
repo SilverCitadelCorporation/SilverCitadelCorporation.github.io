@@ -14,14 +14,13 @@ button:hover, select:hover{background:#666;}
 </head>
 <body>
 
-<!-- START SCREEN -->
 <div id="startScreen">
     <h1>Snake Adventure</h1>
     <button onclick="startGame()">Play</button>
     <button onclick="toggleSettings()">Settings</button>
     <div id="settingsPanel" style="display:none;margin-top:10px;">
         <label>Fruit:
-            <select id="fruitSelect" onchange="checkRandom()">
+            <select id="fruitSelect">
                 <option value="apple">🍎 Apple</option>
                 <option value="orange">🍊 Orange</option>
                 <option value="banana">🍌 Banana</option>
@@ -47,14 +46,12 @@ button:hover, select:hover{background:#666;}
     </div>
 </div>
 
-<!-- GAME SCREEN -->
 <div id="gameScreen" style="display:none;">
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <p>Score: <span id="score">0</span></p>
     <div id="nextFruitPreview">🍎</div>
 </div>
 
-<!-- GAME OVER SCREEN -->
 <div id="gameOverScreen" style="display:none;">
     <h1>Game Over!</h1>
     <p id="finalScore">Score: 0</p>
@@ -65,46 +62,49 @@ button:hover, select:hover{background:#666;}
 <script>
 let canvas=document.getElementById("gameCanvas")
 let ctx=canvas.getContext("2d")
-let snake=[{x:8,y:8}], dx=1, dy=0, apple={x:5,y:5}, score=0, gameInterval
-let grid=20, mode="classic", fruitType="apple", randomFruit=false
-let nextFruit="🍎"
+let snake=[], dx=1, dy=0, apple={x:5,y:5}, score=0, gameInterval
+let grid=20, mode="classic", fruitType="🍎", randomFruit=false, nextFruit="🍎"
 
-// Fruits array (emojis)
 const fruits = ["🍎","🍊","🍌","🍒","🍇","🍉"]
 
-// -------- SETTINGS ----------
 function toggleSettings(){
     let panel=document.getElementById("settingsPanel")
     panel.style.display=(panel.style.display==="none")?"block":"none"
 }
+
+// Apply selected settings from dropdowns
 function applySettings(){
-    let fruitSelect=document.getElementById("fruitSelect").value
+    let fruitSelect = document.getElementById("fruitSelect").value
     randomFruit = (fruitSelect==="random")
-    if(!randomFruit){fruitType=fruitSelect; nextFruit=fruitMap[fruitType]}
-    grid=Number(document.getElementById("gridSelect").value)
-    mode=document.getElementById("modeSelect").value
-}
-function checkRandom(){
-    let val=document.getElementById("fruitSelect").value
-    randomFruit = (val==="random")
-    if(!randomFruit){fruitType=val; nextFruit=fruitMap[fruitType]}
+    if(!randomFruit){fruitType = fruitSelectEmoji(fruitSelect)}
+    grid = Number(document.getElementById("gridSelect").value)
+    mode = document.getElementById("modeSelect").value
 }
 
-// ----------- GAME LOGIC -----------
+// Convert fruit name to emoji
+function fruitSelectEmoji(name){
+    const map = {apple:"🍎", orange:"🍊", banana:"🍌", cherry:"🍒", grape:"🍇", watermelon:"🍉"}
+    return map[name] || "🍎"
+}
+
+// Start game
 function startGame(){
     applySettings()
     document.getElementById("startScreen").style.display="none"
     document.getElementById("gameScreen").style.display="flex"
-    score=0; snake=[{x:8,y:8}]; dx=1; dy=0; placeApple()
+    score=0
+    snake=[{x:8,y:8}]
+    dx=1; dy=0
+    placeApple()
     clearInterval(gameInterval)
     gameInterval=setInterval(gameLoop,100)
     updateNextFruitDisplay()
 }
 
+// Game loop
 function gameLoop(){
     let head={x:snake[0].x+dx,y:snake[0].y+dy}
 
-    // Collision
     if(mode==="classic"){
         if(head.x<0||head.x>=canvas.width/grid||head.y<0||head.y>=canvas.height/grid||snake.some(s=>s.x===head.x&&s.y===head.y)){
             return gameOver()
@@ -117,38 +117,35 @@ function gameLoop(){
 
     snake.unshift(head)
 
-    // Eat fruit
     if(head.x===apple.x && head.y===apple.y){score++; placeApple()}
     else{snake.pop()}
 
-    // Draw snake and fruit
+    // Draw
     ctx.fillStyle="#111"; ctx.fillRect(0,0,canvas.width,canvas.height)
     ctx.fillStyle="lime"; snake.forEach(s=>ctx.fillRect(s.x*grid,s.y*grid,grid-2,grid-2))
     ctx.font = grid + "px Arial"
     ctx.textAlign="center"; ctx.textBaseline="middle"
     ctx.fillText(fruitType, apple.x*grid + grid/2, apple.y*grid + grid/2)
-    
     document.getElementById("score").innerText=score
 }
 
-// ----------- PLACE APPLE / FRUIT -----------
+// Place apple and determine next fruit
 function placeApple(){
     apple.x=Math.floor(Math.random()*canvas.width/grid)
     apple.y=Math.floor(Math.random()*canvas.height/grid)
     if(randomFruit){
         fruitType = fruits[Math.floor(Math.random()*fruits.length)]
     }
-    // Choose next fruit for preview
+    // Pick next fruit for preview
     nextFruit = fruits[Math.floor(Math.random()*fruits.length)]
     updateNextFruitDisplay()
 }
 
-// ----------- UPDATE NEXT FRUIT DISPLAY -----------
 function updateNextFruitDisplay(){
     document.getElementById("nextFruitPreview").innerText = nextFruit
 }
 
-// ----------- CONTROLS -----------
+// Controls
 document.addEventListener("keydown",e=>{
     if(e.key==="ArrowUp"&&dy===0){dx=0;dy=-1}
     if(e.key==="ArrowDown"&&dy===0){dx=0;dy=1}
@@ -156,7 +153,7 @@ document.addEventListener("keydown",e=>{
     if(e.key==="ArrowRight"&&dx===0){dx=1;dy=0}
 })
 
-// ----------- GAME OVER -----------
+// Game over
 function gameOver(){
     clearInterval(gameInterval)
     document.getElementById("gameScreen").style.display="none"
@@ -165,7 +162,7 @@ function gameOver(){
     window.parent.postMessage({gameName:"Snake Adventure", score:score, coins:Math.floor(score/2)}, "*")
 }
 
-// ----------- RESTART / EXIT -----------
+// Restart / exit
 function restartGame(){
     document.getElementById("gameOverScreen").style.display="none"
     startGame()
@@ -174,9 +171,6 @@ function exitGame(){
     document.getElementById("gameOverScreen").style.display="none"
     window.parent.postMessage({gameName:"Snake Adventure", score:score, coins:Math.floor(score/2)}, "*")
 }
-
-// Map fruit name to emoji for preview when specific fruit selected
-const fruitMap = {apple:"🍎", orange:"🍊", banana:"🍌", cherry:"🍒", grape:"🍇", watermelon:"🍉"}
 </script>
 
 </body>
