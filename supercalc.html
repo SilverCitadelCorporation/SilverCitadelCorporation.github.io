@@ -3,68 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>SuperCalc | Student Math Tool</title>
-<link rel="icon" href="logo.png">
+<title>Student Math Portal</title>
 
 <style>
-
 body{
 margin:0;
-font-family:Arial, Helvetica, sans-serif;
+font-family:Arial;
 background:#eef2f7;
 }
 
-/* SCHOOL HEADER */
-
-.header{
+header{
 background:#2c3e50;
 color:white;
 padding:15px;
 text-align:center;
 font-size:22px;
-font-weight:bold;
 }
-
-.sub{
-font-size:13px;
-opacity:.8;
-}
-
-/* MAIN AREA */
 
 .container{
-display:flex;
-justify-content:center;
-align-items:center;
-height:85vh;
-}
-
-/* CALCULATOR */
-
-#calculator{
-background:white;
-width:340px;
+max-width:900px;
+margin:auto;
 padding:20px;
-border-radius:12px;
-box-shadow:0 8px 25px rgba(0,0,0,0.15);
 }
 
-/* DISPLAY */
+.card{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.15);
+margin-bottom:20px;
+}
 
-#display{
+#calc{
 width:100%;
-height:60px;
-font-size:30px;
-text-align:right;
+font-size:26px;
 padding:10px;
-border:2px solid #d0d6e0;
-border-radius:8px;
-margin-bottom:15px;
-box-sizing:border-box;
+margin-bottom:10px;
+text-align:right;
 }
-
-/* BUTTON GRID */
 
 .buttons{
 display:grid;
@@ -72,101 +48,98 @@ grid-template-columns:repeat(4,1fr);
 gap:10px;
 }
 
-button{
-height:55px;
+.buttons button{
+padding:15px;
 font-size:18px;
 border:none;
-border-radius:8px;
-background:#e4e8ef;
+border-radius:6px;
+background:#3498db;
+color:white;
 cursor:pointer;
 }
 
-button:hover{
-background:#d6dbe5;
+.buttons button:hover{
+background:#2980b9;
 }
 
-.operator{
-background:#bfc9d9;
+.info{
+color:#555;
+font-size:14px;
+margin-top:10px;
 }
-
-.equals{
-background:#4a90e2;
-color:white;
-}
-
-.equals:hover{
-background:#3c7ed0;
-}
-
-.clear{
-background:#ff7675;
-color:white;
-}
-
-.clear:hover{
-background:#e05d5c;
-}
-
 </style>
 </head>
 
 <body>
 
-<div class="header">
-SuperCalc Student Tool
-<div class="sub">Educational Mathematics Calculator</div>
-</div>
+<header>Student Mathematics Utility</header>
 
 <div class="container">
 
-<div id="calculator">
+<div class="card">
 
-<input id="display" disabled>
+<h3>Standard Calculator</h3>
+
+<input id="calc" readonly>
 
 <div class="buttons">
 
-<button onclick="press('7')">7</button>
-<button onclick="press('8')">8</button>
-<button onclick="press('9')">9</button>
-<button class="operator" onclick="press('/')">÷</button>
+<button onclick="add('7')">7</button>
+<button onclick="add('8')">8</button>
+<button onclick="add('9')">9</button>
+<button onclick="add('/')">÷</button>
 
-<button onclick="press('4')">4</button>
-<button onclick="press('5')">5</button>
-<button onclick="press('6')">6</button>
-<button class="operator" onclick="press('*')">×</button>
+<button onclick="add('4')">4</button>
+<button onclick="add('5')">5</button>
+<button onclick="add('6')">6</button>
+<button onclick="add('*')">×</button>
 
-<button onclick="press('1')">1</button>
-<button onclick="press('2')">2</button>
-<button onclick="press('3')">3</button>
-<button class="operator" onclick="press('-')">−</button>
+<button onclick="add('1')">1</button>
+<button onclick="add('2')">2</button>
+<button onclick="add('3')">3</button>
+<button onclick="add('-')">−</button>
 
-<button onclick="press('0')">0</button>
-<button onclick="press('.')">.</button>
-<button class="equals" onclick="calculate()">=</button>
-<button class="operator" onclick="press('+')">+</button>
-
-<button class="clear" onclick="clearDisplay()" style="grid-column:span 4;">Clear</button>
+<button onclick="add('0')">0</button>
+<button onclick="clearCalc()">C</button>
+<button onclick="calculate()">=</button>
+<button onclick="add('+')">+</button>
 
 </div>
 
+<div class="info">
+Tip: This calculator supports standard arithmetic expressions.
 </div>
+
+</div>
+
+<div class="card">
+
+<h3>Common Math Formula</h3>
+
+<p>Pythagorean Theorem</p>
+
+
+::contentReference[oaicite:0]{index=0}
+
+
+</div>
+
 </div>
 
 <script>
 
-let display = document.getElementById("display")
+let display = document.getElementById("calc")
 
-function press(val){
+function add(val){
 display.value += val
 }
 
-function clearDisplay(){
+function clearCalc(){
 display.value=""
 }
 
 function calculate(){
 
-/* SECRET CODE */
 if(display.value === "0000"){
 window.location.href="supercalculator.html"
 return
@@ -174,8 +147,7 @@ return
 
 try{
 display.value = eval(display.value)
-}
-catch{
+}catch{
 display.value="Error"
 }
 
