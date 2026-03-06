@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Algebra Night</title>
+<style>
+body{margin:0;font-family:Arial;background:#000;color:white;text-align:center;}
+.screen{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;background:#000d;}
+button{padding:12px 25px;font-size:18px;margin:8px;cursor:pointer;}
+canvas{background:#111;border:6px solid white;display:block;margin:auto;margin-top:20px;}
+#powerBar{width:200px;height:20px;background:#444;margin-top:10px;border-radius:5px;overflow:hidden;}
+#powerFill{height:100%;width:100%;background:#0f0;}
+#controls{display:flex;justify-content:center;margin-top:20px;}
+.controlBtn{margin:0 10px;padding:10px 15px;cursor:pointer;}
+</style>
+</head>
+<body>
+
+<!-- START SCREEN -->
+<div id="startScreen" class="screen">
+<h1>Algebra Night 🐻</h1>
+<button onclick="startGame()">Play</button>
+<button onclick="openSettings()">Settings</button>
+<button onclick="exitGame()">Exit</button>
+</div>
+
+<!-- SETTINGS SCREEN -->
+<div id="settingsScreen" class="screen" style="display:none">
+<h2>⚙ Settings</h2>
+<label>Character Color (Animatronic):</label>
+<input type="color" id="charColor" value="#ff0000"><br>
+<button onclick="closeSettings()">Back</button>
+</div>
+
+<!-- GAME OVER SCREEN -->
+<div id="gameOver" class="screen" style="display:none">
+<h1>Game Over</h1>
+<p id="finalScore"></p>
+<button onclick="restartGame()">Restart</button>
+<button onclick="exitGame()">Exit</button>
+</div>
+
+<!-- GAME SCREEN -->
+<canvas id="game" width="600" height="400"></canvas>
+<div id="powerBar"><div id="powerFill"></div></div>
+<div id="controls">
+<button class="controlBtn" onclick="toggleDoor()">Toggle Door</button>
+<button class="controlBtn" onclick="toggleLight()">Toggle Light</button>
+</div>
+
+<script>
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
+let running=false;
+let power=100;
+let hours=0;
+let animatronics=[];
+let charColor=document.getElementById("charColor").value;
+let door=false;
+let light=false;
+
+// START / SETTINGS / EXIT
+function startGame(){
+  charColor=document.getElementById("charColor").value;
+  animatronics=[{x:50,y:50,targetX:300,targetY:200},{x:550,y:50,targetX:300,targetY:200}];
+  running=true;
+  document.getElementById("startScreen").style.display="none";
+  loop();
+  setInterval(updatePower,1000);
+  setInterval(()=>{if(running) hours++;},5000);
+}
+function openSettings(){document.getElementById("startScreen").style.display="none";document.getElementById("settingsScreen").style.display="flex";}
+function closeSettings(){document.getElementById("settingsScreen").style.display="none";document.getElementById("startScreen").style.display="flex";}
+function exitGame(){window.location.href="../supercalculator.html";}
+function restartGame(){location.reload();}
+
+// GAME CONTROLS
+function toggleDoor(){door=!door;}
+function toggleLight(){light=!light;}
+
+// UPDATE POWER
+function updatePower(){
+  if(!running) return;
+  if(door) power-=1;
+  if(light) power-=0.5;
+  power-=0.2; // constant drain
+  if(power<=0) endGame();
+  document.getElementById("powerFill").style.width=power+"%";
+}
+
+// GAME LOOP
+function loop(){
+  if(!running) return;
+  ctx.fillStyle="#111"; ctx.fillRect(0,0,600,400);
+
+  // Draw office background
+  ctx.fillStyle="#222"; ctx.fillRect(0,0,600,400);
+
+  // Draw animatronics
+  animatronics.forEach(a=>{
+    if(!door){ 
+      // move toward office center
+      if(a.x<a.targetX) a.x+=1; 
+      if(a.x>a.targetX) a.x-=1; 
+      if(a.y<a.targetY) a.y+=1; 
+      if(a.y>a.targetY) a.y-=1; 
+    }
+    ctx.fillStyle=charColor;
+    ctx.fillRect(a.x,a.y,30,30);
+
+    // Check if reached office
+    if(a.x>280 && a.x<320 && a.y>180 && a.y<220 && !door){
+      endGame();
+    }
+  });
+
+  // Display hours survived
+  ctx.fillStyle="white";
+  ctx.font="20px Arial";
+  ctx.fillText("Hours Survived: "+hours,450,30);
+
+  requestAnimationFrame(loop);
+}
+
+// GAME OVER
+function endGame(){
+  running=false;
+  document.getElementById("gameOver").style.display="flex";
+  document.getElementById("finalScore").innerText="Hours Survived: "+hours;
+  let pts=Number(localStorage.getItem("points")||0);
+  localStorage.setItem("points",pts+hours);
+}
+</script>
+
+</body>
+</html>
