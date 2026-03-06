@@ -1,43 +1,167 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Student Resource Hub</title>
+<title>Algebra Night - FNAF Clone</title>
 <style>
-body{margin:0;font-family:Arial;background:#e0e0e0;}
-header{background:#2c3e50;color:white;padding:15px;text-align:center;font-size:24px;}
-#menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:20px;padding:20px;max-width:900px;margin:auto;}
-.gameCard{background:white;padding:20px;border-radius:10px;text-align:center;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,0.2);transition:0.2s;}
-.gameCard:hover{transform:scale(1.05);}
-#player{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:black;z-index:1000;}
-iframe{width:100%;height:100%;border:none;}
-#closeBtn{position:absolute;top:10px;right:20px;font-size:20px;background:red;color:white;border:none;padding:10px;cursor:pointer;}
+body{margin:0;font-family:Arial;background:#000;color:white;text-align:center;}
+.screen{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;background:#000d;}
+button{padding:12px 25px;font-size:18px;margin:8px;cursor:pointer;}
+canvas{background:#111;border:6px solid white;display:block;margin:auto;margin-top:20px;}
+#powerBar{width:200px;height:20px;background:#444;margin-top:10px;border-radius:5px;overflow:hidden;}
+#powerFill{height:100%;width:100%;background:#0f0;}
+#controls{display:flex;justify-content:center;margin-top:20px;}
+.controlBtn{margin:0 10px;padding:10px 15px;cursor:pointer;}
+#cameras{display:flex;justify-content:center;margin-top:10px;}
+.cameraBtn{margin:0 5px;padding:8px 12px;cursor:pointer;}
 </style>
 </head>
 <body>
 
-<header>Student Resource Hub</header>
-
-<div id="menu">
-  <div class="gameCard" onclick="openGame('games/snake.html')">Snake</div>
-  <div class="gameCard" onclick="openGame('games/runner.html')">Runner</div>
-  <div class="gameCard" onclick="openGame('games/eaglecraft.html')">Block Builder (Eaglecraft)</div>
-  <div class="gameCard" onclick="openGame('games/algebra-night.html')">Algebra Night (FNAF 1)</div>
+<!-- START SCREEN -->
+<div id="startScreen" class="screen">
+<h1>Algebra Night 🐻</h1>
+<button onclick="startGame()">Play</button>
+<button onclick="openSettings()">Settings</button>
+<button onclick="exitGame()">Exit</button>
 </div>
 
-<div id="player">
-  <button id="closeBtn" onclick="closeGame()">X</button>
-  <iframe id="gameFrame"></iframe>
+<!-- SETTINGS SCREEN -->
+<div id="settingsScreen" class="screen" style="display:none">
+<h2>⚙ Settings</h2>
+<label>Character Color (placeholder if no images):</label>
+<input type="color" id="charColor" value="#ff0000"><br>
+<button onclick="closeSettings()">Back</button>
+</div>
+
+<!-- GAME OVER SCREEN -->
+<div id="gameOver" class="screen" style="display:none">
+<h1>Game Over</h1>
+<p id="finalScore"></p>
+<button onclick="restartGame()">Restart</button>
+<button onclick="exitGame()">Exit</button>
+</div>
+
+<!-- JUMPSCARE SCREEN -->
+<div id="jumpScare" class="screen" style="display:none; background:#000;">
+<img id="jumpImg" src="" style="width:100%;height:100%;object-fit:cover;">
+</div>
+
+<!-- GAME SCREEN -->
+<canvas id="game" width="600" height="400"></canvas>
+<div id="powerBar"><div id="powerFill"></div></div>
+<div id="controls">
+<button class="controlBtn" onclick="toggleDoor()">Toggle Door</button>
+<button class="controlBtn" onclick="toggleLight()">Toggle Light</button>
+</div>
+<div id="cameras">
+<button class="cameraBtn" onclick="switchCamera(0)">Camera 1</button>
+<button class="cameraBtn" onclick="switchCamera(1)">Camera 2</button>
+<button class="cameraBtn" onclick="switchCamera(2)">Camera 3</button>
 </div>
 
 <script>
-function openGame(url){
-  document.getElementById("player").style.display="block";
-  document.getElementById("gameFrame").src=url;
+// CANVAS & GAME VARIABLES
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
+let running=false;
+let power=100;
+let hours=0;
+let animatronics=[];
+let charColor=document.getElementById("charColor").value;
+let door=false;
+let light=false;
+let camera=0;
+
+// PLACEHOLDER IMAGES (replace with actual animatronics)
+const animImages=["freddy.png","bonnie.png","chica.png"];
+const jumpImages=["freddy_jumpscare.png","bonnie_jumpscare.png","chica_jumpscare.png"];
+
+// START / SETTINGS / EXIT
+function startGame(){
+  charColor=document.getElementById("charColor").value;
+  animatronics=[
+    {x:50,y:50,targetX:300,targetY:200,img:animImages[0]},
+    {x:550,y:50,targetX:300,targetY:200,img:animImages[1]},
+    {x:300,y:50,targetX:300,targetY:200,img:animImages[2]}
+  ];
+  running=true;
+  document.getElementById("startScreen").style.display="none";
+  loop();
+  setInterval(updatePower,1000);
+  setInterval(()=>{if(running) hours++;},5000);
 }
-function closeGame(){
-  document.getElementById("player").style.display="none";
-  document.getElementById("gameFrame").src="";
+function openSettings(){document.getElementById("startScreen").style.display="none";document.getElementById("settingsScreen").style.display="flex";}
+function closeSettings(){document.getElementById("settingsScreen").style.display="none";document.getElementById("startScreen").style.display="flex";}
+function exitGame(){window.location.href="../supercalculator.html";}
+function restartGame(){location.reload();}
+
+// CONTROLS
+function toggleDoor(){door=!door;}
+function toggleLight(){light=!light;}
+function switchCamera(num){camera=num;}
+
+// UPDATE POWER
+function updatePower(){
+  if(!running) return;
+  let drain=0.2;
+  if(door) drain+=1;
+  if(light) drain+=0.5;
+  power-=drain;
+  if(power<=0) endGame();
+  document.getElementById("powerFill").style.width=power+"%";
+}
+
+// LOOP
+function loop(){
+  if(!running) return;
+  ctx.fillStyle="#111"; ctx.fillRect(0,0,600,400);
+  ctx.fillStyle="#222"; ctx.fillRect(0,0,600,400); // background
+
+  // Draw animatronics
+  animatronics.forEach((a,i)=>{
+    let img=new Image();
+    img.src=a.img;
+    ctx.drawImage(img,a.x,a.y,40,40);
+    
+    // Move toward office if on camera
+    if(a.targetX==300 && a.targetY==200 && camera==0 && !door){
+      if(a.x<280) a.x+=1;
+      if(a.x>280) a.x-=1;
+      if(a.y<180) a.y+=1;
+      if(a.y>180) a.y-=1;
+    }
+    
+    // Check if reached office
+    if(a.x>280 && a.x<320 && a.y>180 && a.y<220 && !door){
+      showJumpScare(i);
+    }
+  });
+
+  // Display hours survived
+  ctx.fillStyle="white";
+  ctx.font="20px Arial";
+  ctx.fillText("Hours Survived: "+hours,450,30);
+
+  requestAnimationFrame(loop);
+}
+
+// JUMPSCARE
+function showJumpScare(index){
+  running=false;
+  const js=document.getElementById("jumpScare");
+  const img=document.getElementById("jumpImg");
+  img.src=jumpImages[index];
+  js.style.display="flex";
+  setTimeout(()=>{js.style.display="none"; endGame();},2000);
+}
+
+// GAME OVER
+function endGame(){
+  running=false;
+  document.getElementById("gameOver").style.display="flex";
+  document.getElementById("finalScore").innerText="Hours Survived: "+hours;
+  let pts=Number(localStorage.getItem("points")||0);
+  localStorage.setItem("points",pts+hours);
 }
 </script>
 
