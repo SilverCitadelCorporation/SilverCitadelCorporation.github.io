@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+
 <title>Student Resource Hub</title>
 
 <style>
+
 body{
 margin:0;
 font-family:Arial;
@@ -20,27 +21,33 @@ font-size:24px;
 }
 
 #menu{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-gap:20px;
-padding:20px;
-max-width:900px;
-margin:auto;
+display:flex;
+justify-content:center;
+padding:50px;
 }
 
 .gameCard{
+
 background:white;
-padding:20px;
+padding:30px;
 border-radius:10px;
 text-align:center;
 cursor:pointer;
+
 box-shadow:0 4px 10px rgba(0,0,0,0.2);
+
+transition:0.2s;
+
+font-size:22px;
+
 }
 
 .gameCard:hover{
 transform:scale(1.05);
 }
+
 </style>
+
 </head>
 
 <body>
@@ -49,27 +56,19 @@ transform:scale(1.05);
 
 <div id="menu">
 
-<div class="gameCard" onclick="window.location.href='games/snake.html'">
-Snake Adventure
-</div>
-
-<div class="gameCard" onclick="window.location.href='games/miniDash.html'">
-Mini Dash
-</div>
-
-<div class="gameCard" onclick="window.location.href='games/reaction.html'">
-Reaction Game
-</div>
-
-<div class="gameCard" onclick="window.location.href='games/eagleCraft.html'">
-EagleCraft
-</div>
-
-<div class="gameCard" onclick="window.location.href='games/geometry.html'">
-Geometry Game
+<div class="gameCard" onclick="openGame('snake.html')">
+🐍 Snake
 </div>
 
 </div>
+
+<script>
+
+function openGame(url){
+window.location.href=url
+}
+
+</script>
 
 </body>
 </html>
