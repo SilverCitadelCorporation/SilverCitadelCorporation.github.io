@@ -3,14 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Student Resource Hub</title>
-
 <style>
 body{
   margin:0;
   font-family:Arial;
   background:#e0e0e0;
 }
-
 header{
   background:#2c3e50;
   color:white;
@@ -18,7 +16,6 @@ header{
   text-align:center;
   font-size:24px;
 }
-
 #menu{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
@@ -27,7 +24,6 @@ header{
   max-width:900px;
   margin:auto;
 }
-
 .gameCard{
   background:white;
   padding:20px;
@@ -37,11 +33,9 @@ header{
   box-shadow:0 4px 10px rgba(0,0,0,0.2);
   transition:0.2s;
 }
-
 .gameCard:hover{
   transform:scale(1.05);
 }
-
 #player{
   display:none;
   position:fixed;
@@ -52,13 +46,11 @@ header{
   background:black;
   z-index:1000;
 }
-
 iframe{
   width:100%;
   height:100%;
   border:none;
 }
-
 #closeBtn{
   position:absolute;
   top:10px;
@@ -70,8 +62,6 @@ iframe{
   padding:10px;
   cursor:pointer;
 }
-
-/* Report Button */
 #reportBtn{
   position:fixed;
   bottom:20px;
@@ -91,36 +81,30 @@ iframe{
 }
 </style>
 </head>
-
 <body>
 
 <header>Student Resource Hub</header>
 
 <div id="menu">
 
-  <!-- Local games open inside iframe -->
-  <div class="gameCard" onclick="openGame('games/snake.html')">Snake</div>
-  <div class="gameCard" onclick="openGame('games/runner.html')">Runner</div>
-  <div class="gameCard" onclick="openGame('games/eaglecraft.html')">Block Builder (Eaglecraft)</div>
-  <div class="gameCard" onclick="openGame('games/algebra-night.html')">Algebra Night (FNAF)</div>
-
-  <!-- Online games open in new tab -->
-  <div class="gameCard" onclick="window.open('https://ubg365.github.io/geometry-dash/', '_blank')">Geometry Dash</div>
-  <div class="gameCard" onclick="window.open('https://ubg365.github.io/slope/', '_blank')">Slope</div>
-  <div class="gameCard" onclick="window.open('https://ubg365.github.io/flappy-bird/', '_blank')">Flappy Bird</div>
-  <div class="gameCard" onclick="window.open('https://ubg365.github.io/tetris/', '_blank')">Tetris</div>
-  <div class="gameCard" onclick="window.open('https://ubg365.github.io/2048/', '_blank')">2048</div>
-  <div class="gameCard" onclick="window.open('https://ubg365.github.io/pacman/', '_blank')">Pac-Man</div>
+<div class="gameCard" onclick="openGame('games/snake.html')">Snake</div>
+<div class="gameCard" onclick="openGame('games/runner.html')">Runner</div>
+<div class="gameCard" onclick="openGame('games/eaglecraft.html')">Block Builder (Eaglecraft)</div>
+<div class="gameCard" onclick="openGame('games/algebra-night.html')">Algebra Night (FNAF)</div>
+<div class="gameCard" onclick="openGame('games/geometry-dash.html')">Geometry Dash</div>
+<div class="gameCard" onclick="openGame('games/slope.html')">Slope</div>
+<div class="gameCard" onclick="openGame('games/flappy-bird.html')">Flappy Bird</div>
+<div class="gameCard" onclick="openGame('games/tetris.html')">Tetris</div>
+<div class="gameCard" onclick="openGame('games/2048.html')">2048</div>
+<div class="gameCard" onclick="openGame('games/pacman.html')">Pac-Man</div>
 
 </div>
 
-<!-- iframe player for local games -->
 <div id="player">
-  <button id="closeBtn" onclick="closeGame()">X</button>
-  <iframe id="gameFrame"></iframe>
+<button id="closeBtn" onclick="closeGame()">X</button>
+<iframe id="gameFrame"></iframe>
 </div>
 
-<!-- Report / Contact Bug Button -->
 <button id="reportBtn" onclick="reportBug()">Report a Bug</button>
 
 <script>
@@ -128,13 +112,10 @@ function openGame(url){
   document.getElementById("player").style.display="block";
   document.getElementById("gameFrame").src=url;
 }
-
 function closeGame(){
   document.getElementById("player").style.display="none";
   document.getElementById("gameFrame").src="";
 }
-
-// Report bug function
 function reportBug(){
   window.location.href="mailto:silvercitadelcorporation@gmail.com?subject=Bug Report from Student Hub&body=Describe the issue here...";
 }
