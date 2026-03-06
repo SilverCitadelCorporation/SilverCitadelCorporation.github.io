@@ -1,35 +1,77 @@
 <!DOCTYPE html>
 <html>
-<body style="margin:0;background:red;display:flex;align-items:center;justify-content:center;height:100vh;font-family:Arial;color:white">
+<head>
+<meta charset="UTF-8">
+<title>Reaction Game</title>
+<style>
+body{margin:0;background:#0f172a;color:white;font-family:Arial;text-align:center;}
+button{padding:10px 20px;margin:5px;font-size:16px;cursor:pointer;border:none;background:#444;color:white;border-radius:5px;}
+button:hover{background:#666;}
+#target{width:100px;height:100px;background:red;position:absolute;display:none;cursor:pointer;border-radius:50%;}
+</style>
+</head>
+<body>
 
-<h1 id="text">Wait...</h1>
+<div id="startScreen">
+  <h1>Reaction Game</h1>
+  <button id="playBtn">Play</button>
+</div>
+
+<div id="gameScreen" style="display:none;">
+  <p>Score: <span id="score">0</span></p>
+  <div id="target"></div>
+</div>
+
+<div id="gameOverScreen" style="display:none;">
+  <h1>Game Over!</h1>
+  <p id="finalScore">Score: 0</p>
+  <button id="restartBtn">Restart</button>
+  <button id="exitBtn">Exit</button>
+</div>
 
 <script>
+let score=0, interval;
+const target = document.getElementById("target");
 
-let ready=false
-let start
-
-setTimeout(()=>{
-document.body.style.background="green"
-document.getElementById("text").innerText="CLICK!"
-ready=true
-start=Date.now()
-},Math.random()*5000+2000)
-
-document.body.onclick=()=>{
-
-if(!ready){
-alert("Too early!")
-location.reload()
+function randomPosition(){
+  const x = Math.random()*(window.innerWidth-100);
+  const y = Math.random()*(window.innerHeight-150)+50;
+  target.style.left = x+"px";
+  target.style.top = y+"px";
 }
 
-else{
-alert("Reaction: "+(Date.now()-start)+" ms")
-location.reload()
+function startGame(){
+  score=0;
+  document.getElementById("startScreen").style.display="none";
+  document.getElementById("gameOverScreen").style.display="none";
+  document.getElementById("gameScreen").style.display="block";
+  randomPosition();
+  target.style.display="block";
 }
 
+document.getElementById("playBtn").onclick=startGame;
+
+target.onclick = ()=>{
+  score++;
+  document.getElementById("score").innerText=score;
+  randomPosition();
 }
 
+function gameOver(){
+  document.getElementById("gameScreen").style.display="none";
+  document.getElementById("gameOverScreen").style.display="flex";
+  document.getElementById("finalScore").innerText="Score: "+score;
+}
+
+document.getElementById("restartBtn").onclick=startGame;
+document.getElementById("exitBtn").onclick = ()=>{window.location.href="../supercalculator.html";}
+
+// auto end after 30 seconds
+setInterval(()=>{
+  if(document.getElementById("gameScreen").style.display==="block"){
+    gameOver();
+  }
+},30000);
 </script>
 </body>
 </html>
