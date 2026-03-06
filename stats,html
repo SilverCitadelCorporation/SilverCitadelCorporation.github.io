@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Player Stats</title>
+<style>
+body{background:#0f1720;color:white;font-family:Arial;text-align:center;}
+.card{background:#1f2933;padding:30px;margin:40px auto;max-width:400px;border-radius:10px;}
+button{padding:10px 20px;cursor:pointer;}
+</style>
+</head>
+<body>
+
+<h1>Player Stats</h1>
+<div class="card">
+<h2>Total Points</h2>
+<p id="points"></p>
+<h2>Achievements</h2>
+<ul id="achievements"></ul>
+</div>
+<button onclick="goBack()">Back</button>
+
+<script>
+let pts=Number(localStorage.getItem("points")||0);
+document.getElementById("points").innerText=pts;
+let list=document.getElementById("achievements");
+if(pts>0) list.innerHTML+="<li>🎮 First Game Played</li>";
+if(pts>50) list.innerHTML+="<li>🔥 Beginner Gamer</li>";
+if(pts>200) list.innerHTML+="<li>🏆 Arcade Master</li>";
+function goBack(){window.location.href="supercalculator.html";}
+</script>
+
+</body>
+</html>
