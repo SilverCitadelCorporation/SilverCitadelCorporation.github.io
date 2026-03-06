@@ -2,181 +2,27 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Snake Adventure</title>
+<title>Student Resource Hub</title>
 <style>
-body{margin:0;background:#0f172a;color:white;font-family:Arial;text-align:center;}
-#startScreen,#gameScreen,#gameOverScreen{
-  position:absolute;top:0;left:0;width:100%;height:100%;
-  display:flex;flex-direction:column;justify-content:center;align-items:center;
-}
-canvas{background:#111;}
-button, select{padding:10px 20px;margin:5px;font-size:16px;cursor:pointer;border:none;background:#444;color:white;border-radius:5px;}
-button:hover, select:hover{background:#666;}
-#nextFruitPreview{position:absolute;top:10px;right:10px;font-size:24px;}
-.settingsRow{display:flex;align-items:center;justify-content:center;margin:10px 0;font-size:18px;}
-#settingsFruitPreview{display:inline-block;width:30px;font-size:24px;margin-left:10px;min-width:30px;}
-#settingsPanel{position:absolute;top:150px;background:#1e293b;padding:20px;border-radius:10px;display:none;z-index:1000;}
+body{margin:0;font-family:Arial;background:#e0e0e0;}
+header{background:#2c3e50;color:white;padding:15px;text-align:center;font-size:24px;}
+#menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:20px;padding:20px;max-width:900px;margin:auto;}
+.gameCard{background:white;padding:20px;border-radius:10px;text-align:center;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,0.2);transition:0.2s;}
+.gameCard:hover{transform:scale(1.05);}
 </style>
 </head>
 <body>
-
-<div id="startScreen">
-  <h1>Snake Adventure</h1>
-  <button id="playBtn">Play</button>
-  <button id="settingsBtn">Settings</button>
+<header>Student Tools</header>
+<div id="menu">
+  <div class="gameCard" onclick="openGame('games/snake.html')">Snake Adventure</div>
+  <div class="gameCard" onclick="openGame('games/miniDash.html')">Mini Dash</div>
+  <div class="gameCard" onclick="openGame('games/reaction.html')">Reaction Game</div>
+  <div class="gameCard" onclick="openGame('games/eagleCraft.html')">EagleCraft</div>
+  <div class="gameCard" onclick="openGame('games/geometry.html')">Geometry Game</div>
 </div>
-
-<div id="settingsPanel">
-  <div class="settingsRow">
-    <label>Fruit:</label>
-    <select id="fruitSelect">
-      <option value="apple">Apple</option>
-      <option value="orange">Orange</option>
-      <option value="banana">Banana</option>
-      <option value="cherry">Cherry</option>
-      <option value="grape">Grape</option>
-      <option value="watermelon">Watermelon</option>
-      <option value="random">Random</option>
-    </select>
-    <span id="settingsFruitPreview">🍎</span>
-  </div>
-  <div class="settingsRow">
-    <label>Grid Size:</label>
-    <select id="gridSelect">
-      <option value="20" selected>20</option>
-      <option value="15">15</option>
-      <option value="25">25</option>
-    </select>
-  </div>
-  <div class="settingsRow">
-    <label>Game Mode:</label>
-    <select id="modeSelect">
-      <option value="classic" selected>Classic</option>
-      <option value="wallsOff">Walls Off</option>
-    </select>
-  </div>
-</div>
-
-<div id="gameScreen" style="display:none;">
-  <canvas id="gameCanvas" width="400" height="400"></canvas>
-  <p>Score: <span id="score">0</span></p>
-  <div id="nextFruitPreview">🍎</div>
-</div>
-
-<div id="gameOverScreen" style="display:none;">
-  <h1>Game Over!</h1>
-  <p id="finalScore">Score: 0</p>
-  <button id="restartBtn">Restart</button>
-  <button id="exitBtn">Exit</button>
-</div>
-
 <script>
-const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
-let snake=[], dx=1, dy=0, apple={x:5,y:5}, score=0, gameInterval;
-let grid=20, mode="classic", fruitType="🍎", randomFruit=false;
-
-const fruits = ["🍎","🍊","🍌","🍒","🍇","🍉"];
-const fruitMap = {apple:"🍎", orange:"🍊", banana:"🍌", cherry:"🍒", grape:"🍇", watermelon:"🍉"};
-
-const startScreen = document.getElementById("startScreen");
-const settingsPanel = document.getElementById("settingsPanel");
-const gameScreen = document.getElementById("gameScreen");
-const gameOverScreen = document.getElementById("gameOverScreen");
-
-const fruitSelect = document.getElementById("fruitSelect");
-const gridSelect = document.getElementById("gridSelect");
-const modeSelect = document.getElementById("modeSelect");
-const settingsFruitPreview = document.getElementById("settingsFruitPreview");
-const nextFruitPreview = document.getElementById("nextFruitPreview");
-
-settingsFruitPreview.innerText = fruitMap[fruitSelect.value];
-
-document.getElementById("settingsBtn").onclick = ()=>{
-  settingsPanel.style.display = settingsPanel.style.display==="none"?"block":"none";
-  updateFruitPreview();
-}
-
-fruitSelect.onchange = updateFruitPreview;
-function updateFruitPreview(){
-  const val = fruitSelect.value;
-  settingsFruitPreview.innerText = val==="random"?"🎲":fruitMap[val];
-}
-
-function applySettings(){
-  const val = fruitSelect.value;
-  randomFruit = val==="random";
-  fruitType = randomFruit ? fruits[Math.floor(Math.random()*fruits.length)] : fruitMap[val];
-  grid = Number(gridSelect.value);
-  mode = modeSelect.value;
-}
-
-function startGame(){
-  score=0;
-  snake=[{x:8,y:8}];
-  dx=1; dy=0;
-  placeApple();
-  gameScreen.style.display="flex";
-  startScreen.style.display="none";
-  gameOverScreen.style.display="none";
-  clearInterval(gameInterval);
-  gameInterval = setInterval(gameLoop,100);
-}
-
-document.getElementById("playBtn").onclick = ()=>{
-  applySettings();
-  startGame();
-}
-
-function gameLoop(){
-  let head={x:snake[0].x+dx,y:snake[0].y+dy};
-  if(mode==="classic"){
-    if(head.x<0||head.x>=canvas.width/grid||head.y<0||head.y>=canvas.height/grid||snake.some(s=>s.x===head.x&&s.y===head.y)) return gameOver();
-  } else {
-    head.x=(head.x+canvas.width/grid)%(canvas.width/grid);
-    head.y=(head.y+canvas.height/grid)%(canvas.height/grid);
-    if(snake.some(s=>s.x===head.x&&s.y===head.y)) return gameOver();
-  }
-  snake.unshift(head);
-  if(head.x===apple.x && head.y===apple.y){score++; placeApple();} 
-  else snake.pop();
-
-  ctx.fillStyle="#111"; ctx.fillRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle="lime"; snake.forEach(s=>ctx.fillRect(s.x*grid,s.y*grid,grid-2,grid-2));
-  ctx.font = grid + "px Arial"; ctx.textAlign="center"; ctx.textBaseline="middle";
-  ctx.fillText(fruitType, apple.x*grid+grid/2, apple.y*grid+grid/2);
-  document.getElementById("score").innerText = score;
-}
-
-function placeApple(){
-  apple.x=Math.floor(Math.random()*canvas.width/grid);
-  apple.y=Math.floor(Math.random()*canvas.height/grid);
-  if(randomFruit) fruitType = fruits[Math.floor(Math.random()*fruits.length)];
-  nextFruitPreview.innerText = fruits[Math.floor(Math.random()*fruits.length)];
-}
-
-document.addEventListener("keydown",e=>{
-  if(e.key==="ArrowUp"&&dy===0){dx=0;dy=-1;}
-  if(e.key==="ArrowDown"&&dy===0){dx=0;dy=1;}
-  if(e.key==="ArrowLeft"&&dx===0){dx=-1;dy=0;}
-  if(e.key==="ArrowRight"&&dx===0){dx=1;dy=0;}
-});
-
-function gameOver(){
-  clearInterval(gameInterval);
-  gameScreen.style.display="none";
-  gameOverScreen.style.display="flex";
-  document.getElementById("finalScore").innerText="Score: "+score;
-}
-
-// Restart → immediately start a new game
-document.getElementById("restartBtn").onclick = ()=>{
-  startGame();
-}
-
-// Exit → always go to supercalculator.html in root folder
-document.getElementById("exitBtn").onclick = ()=>{
-  window.location.href = "../supercalculator.html";
+function openGame(url){
+  window.location.href = url; // open each game
 }
 </script>
 </body>
