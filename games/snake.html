@@ -2,297 +2,146 @@
 <html>
 <head>
 <title>Snake</title>
-
 <style>
-
-body{
-margin:0;
-background:black;
-color:white;
-font-family:Arial;
-text-align:center;
-}
-
-canvas{
-background:#111;
-border:6px solid white;
-display:block;
-margin:auto;
-margin-top:20px;
-}
-
+body{margin:0;background:black;color:white;font-family:Arial;text-align:center;}
+canvas{background:#111;border:6px solid white;display:block;margin:auto;margin-top:20px;}
 .screen{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:#000d;
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
+  position:fixed;
+  top:0; left:0; width:100%; height:100%;
+  background:#000d;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
 }
-
-button{
-padding:12px 25px;
-font-size:18px;
-margin:8px;
-cursor:pointer;
-}
-
-select{
-padding:8px;
-margin:5px;
-}
-
+button{padding:12px 25px;font-size:18px;margin:8px;cursor:pointer;}
+select,input{padding:6px;margin:5px;}
 </style>
 </head>
-
 <body>
 
 <!-- START SCREEN -->
-
 <div id="startScreen" class="screen">
-
 <h1>🐍 Snake</h1>
-
 <button onclick="startGame()">Play</button>
-
 <button onclick="openSettings()">Settings</button>
-
 <button onclick="exitGame()">Exit</button>
-
 </div>
 
-
-<!-- SETTINGS -->
-
+<!-- SETTINGS SCREEN -->
 <div id="settingsScreen" class="screen" style="display:none">
-
 <h2>⚙ Settings</h2>
-
 <label>Grid Size</label>
-
 <select id="difficulty">
-<option value="25">Easy</option>
-<option value="20" selected>Normal</option>
-<option value="15">Hard</option>
+  <option value="25">Easy</option>
+  <option value="20" selected>Normal</option>
+  <option value="15">Hard</option>
 </select>
-
 <br>
-
 <label>Snake Color</label>
 <input type="color" id="snakeColor" value="#00ff00">
-
 <br>
-
-<label>Food Color</label>
-<input type="color" id="foodColor" value="#ff0000">
-
-<br><br>
-
+<label>Food Emoji</label>
+<select id="foodEmoji">
+  <option value="🍎">Apple 🍎</option>
+  <option value="🍊">Orange 🍊</option>
+  <option value="🍉">Watermelon 🍉</option>
+  <option value="🍇">Grape 🍇</option>
+  <option value="🍓">Strawberry 🍓</option>
+  <option value="random">Random 🎲</option>
+</select>
+<br>
 <button onclick="closeSettings()">Back</button>
-
 </div>
 
-
-<!-- GAME OVER -->
-
+<!-- GAME OVER SCREEN -->
 <div id="gameOver" class="screen" style="display:none">
-
 <h1>Game Over</h1>
-
 <p id="finalScore"></p>
-
 <button onclick="restartGame()">Restart</button>
-
 <button onclick="exitGame()">Exit</button>
-
 </div>
-
 
 <canvas id="game" width="600" height="600"></canvas>
 
 <script>
-
-const canvas=document.getElementById("game")
-const ctx=canvas.getContext("2d")
-
-let grid
-let snake
-let food
-let dx
-let dy
-let score
-let boardSize
-let snakeColor
-let foodColor
-let running=false
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
+let grid, snake, food, dx, dy, score, boardSize, snakeColor, foodEmoji, running=false;
 
 function startGame(){
-
-boardSize=document.getElementById("difficulty").value
-snakeColor=document.getElementById("snakeColor").value
-foodColor=document.getElementById("foodColor").value
-
-grid=600/boardSize
-
-snake=[{x:10,y:10}]
-food={x:5,y:5}
-
-dx=1
-dy=0
-
-score=0
-running=true
-
-document.getElementById("startScreen").style.display="none"
-
-loop()
-
+  boardSize=document.getElementById("difficulty").value;
+  snakeColor=document.getElementById("snakeColor").value;
+  foodEmoji=document.getElementById("foodEmoji").value;
+  grid=600/boardSize;
+  snake=[{x:10,y:10}];
+  food={x:5,y:5};
+  dx=1; dy=0;
+  score=0; running=true;
+  document.getElementById("startScreen").style.display="none";
+  loop();
 }
 
 function openSettings(){
-
-document.getElementById("startScreen").style.display="none"
-document.getElementById("settingsScreen").style.display="flex"
-
+  document.getElementById("startScreen").style.display="none";
+  document.getElementById("settingsScreen").style.display="flex";
 }
 
 function closeSettings(){
-
-document.getElementById("settingsScreen").style.display="none"
-document.getElementById("startScreen").style.display="flex"
-
+  document.getElementById("settingsScreen").style.display="none";
+  document.getElementById("startScreen").style.display="flex";
 }
 
-function restartGame(){
-
-location.reload()
-
-}
-
-function exitGame(){
-
-window.location.href="supercalculator.html"
-
-}
+function restartGame(){ location.reload(); }
+function exitGame(){ window.location.href="supercalculator.html"; }
 
 document.addEventListener("keydown",e=>{
-
-if(e.key=="ArrowUp" && dy==0){
-dx=0
-dy=-1
-}
-
-if(e.key=="ArrowDown" && dy==0){
-dx=0
-dy=1
-}
-
-if(e.key=="ArrowLeft" && dx==0){
-dx=-1
-dy=0
-}
-
-if(e.key=="ArrowRight" && dx==0){
-dx=1
-dy=0
-}
-
-})
+  if(e.key=="ArrowUp" && dy==0){dx=0; dy=-1;}
+  if(e.key=="ArrowDown" && dy==0){dx=0; dy=1;}
+  if(e.key=="ArrowLeft" && dx==0){dx=-1; dy=0;}
+  if(e.key=="ArrowRight" && dx==0){dx=1; dy=0;}
+});
 
 function loop(){
-
-if(!running)return
-
-setTimeout(()=>{
-
-update()
-draw()
-loop()
-
-},120)
-
+  if(!running) return;
+  setTimeout(()=>{
+    update();
+    draw();
+    loop();
+  },120);
 }
 
 function update(){
+  let head={x:snake[0].x+dx, y:snake[0].y+dy};
+  snake.unshift(head);
+  if(head.x==food.x && head.y==food.y){
+    score++;
+    if(foodEmoji=="random"){
+      const fruits=["🍎","🍊","🍉","🍇","🍓"];
+      foodEmoji=fruits[Math.floor(Math.random()*fruits.length)];
+    }
+    food={x:Math.floor(Math.random()*boardSize), y:Math.floor(Math.random()*boardSize)};
+  } else { snake.pop(); }
 
-let head={
-x:snake[0].x+dx,
-y:snake[0].y+dy
-}
-
-snake.unshift(head)
-
-if(head.x==food.x && head.y==food.y){
-
-score++
-
-food={
-x:Math.floor(Math.random()*boardSize),
-y:Math.floor(Math.random()*boardSize)
-}
-
-}else{
-
-snake.pop()
-
-}
-
-if(
-head.x<0||
-head.y<0||
-head.x>=boardSize||
-head.y>=boardSize
-){
-endGame()
-}
-
-for(let i=1;i<snake.length;i++){
-
-if(head.x==snake[i].x && head.y==snake[i].y){
-endGame()
-}
-
-}
-
+  if(head.x<0||head.y<0||head.x>=boardSize||head.y>=boardSize) endGame();
+  for(let i=1;i<snake.length;i++){
+    if(head.x==snake[i].x && head.y==snake[i].y) endGame();
+  }
 }
 
 function draw(){
-
-ctx.fillStyle="#111"
-ctx.fillRect(0,0,600,600)
-
-ctx.fillStyle=snakeColor
-
-snake.forEach(s=>{
-
-ctx.fillRect(s.x*grid,s.y*grid,grid-2,grid-2)
-
-})
-
-ctx.fillStyle=foodColor
-
-ctx.fillRect(food.x*grid,food.y*grid,grid-2,grid-2)
-
+  ctx.fillStyle="#111"; ctx.fillRect(0,0,600,600);
+  ctx.fillStyle=snakeColor;
+  snake.forEach(s=>ctx.fillRect(s.x*grid,s.y*grid,grid-2,grid-2));
+  ctx.font=grid+"px Arial";
+  ctx.textAlign="center"; ctx.textBaseline="middle";
+  ctx.fillText(foodEmoji, food.x*grid+grid/2, food.y*grid+grid/2);
 }
 
 function endGame(){
-
-running=false
-
-document.getElementById("gameOver").style.display="flex"
-
-document.getElementById("finalScore").innerText="Score: "+score
-
-let pts=Number(localStorage.getItem("points")||0)
-
-localStorage.setItem("points",pts+score)
-
+  running=false;
+  document.getElementById("gameOver").style.display="flex";
+  document.getElementById("finalScore").innerText="Score: "+score;
+  let pts=Number(localStorage.getItem("points")||0);
+  localStorage.setItem("points",pts+score);
 }
-
 </script>
 
 </body>
