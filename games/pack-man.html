@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mini Pac‑Man Maze</title>
+<style>
+body { margin:0; font-family: Arial; background:black; text-align:center; color:white; }
+#gameArea { position: relative; margin: 20px auto; width:400px; height:400px; background: #000; }
+canvas { display:block; margin:auto; background:#000; }
+#score { font-size: 20px; margin-top:10px; }
+#gameOver { display:none; font-size:32px; margin-top:20px; }
+</style>
+</head>
+<body>
+
+<h1>Mini Pac‑Man Maze</h1>
+<canvas id="gameCanvas" width="400" height="400"></canvas>
+<div id="score">Score: 0</div>
+<div id="gameOver">Game Over! <button onclick="startGame()">Restart</button></div>
+
+<script>
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const grid = 20; // size of one cell
+const rows = canvas.height/grid;
+const cols = canvas.width/grid;
+
+// Maze layout: 0 = dot, 1 = wall, 2 = power pellet
+const maze = [
+[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+[1,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,2,1],
+[1,0,1,0,1,0,1,1,1,0,1,1,1,1,0,1,0,1,0,1],
+[1,0,1,0,0,0,0,0,1,0,1,0,0,0,0,1,0,1,0,1],
+[1,0,1,1,1,1,1,0,1,0,1,0,1,1,1,1,0,1,0,1],
+[1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1,0,1],
+[1,1,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,1,0,1],
+[1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,1],
+[1,0,1,0,1,1,1,0,1,1,1,0,1,0,1,1,1,1,0,1],
+[1,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1,0,1],
+[1,0,1,1,1,0,1,1,1,0,1,1,1,0,1,1,0,1,0,1],
+[1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,2,1],
+[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+];
+
+let pac = { x:1, y:1, dx:0, dy:0, powered: false, powerTime:0 };
+let ghosts = [ {x:18,y:1,dx:0,dy:0}, {x:18,y:11,dx:0,dy:0} ];
+let score = 0;
+let gameRunning = true;
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  // Draw maze
+  for(let i=0;i<maze.length;i++){
+    for(let j=0;j<maze[i].length;j++){
+      if(maze[i][j]===1){
+        ctx.fillStyle='blue';
+        ctx.fillRect(j*grid,i*grid,grid,grid);
+      } else if(maze[i][j]===0){
+        ctx.fillStyle='white';
+        ctx.beginPath();
+        ctx.arc(j*grid+grid/2,i*grid+grid/2,grid/6,0,Math.PI*2);
+        ctx.fill();
+      } else if(maze[i][j]===2){
+        ctx.fillStyle='orange';
+        ctx.beginPath();
+        ctx.arc(j*grid+grid/2,i*grid+grid/2,grid/3,0,Math.PI*2);
+        ctx.fill();
+      }
+    }
+  }
+
+  // Draw Pac‑Man
+  ctx.fillStyle = 'yellow';
+  ctx.beginPath();
+  ctx.arc(pac.x*grid+grid/2,pac.y*grid+grid/2,grid/2,0,Math.PI*2);
+  ctx.fill();
+
+  // Draw ghosts
+  ghosts.forEach(g=>{
+    ctx.fillStyle = pac.powered ? 'cyan' : 'red';
+    ctx.fillRect(g.x*grid,g.y*grid,grid,grid);
+  });
+}
+
+function movePac(){
+  const nx = pac.x + pac.dx;
+  const ny = pac.y + pac.dy;
+  if(maze[ny][nx]!==1){
+    pac.x=nx; pac.y=ny;
+    // Eat dots
+    if(maze[ny][nx]===0){ score++; maze[ny][nx]=0.9; }
+    if(maze[ny][nx]===2){ score+=5; pac.powered=true; pac.powerTime=0; maze[ny][nx]=0.9; }
+  }
+}
+
+function moveGhosts(){
+  ghosts.forEach(g=>{
+    if(pac.powered){
+      // Move away from pac
+      if(g.x<pac.x) g.x--;
+      else if(g.x>pac.x) g.x++;
+      if(g.y<pac.y) g.y--;
+      else if(g.y>pac.y) g.y++;
+    } else {
+      // Random movement
+      const dir=Math.floor(Math.random()*4);
+      const nx=g.x + (dir===0?1:dir===1?-1:0);
+      const ny=g.y + (dir===2?1:dir===3?-1:0);
+      if(maze[ny][nx]!==1){ g.x=nx; g.y=ny; }
+    }
+
+    // Collision
+    if(g.x===pac.x && g.y===pac.y){
+      if(pac.powered){
+        g.x = 18; g.y = 1; // reset ghost
+        score+=10;
+      } else {
+        endGame();
+      }
+    }
+  });
+}
+
+function gameLoop(){
+  if(!gameRunning) return;
+  movePac();
+  moveGhosts();
+  draw();
+  pac.powerTime++;
+  if(pac.powerTime>200){ pac.powered=false; }
+  document.getElementById('score').innerText='Score: '+score;
+  requestAnimationFrame(gameLoop);
+}
+
+function endGame(){
+  gameRunning=false;
+  document.getElementById('gameOver').style.display='block';
+}
+
+function startGame(){
+  pac={ x:1, y:1, dx:0, dy:0, powered:false, powerTime:0 };
+  ghosts = [ {x:18,y:1,dx:0,dy:0}, {x:18,y:11,dx:0,dy:0} ];
+  score=0;
+  gameRunning=true;
+  document.getElementById('gameOver').style.display='none';
+  gameLoop();
+}
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowLeft'){ pac.dx=-1; pac.dy=0; }
+  if(e.key==='ArrowRight'){ pac.dx=1; pac.dy=0; }
+  if(e.key==='ArrowUp'){ pac.dx=0; pac.dy=-1; }
+  if(e.key==='ArrowDown'){ pac.dx=0; pac.dy=1; }
+});
+
+startGame();
+</script>
+
+</body>
+</html>
