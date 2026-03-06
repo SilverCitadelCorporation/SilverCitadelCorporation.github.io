@@ -6,8 +6,23 @@
 <style>
 body{margin:0;font-family:Arial;background:#e0e0e0;}
 header{background:#2c3e50;color:white;padding:15px;text-align:center;font-size:24px;}
-#menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:20px;padding:20px;max-width:900px;margin:auto;}
-.gameCard{background:white;padding:20px;border-radius:10px;text-align:center;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,0.2);transition:0.2s;}
+#menu{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:20px;
+  padding:20px;
+  max-width:900px;
+  margin:auto;
+}
+.gameCard{
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  text-align:center;
+  cursor:pointer;
+  box-shadow:0 4px 10px rgba(0,0,0,0.2);
+  transition:0.2s;
+}
 .gameCard:hover{transform:scale(1.05);}
 </style>
 </head>
@@ -20,9 +35,11 @@ header{background:#2c3e50;color:white;padding:15px;text-align:center;font-size:2
   <div class="gameCard" onclick="openGame('games/eagleCraft.html')">EagleCraft</div>
   <div class="gameCard" onclick="openGame('games/geometry.html')">Geometry Game</div>
 </div>
+
 <script>
 function openGame(url){
-  window.location.href = url; // open each game
+  // Open the game in the same tab
+  window.location.href = url;
 }
 </script>
 </body>
