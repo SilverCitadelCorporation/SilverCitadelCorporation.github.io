@@ -1,57 +1,135 @@
 <!DOCTYPE html>
 <html>
-<body style="margin:0;background:black">
+<head>
+<title>Runner Game</title>
+<style>
+body{margin:0;background:#222;color:white;font-family:Arial;text-align:center;}
+canvas{background:#333;border:6px solid white;display:block;margin:auto;margin-top:20px;}
+.screen{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:#000d;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+}
+button{padding:12px 25px;font-size:18px;margin:8px;cursor:pointer;}
+select,input{padding:6px;margin:5px;}
+</style>
+</head>
+<body>
 
-<canvas id="game" width="800" height="500"></canvas>
+<!-- START SCREEN -->
+<div id="startScreen" class="screen">
+<h1>🏃 Runner</h1>
+<button onclick="startGame()">Play</button>
+<button onclick="openSettings()">Settings</button>
+<button onclick="exitGame()">Exit</button>
+</div>
+
+<!-- SETTINGS -->
+<div id="settingsScreen" class="screen" style="display:none">
+<h2>⚙ Settings</h2>
+<label>Player Color:</label>
+<input type="color" id="playerColor" value="#00ff00"><br>
+<button onclick="closeSettings()">Back</button>
+</div>
+
+<!-- GAME OVER -->
+<div id="gameOver" class="screen" style="display:none">
+<h1>Game Over</h1>
+<p id="finalScore"></p>
+<button onclick="restartGame()">Restart</button>
+<button onclick="exitGame()">Exit</button>
+</div>
+
+<canvas id="game" width="600" height="300"></canvas>
 
 <script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
 
-let c=document.getElementById("game")
-let ctx=c.getContext("2d")
+let player, obstacles, speed, score, running, playerColor;
 
-let player={y:400,vy:0}
-let obstacle={x:800}
+function startGame(){
+  playerColor = document.getElementById("playerColor").value;
+  player = {x:50, y:250, width:30, height:30, dy:0, jump:false};
+  obstacles = [];
+  speed = 4;
+  score = 0;
+  running = true;
+  document.getElementById("startScreen").style.display = "none";
+  loop();
+}
+
+function openSettings(){
+  document.getElementById("startScreen").style.display = "none";
+  document.getElementById("settingsScreen").style.display = "flex";
+}
+
+function closeSettings(){
+  document.getElementById("settingsScreen").style.display = "none";
+  document.getElementById("startScreen").style.display = "flex";
+}
+
+function restartGame(){ location.reload(); }
+function exitGame(){ window.location.href="../supercalculator.html"; }
+
+document.addEventListener("keydown", e=>{
+  if(e.code=="Space" && !player.jump){
+    player.dy=-10;
+    player.jump=true;
+  }
+});
+
+function loop(){
+  if(!running) return;
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+function update(){
+  // Gravity
+  player.dy += 0.5;
+  player.y += player.dy;
+  if(player.y > 250){player.y=250; player.dy=0; player.jump=false;}
+
+  // Obstacles
+  if(Math.random()<0.02){ obstacles.push({x:600, y:250, width:30, height:30}); }
+  obstacles.forEach(o=>{o.x-=speed;});
+  obstacles = obstacles.filter(o=>o.x+o.width>0);
+
+  // Collision
+  obstacles.forEach(o=>{
+    if(player.x < o.x+o.width && player.x+player.width>o.x &&
+       player.y<o.y+o.height && player.y+player.height>o.y){
+      endGame();
+    }
+  });
+
+  score++;
+}
 
 function draw(){
-
-ctx.fillStyle="black"
-ctx.fillRect(0,0,800,500)
-
-ctx.fillStyle="lime"
-ctx.fillRect(100,player.y,40,40)
-
-ctx.fillStyle="red"
-ctx.fillRect(obstacle.x,420,40,40)
-
-player.vy+=1
-player.y+=player.vy
-
-if(player.y>400){
-player.y=400
-player.vy=0
+  ctx.fillStyle="#333"; ctx.fillRect(0,0,600,300);
+  // Player
+  ctx.fillStyle=playerColor;
+  ctx.fillRect(player.x,player.y,player.width,player.height);
+  // Obstacles
+  ctx.fillStyle="red";
+  obstacles.forEach(o=>ctx.fillRect(o.x,o.y,o.width,o.height));
+  // Score
+  ctx.fillStyle="white";
+  ctx.font="20px Arial";
+  ctx.fillText("Score: "+score,500,30);
 }
 
-obstacle.x-=6
-
-if(obstacle.x<0){
-obstacle.x=800
+function endGame(){
+  running=false;
+  document.getElementById("gameOver").style.display="flex";
+  document.getElementById("finalScore").innerText="Score: "+score;
+  let pts = Number(localStorage.getItem("points")||0);
+  localStorage.setItem("points",pts+score);
 }
-
-if(obstacle.x<140 && player.y>380){
-alert("Game Over")
-location.reload()
-}
-
-requestAnimationFrame(draw)
-
-}
-
-document.addEventListener("keydown",e=>{
-if(e.code==="Space") player.vy=-15
-})
-
-draw()
-
 </script>
+
 </body>
 </html>
