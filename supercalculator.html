@@ -24,10 +24,16 @@ header{background:#2c3e50;color:white;padding:15px;text-align:center;font-size:2
   transition:0.2s;
 }
 .gameCard:hover{transform:scale(1.05);}
+#overallStats{
+  max-width:900px;margin:20px auto;padding:20px;background:#fff;border-radius:10px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.2);
+}
 </style>
 </head>
 <body>
+
 <header>Student Tools</header>
+
 <div id="menu">
   <div class="gameCard" onclick="openGame('games/snake.html')">Snake Adventure</div>
   <div class="gameCard" onclick="openGame('games/miniDash.html')">Mini Dash</div>
@@ -36,11 +42,37 @@ header{background:#2c3e50;color:white;padding:15px;text-align:center;font-size:2
   <div class="gameCard" onclick="openGame('games/geometry.html')">Geometry Game</div>
 </div>
 
+<div id="overallStats">
+  <h2>Player Stats</h2>
+  <p>Total Points: <span id="totalPoints">0</span></p>
+  <p>Snake: <span id="snakePoints">0</span></p>
+  <p>Mini Dash: <span id="miniDashPoints">0</span></p>
+  <p>Reaction Game: <span id="reactionPoints">0</span></p>
+  <p>EagleCraft: <span id="eagleCraftPoints">0</span></p>
+  <p>Geometry Game: <span id="geometryPoints">0</span></p>
+  <p>Total Plays: <span id="totalPlays">0</span></p>
+</div>
+
 <script>
 function openGame(url){
-  // Open the game in the same tab
   window.location.href = url;
 }
+
+function loadOverallStats(){
+  let stats = JSON.parse(localStorage.getItem("overallStats")) || {
+    totalPoints:0, snake:0, miniDash:0, reaction:0, eagleCraft:0, geometry:0, plays:0
+  };
+  document.getElementById("totalPoints").innerText = stats.totalPoints;
+  document.getElementById("snakePoints").innerText = stats.snake;
+  document.getElementById("miniDashPoints").innerText = stats.miniDash;
+  document.getElementById("reactionPoints").innerText = stats.reaction;
+  document.getElementById("eagleCraftPoints").innerText = stats.eagleCraft;
+  document.getElementById("geometryPoints").innerText = stats.geometry;
+  document.getElementById("totalPlays").innerText = stats.plays;
+}
+
+loadOverallStats();
 </script>
+
 </body>
 </html>
