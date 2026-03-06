@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Mini Dash</title>
+<style>
+body{margin:0;background:#0f172a;color:white;font-family:Arial;text-align:center;}
+canvas{background:#111;display:block;margin:auto;}
+button{padding:10px 20px;margin:5px;font-size:16px;cursor:pointer;border:none;background:#444;color:white;border-radius:5px;}
+button:hover{background:#666;}
+</style>
+</head>
+<body>
+<div id="startScreen">
+  <h1>Mini Dash</h1>
+  <button id="playBtn">Play</button>
+</div>
+<div id="gameScreen" style="display:none;">
+  <canvas id="canvas" width="600" height="400"></canvas>
+  <p>Score: <span id="score">0</span></p>
+</div>
+<div id="gameOverScreen" style="display:none;">
+  <h1>Game Over!</h1>
+  <p id="finalScore">Score: 0</p>
+  <button id="restartBtn">Restart</button>
+  <button id="exitBtn">Exit</button>
+</div>
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+let player={x:50,y:300,width:30,height:30,vy:0}, obstacles=[], score=0, interval;
+const gravity=0.8,jump=-12;
+
+function startGame(){
+  player.y=300; player.vy=0; obstacles=[]; score=0;
+  document.getElementById("startScreen").style.display="none";
+  document.getElementById("gameOverScreen").style.display="none";
+  document.getElementById("gameScreen").style.display="block";
+  interval=setInterval(gameLoop,20);
+}
+
+document.getElementById("playBtn").onclick = startGame;
+
+document.addEventListener("keydown",e=>{if(e.key===" "){player.vy=jump;}});
+
+function gameLoop(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  // player
+  player.vy+=gravity;
+  player.y+=player.vy;
+  ctx.fillStyle="lime";
+  ctx.fillRect(player.x,player.y,player.width,player.height);
+  
+  // obstacles
+  if(Math.random()<0.02) obstacles.push({x:canvas.width,y:350,width:20,height:50});
+  obstacles.forEach(o=>{o.x-=5;ctx.fillStyle="red";ctx.fillRect(o.x,o.y,o.width,o.height);});
+  obstacles=obstacles.filter(o=>o.x+o.width>0);
+  
+  // collision
+  if(obstacles.some(o=>player.x<o.x+o.width && player.x+player.width>o.x && player.y<o.y+o.height && player.y+player.height>o.y) || player.y>canvas.height){
+    return gameOver();
+  }
+  
+  score++;
+  document.getElementById("score").innerText=score;
+}
+
+function gameOver(){
+  clearInterval(interval);
+  document.getElementById("gameScreen").style.display="none";
+  document.getElementById("gameOverScreen").style.display="flex";
+  document.getElementById("finalScore").innerText="Score: "+score;
+}
+
+document.getElementById("restartBtn").onclick = startGame;
+document.getElementById("exitBtn").onclick = ()=>{window.location.href="../supercalculator.html";}
+</script>
+</body>
+</html>
