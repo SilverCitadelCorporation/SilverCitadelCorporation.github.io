@@ -1,76 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Student Arcade Hub</title>
+<meta charset="UTF-8">
+<title>Student Resource Hub</title>
 <style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:#0f1720;
-  color:white;
-  text-align:center;
-}
-header{
-  background:#111827;
-  padding:20px;
-  font-size:28px;
-}
-#menu{
-  display:flex;
-  justify-content:center;
-  padding:50px;
-}
-.gameCard{
-  background:#1f2933;
-  padding:40px;
-  border-radius:10px;
-  cursor:pointer;
-  box-shadow:0 4px 10px rgba(0,0,0,0.2);
-  transition:.2s;
-  font-size:24px;
-}
-.gameCard:hover{
-  transform:scale(1.05);
-  border:2px solid #00ffd5;
-}
-.stats{
-  position:fixed;
-  top:10px;
-  right:10px;
-  background:#111827;
-  padding:10px 20px;
-  border-radius:8px;
-}
-button{
-  padding:10px 20px;
-  margin-top:20px;
-  cursor:pointer;
-}
+body{margin:0;font-family:Arial;background:#e0e0e0;}
+header{background:#2c3e50;color:white;padding:15px;text-align:center;font-size:24px;}
+#menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:20px;padding:20px;max-width:900px;margin:auto;}
+.gameCard{background:white;padding:20px;border-radius:10px;text-align:center;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,0.2);transition:0.2s;}
+.gameCard:hover{transform:scale(1.05);}
+#player{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:black;z-index:1000;}
+iframe{width:100%;height:100%;border:none;}
+#closeBtn{position:absolute;top:10px;right:20px;font-size:20px;background:red;color:white;border:none;padding:10px;cursor:pointer;}
 </style>
 </head>
 <body>
 
-<header>Student Arcade</header>
-
-<div class="stats">
-Total Points: <span id="points">0</span>
-</div>
+<header>Student Resource Hub</header>
 
 <div id="menu">
-  <div class="gameCard" onclick="playGame('snake.html')">🐍 Snake</div>
-  <div class="gameCard" onclick="playGame('stats.html')">📊 Stats</div>
+  <div class="gameCard" onclick="openGame('games/snake.html')">Snake</div>
+  <div class="gameCard" onclick="openGame('games/runner.html')">Runner</div>
+  <div class="gameCard" onclick="openGame('games/eaglecraft.html')">Block Builder (Eaglecraft)</div>
+  <div class="gameCard" onclick="openGame('games/algebra-night.html')">Algebra Night (FNAF 1)</div>
 </div>
 
-<a href="mailto:silvercitadelcorporation@gmail.com">
-  <button>Report Bug</button>
-</a>
+<div id="player">
+  <button id="closeBtn" onclick="closeGame()">X</button>
+  <iframe id="gameFrame"></iframe>
+</div>
 
 <script>
-let pts = Number(localStorage.getItem("points")||0);
-document.getElementById("points").innerText = pts;
-
-function playGame(file){
-  window.location.href = file;
+function openGame(url){
+  document.getElementById("player").style.display="block";
+  document.getElementById("gameFrame").src=url;
+}
+function closeGame(){
+  document.getElementById("player").style.display="none";
+  document.getElementById("gameFrame").src="";
 }
 </script>
 
