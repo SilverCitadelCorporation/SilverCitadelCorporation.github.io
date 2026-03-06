@@ -70,6 +70,25 @@ border:none;
 padding:10px;
 cursor:pointer;
 }
+
+/* Report Button */
+#reportBtn{
+position:fixed;
+bottom:20px;
+right:20px;
+padding:12px 20px;
+background:#f39c12;
+color:white;
+border:none;
+border-radius:8px;
+font-size:16px;
+cursor:pointer;
+box-shadow:0 4px 6px rgba(0,0,0,0.3);
+transition:0.2s;
+}
+#reportBtn:hover{
+background:#e67e22;
+}
 </style>
 </head>
 
@@ -85,7 +104,7 @@ cursor:pointer;
 
 <div class="gameCard" onclick="openGame('games/eaglecraft.html')">Block Builder (Eaglecraft)</div>
 
-<div class="gameCard" onclick="openGame('games/algebra-night.html')">Algebra Night (FNAF 1)</div>
+<div class="gameCard" onclick="openGame('games/algebra-night.html')">Algebra Night (FNAF)</div>
 
 <div class="gameCard" onclick="window.open('https://ubg365.github.io/geometry-dash/', '_blank')">Geometry Dash</div>
 
@@ -106,8 +125,10 @@ cursor:pointer;
 <iframe id="gameFrame"></iframe>
 </div>
 
-<script>
+<!-- Report / Contact Bug Button -->
+<button id="reportBtn" onclick="reportBug()">Report a Bug</button>
 
+<script>
 function openGame(url){
 document.getElementById("player").style.display="block";
 document.getElementById("gameFrame").src=url;
@@ -118,6 +139,10 @@ document.getElementById("player").style.display="none";
 document.getElementById("gameFrame").src="";
 }
 
+// Report bug function
+function reportBug(){
+window.location.href="mailto:silvercitadelcorporation@gmail.co..m?subject=Bug Report from Student Hub&body=Describe the issue here...";
+}
 </script>
 
 </body>
