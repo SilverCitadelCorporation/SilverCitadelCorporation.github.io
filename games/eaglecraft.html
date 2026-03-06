@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>EagleCraft</title>
+<style>
+body{margin:0;background:#0f172a;color:white;font-family:Arial;text-align:center;}
+canvas{background:#111;display:block;margin:auto;}
+button{padding:10px 20px;margin:5px;font-size:16px;cursor:pointer;border:none;background:#444;color:white;border-radius:5px;}
+button:hover{background:#666;}
+</style>
+</head>
+<body>
+
+<div id="startScreen">
+  <h1>EagleCraft</h1>
+  <button id="playBtn">Play</button>
+</div>
+
+<div id="gameScreen" style="display:none;">
+  <canvas id="canvas" width="600" height="400"></canvas>
+  <p>Blocks Placed: <span id="score">0</span></p>
+</div>
+
+<div id="gameOverScreen" style="display:none;">
+  <h1>Game Over!</h1>
+  <p id="finalScore">Blocks Placed: 0</p>
+  <button id="restartBtn">Restart</button>
+  <button id="exitBtn">Exit</button>
+</div>
+
+<script>
+const canvas=document.getElementById("canvas");
+const ctx=canvas.getContext("2d");
+let blocks=[],score=0,placing=false;
+
+function startGame(){
+  blocks=[];
+  score=0;
+  document.getElementById("startScreen").style.display="none";
+  document.getElementById("gameOverScreen").style.display="none";
+  document.getElementById("gameScreen").style.display="block";
+  draw();
+}
+
+document.getElementById("playBtn").onclick=startGame;
+
+canvas.addEventListener("mousedown",()=>placing=true);
+canvas.addEventListener("mouseup",()=>placing=false);
+canvas.addEventListener("mousemove",(e)=>{
+  if(placing){
+    const rect=canvas.getBoundingClientRect();
+    const x=Math.floor((e.clientX-rect.left)/20)*20;
+    const y=Math.floor((e.clientY-rect.top)/20)*20;
+    blocks.push({x,y});
+    score++;
+    document.getElementById("score").innerText=score;
+  }
+});
+
+function draw(){
+  ctx.fillStyle="#111"; ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="#8B4513"; blocks.forEach(b=>ctx.fillRect(b.x,b.y,20,20));
+  requestAnimationFrame(draw);
+}
+
+document.getElementById("restartBtn").onclick=startGame;
+document.getElementById("exitBtn").onclick = ()=>{window.location.href="../supercalculator.html";}
+</script>
+</body>
+</html>
