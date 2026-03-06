@@ -2,267 +2,182 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Arcade Hub Pro</title>
+<title>Snake Adventure</title>
 <style>
-/* BODY + HEADER */
-body{margin:0;background:#0f172a;font-family:Arial;color:white;}
-header{background:#020617;padding:15px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #1e293b;}
-#logo{font-size:22px;font-weight:bold;}
-#search{padding:8px;width:250px;border-radius:6px;border:none;}
-
-/* CATEGORY BAR */
-#categories{display:flex;gap:10px;padding:10px 20px;background:#020617;}
-.catBtn{padding:6px 14px;background:#1e293b;border-radius:6px;cursor:pointer;}
-
-/* GRID */
-#games{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:20px;padding:25px;}
-.card{background:#1e293b;border-radius:12px;overflow:hidden;cursor:pointer;transition:.25s;position:relative;}
-.card:hover{transform:scale(1.06);box-shadow:0 10px 25px rgba(0,0,0,.6);}
-.thumb{height:120px;background:#334155;display:flex;align-items:center;justify-content:center;}
-.thumb img{max-width:100%;max-height:100%;border-radius:6px;}
-.title{text-align:center;padding:10px;}
-.favorite{position:absolute;top:6px;right:8px;cursor:pointer;font-size:18px;}
-
-/* PLAYER */
-#player{position:fixed;top:0;left:0;width:100%;height:100%;background:black;display:none;flex-direction:column;}
-#topbar{background:#020617;padding:10px;display:flex;justify-content:space-between;}
-iframe{flex:1;border:none;}
-#loading{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:26px;display:none;}
-
-/* TRENDING & RECENT */
-#extraSections{padding:20px;}
-.sectionTitle{font-size:20px;margin-bottom:10px;}
-.extraGames{display:flex;gap:15px;overflow-x:auto;}
-.extraGames .card{min-width:150px;flex:0 0 auto;}
-
-/* ADMIN PANEL */
-#adminPanel{position:fixed;top:50px;right:20px;background:#1e293b;padding:20px;border-radius:10px;display:none;width:300px;color:white;z-index:1000;}
-
-/* BUG REPORT */
-#reportScreen{position:fixed;top:0;left:0;width:100%;height:100%;background:#000c;display:none;justify-content:center;align-items:center;}
-#reportScreen div{background:#1e293b;padding:30px;border-radius:10px;width:400px;}
-
-/* BUTTONS */
-button{padding:10px 20px;margin:5px;font-size:16px;cursor:pointer;border:none;background:#444;color:white;}
-button:hover{background:#666;}
+body{margin:0;background:#0f172a;color:white;font-family:Arial;text-align:center;}
+#startScreen,#gameScreen,#gameOverScreen{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+}
+canvas{background:#111;}
+button, select{padding:10px 20px;margin:5px;font-size:16px;cursor:pointer;border:none;background:#444;color:white;border-radius:5px;}
+button:hover, select:hover{background:#666;}
+#nextFruitPreview{position:absolute;top:10px;right:10px;font-size:24px;}
+.settingsRow{display:flex;align-items:center;justify-content:center;margin:10px 0;font-size:18px;}
+#settingsFruitPreview{display:inline-block;width:30px;font-size:24px;margin-left:10px;min-width:30px;}
+#settingsPanel{position:absolute;top:150px;background:#1e293b;padding:20px;border-radius:10px;display:none;z-index:1000;}
 </style>
 </head>
 <body>
 
-<header>
-<div id="logo">🎮 Arcade Hub Pro</div>
-<input id="search" placeholder="Search games..." onkeyup="searchGames()">
-<button onclick="openReport()">Report Bug</button>
-<button onclick="toggleAdmin()">Admin</button>
-</header>
-
-<div id="categories">
-<div class="catBtn" onclick="filterGames('all')">All</div>
-<div class="catBtn" onclick="filterGames('arcade')">Arcade</div>
-<div class="catBtn" onclick="filterGames('puzzle')">Puzzle</div>
-<div class="catBtn" onclick="filterGames('action')">Action</div>
-<div class="catBtn" onclick="filterGames('skill')">Skill</div>
+<div id="startScreen">
+  <h1>Snake Adventure</h1>
+  <button id="playBtn">Play</button>
+  <button id="settingsBtn">Settings</button>
 </div>
 
-<!-- TRENDING & RECENT -->
-<div id="extraSections">
-<div class="sectionTitle">Trending</div>
-<div class="extraGames" id="trending"></div>
-<div class="sectionTitle">Recently Played</div>
-<div class="extraGames" id="recentlyPlayed"></div>
+<div id="settingsPanel">
+  <div class="settingsRow">
+    <label>Fruit:</label>
+    <select id="fruitSelect">
+      <option value="apple">Apple</option>
+      <option value="orange">Orange</option>
+      <option value="banana">Banana</option>
+      <option value="cherry">Cherry</option>
+      <option value="grape">Grape</option>
+      <option value="watermelon">Watermelon</option>
+      <option value="random">Random</option>
+    </select>
+    <span id="settingsFruitPreview">🍎</span>
+  </div>
+  <div class="settingsRow">
+    <label>Grid Size:</label>
+    <select id="gridSelect">
+      <option value="20" selected>20</option>
+      <option value="15">15</option>
+      <option value="25">25</option>
+    </select>
+  </div>
+  <div class="settingsRow">
+    <label>Game Mode:</label>
+    <select id="modeSelect">
+      <option value="classic" selected>Classic</option>
+      <option value="wallsOff">Walls Off</option>
+    </select>
+  </div>
 </div>
 
-<div id="games">
-<!-- Game Cards: Add thumbnails in thumbs/ folder -->
-<div class="card arcade" data-name="Snake Adventure" data-thumb="thumbs/snake.png" onclick="openGame('games/snake.html')">
-<div class="favorite" onclick="toggleFav(event,this)">⭐</div>
-<div class="thumb"><img src="thumbs/snake.png"></div>
-<div class="title">Snake Adventure</div>
-</div>
-<div class="card arcade" data-name="Breakout" data-thumb="thumbs/breakout.png" onclick="openGame('games/breakout.html')">
-<div class="favorite" onclick="toggleFav(event,this)">⭐</div>
-<div class="thumb"><img src="thumbs/breakout.png"></div>
-<div class="title">Breakout</div>
-</div>
-<div class="card puzzle" data-name="Tetris" data-thumb="thumbs/tetris.png" onclick="openGame('games/tetris.html')">
-<div class="favorite" onclick="toggleFav(event,this)">⭐</div>
-<div class="thumb"><img src="thumbs/tetris.png"></div>
-<div class="title">Tetris</div>
-</div>
-<div class="card skill" data-name="Reaction Test" data-thumb="thumbs/reaction.png" onclick="openGame('games/reaction.html')">
-<div class="favorite" onclick="toggleFav(event,this)">⭐</div>
-<div class="thumb"><img src="thumbs/reaction.png"></div>
-<div class="title">Reaction Test</div>
-</div>
-<div class="card action" data-name="Space Shooter" data-thumb="thumbs/spaceshooter.png" onclick="openGame('games/spaceshooter.html')">
-<div class="favorite" onclick="toggleFav(event,this)">⭐</div>
-<div class="thumb"><img src="thumbs/spaceshooter.png"></div>
-<div class="title">Space Shooter</div>
-</div>
-<div class="card arcade" data-name="Flappy Flight" data-thumb="thumbs/flappy.png" onclick="openGame('games/flappy.html')">
-<div class="favorite" onclick="toggleFav(event,this)">⭐</div>
-<div class="thumb"><img src="thumbs/flappy.png"></div>
-<div class="title">Flappy Flight</div>
-</div>
-<div class="card arcade" data-name="Maze Chaser" data-thumb="thumbs/pacman.png" onclick="openGame('games/pacman.html')">
-<div class="favorite" onclick="toggleFav(event,this)">⭐</div>
-<div class="thumb"><img src="thumbs/pacman.png"></div>
-<div class="title">Maze Chaser</div>
-</div>
-<div class="card puzzle" data-name="2048" data-thumb="thumbs/2048.png" onclick="openGame('games/2048.html')">
-<div class="favorite" onclick="toggleFav(event,this)">⭐</div>
-<div class="thumb"><img src="thumbs/2048.png"></div>
-<div class="title">2048</div>
-</div>
+<div id="gameScreen" style="display:none;">
+  <canvas id="gameCanvas" width="400" height="400"></canvas>
+  <p>Score: <span id="score">0</span></p>
+  <div id="nextFruitPreview">🍎</div>
 </div>
 
-<!-- PLAYER -->
-<div id="player">
-<div id="topbar">
-<button onclick="closeGame()">⬅ Back</button>
-<div>Game Player</div>
-</div>
-<div id="loading">Loading Game...</div>
-<iframe id="gameFrame"></iframe>
-</div>
-
-<!-- BUG REPORT -->
-<div id="reportScreen">
-<div>
-<h2>Report a Bug</h2>
-<input id="bugGame" placeholder="Game Name" style="width:100%;padding:8px;margin-bottom:10px;">
-<textarea id="bugDesc" placeholder="Describe the bug..." style="width:100%;height:120px;padding:8px;"></textarea>
-<br><br>
-<button onclick="sendBug()">Send Report</button>
-<button onclick="closeReport()">Cancel</button>
-</div>
-</div>
-
-<!-- ADMIN PANEL -->
-<div id="adminPanel">
-<h3>Admin Panel</h3>
-<input id="newGameName" placeholder="Game Name" style="width:100%;margin-bottom:5px;">
-<input id="newGameURL" placeholder="Game URL" style="width:100%;margin-bottom:5px;">
-<input id="newGameThumb" placeholder="Thumbnail URL" style="width:100%;margin-bottom:5px;">
-<select id="newGameCat" style="width:100%;margin-bottom:10px;">
-<option value="arcade">Arcade</option>
-<option value="puzzle">Puzzle</option>
-<option value="action">Action</option>
-<option value="skill">Skill</option>
-</select>
-<button onclick="addGame()">Add Game</button>
-<hr>
-<button onclick="hideAdmin()">Close Panel</button>
+<div id="gameOverScreen" style="display:none;">
+  <h1>Game Over!</h1>
+  <p id="finalScore">Score: 0</p>
+  <button id="restartBtn">Restart</button>
+  <button id="exitBtn">Exit</button>
 </div>
 
 <script>
-// ---------- Game Player ----------
-function openGame(url,name){
-document.getElementById("player").style.display="flex"
-document.getElementById("loading").style.display="block"
-document.getElementById("gameFrame").src=""
-setTimeout(()=>{
-document.getElementById("gameFrame").src=url
-document.getElementById("loading").style.display="none"
-},500)
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+let snake=[], dx=1, dy=0, apple={x:5,y:5}, score=0, gameInterval;
+let grid=20, mode="classic", fruitType="🍎", randomFruit=false;
 
-// Update Recently Played
-if(name){
-let recent=JSON.parse(localStorage.getItem("recent")||"[]")
-recent.unshift(name)
-recent=[...new Set(recent)].slice(0,5)
-localStorage.setItem("recent",JSON.stringify(recent))
-renderExtra()
-}
-}
-function closeGame(){document.getElementById("player").style.display="none";document.getElementById("gameFrame").src=""}
+const fruits = ["🍎","🍊","🍌","🍒","🍇","🍉"];
+const fruitMap = {apple:"🍎", orange:"🍊", banana:"🍌", cherry:"🍒", grape:"🍇", watermelon:"🍉"};
 
-// ---------- Search ----------
-function searchGames(){
-let input=document.getElementById("search").value.toLowerCase()
-let cards=document.querySelectorAll(".card")
-cards.forEach(card=>{
-let title=card.dataset.name.toLowerCase()
-card.style.display = title.includes(input) ? "block":"none"
-})
+const startScreen = document.getElementById("startScreen");
+const settingsPanel = document.getElementById("settingsPanel");
+const gameScreen = document.getElementById("gameScreen");
+const gameOverScreen = document.getElementById("gameOverScreen");
+
+const fruitSelect = document.getElementById("fruitSelect");
+const gridSelect = document.getElementById("gridSelect");
+const modeSelect = document.getElementById("modeSelect");
+const settingsFruitPreview = document.getElementById("settingsFruitPreview");
+const nextFruitPreview = document.getElementById("nextFruitPreview");
+
+settingsFruitPreview.innerText = fruitMap[fruitSelect.value];
+
+document.getElementById("settingsBtn").onclick = ()=>{
+  settingsPanel.style.display = settingsPanel.style.display==="none"?"block":"none";
+  updateFruitPreview();
 }
 
-// ---------- Filter ----------
-function filterGames(cat){
-let cards=document.querySelectorAll(".card")
-cards.forEach(card=>{
-if(cat=="all"){card.style.display="block"}
-else{card.style.display = card.classList.contains(cat) ? "block":"none"}
-})
+fruitSelect.onchange = updateFruitPreview;
+function updateFruitPreview(){
+  const val = fruitSelect.value;
+  settingsFruitPreview.innerText = val==="random"?"🎲":fruitMap[val];
 }
 
-// ---------- Favorites ----------
-function toggleFav(event,star){
-event.stopPropagation()
-let favs=JSON.parse(localStorage.getItem("favs")||"[]")
-let name=star.parentElement.dataset.name
-if(star.innerText=="⭐"){star.innerText="🌟"; if(!favs.includes(name)) favs.push(name)}
-else{star.innerText="⭐"; favs=favs.filter(x=>x!=name)}
-localStorage.setItem("favs",JSON.stringify(favs))
-renderExtra()
+function applySettings(){
+  const val = fruitSelect.value;
+  randomFruit = val==="random";
+  fruitType = randomFruit ? fruits[Math.floor(Math.random()*fruits.length)] : fruitMap[val];
+  grid = Number(gridSelect.value);
+  mode = modeSelect.value;
 }
 
-// ---------- Bug Report ----------
-function openReport(){document.getElementById("reportScreen").style.display="flex"}
-function closeReport(){document.getElementById("reportScreen").style.display="none"}
-function sendBug(){
-let game=document.getElementById("bugGame").value
-let desc=document.getElementById("bugDesc").value
-let email="silvercitadelcorporation@gmail.com"
-let subject=encodeURIComponent("Arcade Bug Report")
-let body=encodeURIComponent("Game: "+game+"\n\nBug Description:\n"+desc)
-window.location.href="mailto:"+email+"?subject="+subject+"&body="+body
+function startGame(){
+  score=0;
+  snake=[{x:8,y:8}];
+  dx=1; dy=0;
+  placeApple();
+  gameScreen.style.display="flex";
+  startScreen.style.display="none";
+  gameOverScreen.style.display="none";
+  clearInterval(gameInterval);
+  gameInterval = setInterval(gameLoop,100);
 }
 
-// ---------- Admin Panel ----------
-function toggleAdmin(){let panel=document.getElementById("adminPanel");panel.style.display=(panel.style.display=="flex")?"none":"flex"}
-function hideAdmin(){document.getElementById("adminPanel").style.display="none"}
-function addGame(){
-let name=document.getElementById("newGameName").value
-let url=document.getElementById("newGameURL").value
-let thumb=document.getElementById("newGameThumb").value
-let cat=document.getElementById("newGameCat").value
-if(!name||!url||!thumb){alert("Fill all fields!"); return;}
-let container=document.getElementById("games")
-let card=document.createElement("div")
-card.className="card "+cat
-card.dataset.name=name
-card.innerHTML='<div class="favorite" onclick="toggleFav(event,this)">⭐</div><div class="thumb"><img src="'+thumb+'"></div><div class="title">'+name+'</div>'
-card.setAttribute("onclick","openGame('"+url+"','"+name+"')")
-container.appendChild(card)
-document.getElementById("newGameName").value=""
-document.getElementById("newGameURL").value=""
-document.getElementById("newGameThumb").value=""
-renderExtra()
+document.getElementById("playBtn").onclick = ()=>{
+  applySettings();
+  startGame();
 }
 
-// ---------- Render Trending & Recently Played ----------
-function renderExtra(){
-let trending=document.getElementById("trending")
-let recent=document.getElementById("recentlyPlayed")
-trending.innerHTML=""; recent.innerHTML=""
-let cards=[...document.querySelectorAll(".card")]
-// Trending: top 5 favorites
-let favs=JSON.parse(localStorage.getItem("favs")||"[]")
-cards.filter(c=>favs.includes(c.dataset.name)).slice(0,5).forEach(c=>{
-trending.appendChild(c.cloneNode(true))
-})
-// Recently Played
-let rec=JSON.parse(localStorage.getItem("recent")||"[]")
-rec.forEach(name=>{
-let c=cards.find(x=>x.dataset.name==name)
-if(c) recent.appendChild(c.cloneNode(true))
-})
+function gameLoop(){
+  let head={x:snake[0].x+dx,y:snake[0].y+dy};
+  if(mode==="classic"){
+    if(head.x<0||head.x>=canvas.width/grid||head.y<0||head.y>=canvas.height/grid||snake.some(s=>s.x===head.x&&s.y===head.y)) return gameOver();
+  } else {
+    head.x=(head.x+canvas.width/grid)%(canvas.width/grid);
+    head.y=(head.y+canvas.height/grid)%(canvas.height/grid);
+    if(snake.some(s=>s.x===head.x&&s.y===head.y)) return gameOver();
+  }
+  snake.unshift(head);
+  if(head.x===apple.x && head.y===apple.y){score++; placeApple();} 
+  else snake.pop();
+
+  ctx.fillStyle="#111"; ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="lime"; snake.forEach(s=>ctx.fillRect(s.x*grid,s.y*grid,grid-2,grid-2));
+  ctx.font = grid + "px Arial"; ctx.textAlign="center"; ctx.textBaseline="middle";
+  ctx.fillText(fruitType, apple.x*grid+grid/2, apple.y*grid+grid/2);
+  document.getElementById("score").innerText = score;
 }
 
-// ---------- Init ----------
-renderExtra()
-filterGames('all')
+function placeApple(){
+  apple.x=Math.floor(Math.random()*canvas.width/grid);
+  apple.y=Math.floor(Math.random()*canvas.height/grid);
+  if(randomFruit) fruitType = fruits[Math.floor(Math.random()*fruits.length)];
+  nextFruitPreview.innerText = fruits[Math.floor(Math.random()*fruits.length)];
+}
+
+document.addEventListener("keydown",e=>{
+  if(e.key==="ArrowUp"&&dy===0){dx=0;dy=-1;}
+  if(e.key==="ArrowDown"&&dy===0){dx=0;dy=1;}
+  if(e.key==="ArrowLeft"&&dx===0){dx=-1;dy=0;}
+  if(e.key==="ArrowRight"&&dx===0){dx=1;dy=0;}
+});
+
+function gameOver(){
+  clearInterval(gameInterval);
+  gameScreen.style.display="none";
+  gameOverScreen.style.display="flex";
+  document.getElementById("finalScore").innerText="Score: "+score;
+}
+
+// Restart → immediately start a new game
+document.getElementById("restartBtn").onclick = ()=>{
+  startGame();
+}
+
+// Exit → go to supercalculator.html
+document.getElementById("exitBtn").onclick = ()=>{
+  window.location.href="supercalculator.html";
+}
 </script>
 </body>
 </html>
