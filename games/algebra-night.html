@@ -1,168 +1,109 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Algebra Night - FNAF Clone</title>
+<meta charset="UTF-8">
+<title>Algebra Night (Mini FNAF)</title>
 <style>
-body{margin:0;font-family:Arial;background:#000;color:white;text-align:center;}
-.screen{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;background:#000d;}
-button{padding:12px 25px;font-size:18px;margin:8px;cursor:pointer;}
-canvas{background:#111;border:6px solid white;display:block;margin:auto;margin-top:20px;}
-#powerBar{width:200px;height:20px;background:#444;margin-top:10px;border-radius:5px;overflow:hidden;}
-#powerFill{height:100%;width:100%;background:#0f0;}
-#controls{display:flex;justify-content:center;margin-top:20px;}
-.controlBtn{margin:0 10px;padding:10px 15px;cursor:pointer;}
-#cameras{display:flex;justify-content:center;margin-top:10px;}
-.cameraBtn{margin:0 5px;padding:8px 12px;cursor:pointer;}
+body { margin:0; font-family: Arial; background: black; color: white; text-align:center; }
+#gameArea { position: relative; width: 400px; height: 600px; margin: 50px auto; background: #111; border: 3px solid #555; overflow: hidden; }
+.animatronic { position: absolute; width: 60px; height: 60px; background: red; top: 0; left: 0; border-radius: 10px; }
+button { padding:10px 20px; margin:5px; font-size:16px; cursor:pointer; }
+#gameOver { display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); color:white; font-size:32px; display:flex; justify-content:center; align-items:center; flex-direction:column; }
 </style>
 </head>
 <body>
 
-<!-- START SCREEN -->
-<div id="startScreen" class="screen">
-<h1>Algebra Night 🐻</h1>
-<button onclick="startGame()">Play</button>
-<button onclick="openSettings()">Settings</button>
-<button onclick="exitGame()">Exit</button>
+<h1>Algebra Night</h1>
+<div id="gameArea">
+  <div id="anim1" class="animatronic"></div>
+  <div id="anim2" class="animatronic"></div>
+  <div id="gameOver">
+    <div id="gameOverText">GAME OVER</div>
+    <button onclick="startGame()">Restart</button>
+  </div>
 </div>
 
-<!-- SETTINGS SCREEN -->
-<div id="settingsScreen" class="screen" style="display:none">
-<h2>⚙ Settings</h2>
-<label>Character Color (placeholder if no images):</label>
-<input type="color" id="charColor" value="#ff0000"><br>
-<button onclick="closeSettings()">Back</button>
+<div>
+  <button id="doorBtn">Close Door</button>
+  <button id="lightBtn">Turn On Light</button>
 </div>
-
-<!-- GAME OVER SCREEN -->
-<div id="gameOver" class="screen" style="display:none">
-<h1>Game Over</h1>
-<p id="finalScore"></p>
-<button onclick="restartGame()">Restart</button>
-<button onclick="exitGame()">Exit</button>
-</div>
-
-<!-- JUMPSCARE SCREEN -->
-<div id="jumpScare" class="screen" style="display:none; background:#000;">
-<img id="jumpImg" src="" style="width:100%;height:100%;object-fit:cover;">
-</div>
-
-<!-- GAME SCREEN -->
-<canvas id="game" width="600" height="400"></canvas>
-<div id="powerBar"><div id="powerFill"></div></div>
-<div id="controls">
-<button class="controlBtn" onclick="toggleDoor()">Toggle Door</button>
-<button class="controlBtn" onclick="toggleLight()">Toggle Light</button>
-</div>
-<div id="cameras">
-<button class="cameraBtn" onclick="switchCamera(0)">Camera 1</button>
-<button class="cameraBtn" onclick="switchCamera(1)">Camera 2</button>
-<button class="cameraBtn" onclick="switchCamera(2)">Camera 3</button>
-</div>
+<div id="score">Time Survived: 0s</div>
 
 <script>
-// CANVAS & GAME VARIABLES
-const canvas=document.getElementById("game");
-const ctx=canvas.getContext("2d");
-let running=false;
-let power=100;
-let hours=0;
-let animatronics=[];
-let charColor=document.getElementById("charColor").value;
-let door=false;
-let light=false;
-let camera=0;
+let anim1 = document.getElementById('anim1');
+let anim2 = document.getElementById('anim2');
+let gameOverDiv = document.getElementById('gameOver');
+let scoreDiv = document.getElementById('score');
+let doorBtn = document.getElementById('doorBtn');
+let lightBtn = document.getElementById('lightBtn');
 
-// PLACEHOLDER IMAGES (replace with actual animatronics)
-const animImages=["freddy.png","bonnie.png","chica.png"];
-const jumpImages=["freddy_jumpscare.png","bonnie_jumpscare.png","chica_jumpscare.png"];
+let gameInterval;
+let animSpeed1, animSpeed2;
+let doorClosed = false;
+let lightOn = false;
+let score = 0;
+let gameRunning = false;
 
-// START / SETTINGS / EXIT
-function startGame(){
-  charColor=document.getElementById("charColor").value;
-  animatronics=[
-    {x:50,y:50,targetX:300,targetY:200,img:animImages[0]},
-    {x:550,y:50,targetX:300,targetY:200,img:animImages[1]},
-    {x:300,y:50,targetX:300,targetY:200,img:animImages[2]}
-  ];
-  running=true;
-  document.getElementById("startScreen").style.display="none";
-  loop();
-  setInterval(updatePower,1000);
-  setInterval(()=>{if(running) hours++;},5000);
-}
-function openSettings(){document.getElementById("startScreen").style.display="none";document.getElementById("settingsScreen").style.display="flex";}
-function closeSettings(){document.getElementById("settingsScreen").style.display="none";document.getElementById("startScreen").style.display="flex";}
-function exitGame(){window.location.href="../supercalculator.html";}
-function restartGame(){location.reload();}
+function startGame() {
+  anim1.style.top = '0px';
+  anim1.style.left = Math.random()*340+'px';
+  anim2.style.top = '0px';
+  anim2.style.left = Math.random()*340+'px';
+  animSpeed1 = 1 + Math.random()*1.5;
+  animSpeed2 = 1 + Math.random()*1.5;
+  doorClosed = false;
+  lightOn = false;
+  score = 0;
+  gameOverDiv.style.display = 'none';
+  gameRunning = true;
 
-// CONTROLS
-function toggleDoor(){door=!door;}
-function toggleLight(){light=!light;}
-function switchCamera(num){camera=num;}
-
-// UPDATE POWER
-function updatePower(){
-  if(!running) return;
-  let drain=0.2;
-  if(door) drain+=1;
-  if(light) drain+=0.5;
-  power-=drain;
-  if(power<=0) endGame();
-  document.getElementById("powerFill").style.width=power+"%";
+  if(gameInterval) clearInterval(gameInterval);
+  gameInterval = setInterval(gameLoop, 20);
 }
 
-// LOOP
-function loop(){
-  if(!running) return;
-  ctx.fillStyle="#111"; ctx.fillRect(0,0,600,400);
-  ctx.fillStyle="#222"; ctx.fillRect(0,0,600,400); // background
+doorBtn.onclick = ()=>{ doorClosed = !doorClosed; doorBtn.innerText = doorClosed ? "Door Closed" : "Close Door"; }
+lightBtn.onclick = ()=>{ lightOn = !lightOn; lightBtn.innerText = lightOn ? "Light On" : "Turn On Light"; }
 
-  // Draw animatronics
-  animatronics.forEach((a,i)=>{
-    let img=new Image();
-    img.src=a.img;
-    ctx.drawImage(img,a.x,a.y,40,40);
-    
-    // Move toward office if on camera
-    if(a.targetX==300 && a.targetY==200 && camera==0 && !door){
-      if(a.x<280) a.x+=1;
-      if(a.x>280) a.x-=1;
-      if(a.y<180) a.y+=1;
-      if(a.y>180) a.y-=1;
-    }
-    
-    // Check if reached office
-    if(a.x>280 && a.x<320 && a.y>180 && a.y<220 && !door){
-      showJumpScare(i);
-    }
-  });
+function gameLoop(){
+  if(!gameRunning) return;
 
-  // Display hours survived
-  ctx.fillStyle="white";
-  ctx.font="20px Arial";
-  ctx.fillText("Hours Survived: "+hours,450,30);
+  // Move animatronics
+  anim1.style.top = parseFloat(anim1.style.top) + animSpeed1 + 'px';
+  anim2.style.top = parseFloat(anim2.style.top) + animSpeed2 + 'px';
 
-  requestAnimationFrame(loop);
+  // If light is on, slow them
+  if(lightOn){
+    animSpeed1 = Math.max(animSpeed1-0.05,0.5);
+    animSpeed2 = Math.max(animSpeed2-0.05,0.5);
+  }
+
+  // If door is closed, stop them
+  if(doorClosed){
+    animSpeed1 = 0;
+    animSpeed2 = 0;
+  } else {
+    animSpeed1 = 1 + Math.random()*1.5;
+    animSpeed2 = 1 + Math.random()*1.5;
+  }
+
+  // Check collision with bottom
+  if(parseFloat(anim1.style.top) > 540 || parseFloat(anim2.style.top) > 540){
+    endGame();
+  }
+
+  // Update score
+  score += 0.02;
+  scoreDiv.innerText = 'Time Survived: '+Math.floor(score)+'s';
 }
 
-// JUMPSCARE
-function showJumpScare(index){
-  running=false;
-  const js=document.getElementById("jumpScare");
-  const img=document.getElementById("jumpImg");
-  img.src=jumpImages[index];
-  js.style.display="flex";
-  setTimeout(()=>{js.style.display="none"; endGame();},2000);
-}
-
-// GAME OVER
 function endGame(){
-  running=false;
-  document.getElementById("gameOver").style.display="flex";
-  document.getElementById("finalScore").innerText="Hours Survived: "+hours;
-  let pts=Number(localStorage.getItem("points")||0);
-  localStorage.setItem("points",pts+hours);
+  gameRunning = false;
+  clearInterval(gameInterval);
+  gameOverDiv.style.display = 'flex';
 }
+
+// Start immediately
+startGame();
 </script>
 
 </body>
