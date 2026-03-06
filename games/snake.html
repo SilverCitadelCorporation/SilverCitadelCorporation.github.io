@@ -169,15 +169,15 @@ function gameOver(){
   document.getElementById("finalScore").innerText="Score: "+score;
 }
 
-// Restart → go back to Play screen
+// Restart → back to Play screen
 document.getElementById("restartBtn").onclick = ()=>{
   gameOverScreen.style.display="none";
   startScreen.style.display="flex";
 }
 
-// Exit → go back to hub (main menu page)
+// Exit → go to supercalculator.html
 document.getElementById("exitBtn").onclick = ()=>{
-  window.location.href="index.html"; // <-- change this to your hub URL
+  window.location.href="supercalculator.html";
 }
 </script>
 </body>
