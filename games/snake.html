@@ -111,21 +111,22 @@ function applySettings(){
   mode = modeSelect.value;
 }
 
-document.getElementById("playBtn").onclick = ()=>{
-  applySettings();
-  startScreen.style.display="none";
-  settingsPanel.style.display="none";
-  gameScreen.style.display="flex";
-  startGame();
-}
-
+// Start Game function (used for Play and Restart)
 function startGame(){
   score=0;
   snake=[{x:8,y:8}];
   dx=1; dy=0;
   placeApple();
+  gameScreen.style.display="flex";
+  startScreen.style.display="none";
+  gameOverScreen.style.display="none";
   clearInterval(gameInterval);
   gameInterval = setInterval(gameLoop,100);
+}
+
+document.getElementById("playBtn").onclick = ()=>{
+  applySettings();
+  startGame();
 }
 
 function gameLoop(){
@@ -169,10 +170,9 @@ function gameOver(){
   document.getElementById("finalScore").innerText="Score: "+score;
 }
 
-// Restart → back to Play screen
+// Restart → immediately start a new game
 document.getElementById("restartBtn").onclick = ()=>{
-  gameOverScreen.style.display="none";
-  startScreen.style.display="flex";
+  startGame();
 }
 
 // Exit → go to supercalculator.html
