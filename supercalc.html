@@ -88,7 +88,7 @@ iframe {
 
   <div class="gameCard" onclick="openGame('games/snake/index.html')">Snake</div>
   <div class="gameCard" onclick="openGame('games/2048/index.html')">2048</div>
-  <div class="gameCard" onclick="openGame('games/flappy-bird.html')">Flappy Bird</div>
+  <div class="gameCard" onclick="openGame('flappyInternal')">Flappy Bird</div>
   <div class="gameCard" onclick="openGame('games/tetris/index.html')">Tetris</div>
   <div class="gameCard" onclick="openGame('games/pacman/index.html')">Pac‑Man</div>
   <div class="gameCard" onclick="openGame('games/slope/index.html')">Slope</div>
@@ -101,21 +101,120 @@ iframe {
 <div id="player">
   <button id="closeBtn" onclick="closeGame()">X</button>
   <iframe id="gameFrame"></iframe>
+  <canvas id="flappyCanvas" width="400" height="600" style="display:none; margin:auto; background:#70c5ce;"></canvas>
+  <div id="flappyScore" style="position:absolute; top:10px; left:50%; transform:translateX(-50%); font-size:24px; color:white; text-shadow:2px 2px 4px #000;"></div>
 </div>
 
 <button id="reportBtn" onclick="reportBug()">Report a Bug</button>
 
 <script>
+// Open game or internal Flappy
 function openGame(url){
   document.getElementById("player").style.display="block";
-  document.getElementById("gameFrame").src = url;
+  if(url === "flappyInternal"){
+    document.getElementById("gameFrame").style.display="none";
+    document.getElementById("flappyCanvas").style.display="block";
+    document.getElementById("flappyScore").innerText="Score: 0";
+    startFlappy();
+  } else {
+    document.getElementById("gameFrame").style.display="block";
+    document.getElementById("flappyCanvas").style.display="none";
+    document.getElementById("gameFrame").src = url;
+  }
 }
+
 function closeGame(){
   document.getElementById("player").style.display="none";
   document.getElementById("gameFrame").src = "";
+  document.getElementById("flappyCanvas").style.display="none";
+  cancelAnimationFrame(flappyFrame);
 }
+
+// Report bug
 function reportBug(){
   window.location.href="mailto:silvercitadelcorporation@gmail.com?subject=Bug Report from Student Hub&body=Describe the issue here...";
+}
+
+// ===== Simple Flappy Bird inside hub =====
+let flappyFrame;
+function startFlappy(){
+  const canvas = document.getElementById('flappyCanvas');
+  const ctx = canvas.getContext('2d');
+  let bird = { x:50, y:300, w:30, h:30, v:0 };
+  const gravity = 0.6;
+  const jump = -10;
+  const pipes = [];
+  const pipeWidth = 50;
+  const pipeGap = 150;
+  let frame = 0;
+  let score = 0;
+  let gameOver = false;
+
+  function loop(){
+    if(gameOver){ drawGameOver(); return; }
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    frame++;
+
+    // Bird
+    bird.v += gravity;
+    bird.y += bird.v;
+    ctx.fillStyle='yellow';
+    ctx.fillRect(bird.x,bird.y,bird.w,bird.h);
+
+    // Pipes
+    if(frame % 90 === 0){
+      const topH = Math.random() * (canvas.height - pipeGap - 50) + 50;
+      pipes.push({ x:canvas.width, topH, passed:false });
+    }
+
+    for(let i=0;i<pipes.length;i++){
+      const p = pipes[i];
+      p.x -= 2;
+      ctx.fillStyle='green';
+      ctx.fillRect(p.x,0,pipeWidth,p.topH);
+      ctx.fillRect(p.x,p.topH+pipeGap,pipeWidth,canvas.height-p.topH-pipeGap);
+
+      // Collision
+      if(bird.x < p.x+pipeWidth && bird.x+bird.w>p.x && (bird.y < p.topH || bird.y+bird.h > p.topH+pipeGap)){
+        gameOver=true;
+      }
+
+      // Score
+      if(!p.passed && p.x+pipeWidth<bird.x){ score++; p.passed=true; }
+    }
+
+    // Floor & ceiling
+    if(bird.y + bird.h>canvas.height || bird.y<0){ gameOver=true; }
+
+    document.getElementById('flappyScore').innerText='Score: '+score;
+    flappyFrame = requestAnimationFrame(loop);
+  }
+
+  function drawGameOver(){
+    ctx.fillStyle='rgba(0,0,0,0.5)';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle='white';
+    ctx.font='36px sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText('Game Over', canvas.width/2, canvas.height/2-20);
+    ctx.font='24px sans-serif';
+    ctx.fillText('Score: '+score, canvas.width/2, canvas.height/2+20);
+    ctx.fillText('Click or Space to Restart', canvas.width/2, canvas.height/2+60);
+    document.addEventListener('keydown', restartHandler);
+    document.addEventListener('click', restartHandler);
+  }
+
+  function restartHandler(){
+    document.removeEventListener('keydown', restartHandler);
+    document.removeEventListener('click', restartHandler);
+    bird={ x:50, y:300, w:30, h:30, v:0 };
+    pipes.length=0; score=0; gameOver=false; frame=0;
+    loop();
+  }
+
+  document.addEventListener('keydown', e=>{ if(e.code==='Space'){ bird.v=jump; } });
+  document.addEventListener('click', e=>{ bird.v=jump; });
+  loop();
 }
 </script>
 
