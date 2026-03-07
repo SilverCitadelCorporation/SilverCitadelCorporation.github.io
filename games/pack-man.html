@@ -68,3 +68,88 @@ ctx.clearRect(0,0,400,400)
 
 ctx.fillStyle="yellow"
 ctx.beginPath()
+ctx.arc(pac.x,pac.y,pac.size,0,Math.PI*2)
+ctx.fill()
+
+ctx.fillStyle="white"
+
+food.forEach((f,i)=>{
+ctx.beginPath()
+ctx.arc(f.x,f.y,5,0,Math.PI*2)
+ctx.fill()
+
+if(Math.hypot(pac.x-f.x,pac.y-f.y)<20){
+food.splice(i,1)
+}
+})
+
+if(!paused){
+pac.x+=pac.dx
+pac.y+=pac.dy
+}
+
+if(pac.x<0)pac.x=400
+if(pac.x>400)pac.x=0
+if(pac.y<0)pac.y=400
+if(pac.y>400)pac.y=0
+
+requestAnimationFrame(draw)
+
+}
+
+draw()
+
+function move(dir){
+
+if(dir==="up"){pac.dx=0;pac.dy=-3}
+if(dir==="down"){pac.dx=0;pac.dy=3}
+if(dir==="left"){pac.dx=-3;pac.dy=0}
+if(dir==="right"){pac.dx=3;pac.dy=0}
+
+}
+
+document.addEventListener("keydown",e=>{
+
+if(e.key==="ArrowUp"||e.key==="w")move("up")
+if(e.key==="ArrowDown"||e.key==="s")move("down")
+if(e.key==="ArrowLeft"||e.key==="a")move("left")
+if(e.key==="ArrowRight"||e.key==="d")move("right")
+
+if(e.key===" "){
+paused=!paused
+}
+
+})
+
+canvas.addEventListener("click",e=>{
+pac.x=e.offsetX
+pac.y=e.offsetY
+})
+
+let touchStartX=0
+let touchStartY=0
+
+canvas.addEventListener("touchstart",e=>{
+touchStartX=e.touches[0].clientX
+touchStartY=e.touches[0].clientY
+})
+
+canvas.addEventListener("touchend",e=>{
+
+let dx=e.changedTouches[0].clientX-touchStartX
+let dy=e.changedTouches[0].clientY-touchStartY
+
+if(Math.abs(dx)>Math.abs(dy)){
+if(dx>0)move("right")
+else move("left")
+}else{
+if(dy>0)move("down")
+else move("up")
+}
+
+})
+
+</script>
+
+</body>
+</html>
