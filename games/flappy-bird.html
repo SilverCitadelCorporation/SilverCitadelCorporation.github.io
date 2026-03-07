@@ -5,49 +5,24 @@
 <title>Flappy Bird</title>
 
 <style>
-body{
-margin:0;
-background:#70c5ce;
-text-align:center;
-font-family:sans-serif;
-}
-
-canvas{
-background:#70c5ce;
-display:block;
-margin:auto;
-}
-
-h2{
-margin:10px;
-}
+body{margin:0;background:black}
+canvas{display:block;margin:auto;background:#70c5ce}
 </style>
+
 </head>
 
 <body>
-
-<h2>Flappy Bird</h2>
-<p>Space / Click / Tap / WASD / Arrows</p>
 
 <canvas id="game" width="400" height="500"></canvas>
 
 <script>
 
-const canvas = document.getElementById("game")
-const ctx = canvas.getContext("2d")
+const canvas=document.getElementById("game")
+const ctx=canvas.getContext("2d")
 
-let bird={
-x:80,
-y:200,
-size:20,
-gravity:0.5,
-lift:-8,
-velocity:0
-}
-
+let bird={x:80,y:200,v:0}
 let pipes=[]
 let score=0
-let gameOver=false
 
 function spawnPipe(){
 
@@ -58,39 +33,50 @@ pipes.push({
 x:400,
 top:top,
 bottom:top+gap,
-width:60
+w:60
 })
 
 }
 
 setInterval(spawnPipe,2000)
 
+function flap(){
+bird.v=-8
+}
+
+document.addEventListener("keydown",e=>{
+if(e.key===" "||e.key==="w"||e.key==="ArrowUp"){
+flap()
+}
+})
+
+canvas.addEventListener("click",flap)
+canvas.addEventListener("touchstart",flap)
+
 function update(){
 
-if(gameOver)return
+bird.v+=0.5
+bird.y+=bird.v
 
-bird.velocity+=bird.gravity
-bird.y+=bird.velocity
-
-if(bird.y>500 || bird.y<0){
-gameOver=true
+if(bird.y>500||bird.y<0){
+location.reload()
 }
 
-pipes.forEach(pipe=>{
+pipes.forEach(p=>{
 
-pipe.x-=2
+p.x-=2
 
 if(
-bird.x+bird.size>pipe.x &&
-bird.x<pipe.x+pipe.width &&
-(bird.y<pipe.top || bird.y+bird.size>pipe.bottom)
+bird.x+20>p.x &&
+bird.x<p.x+p.w &&
+(bird.y<p.top || bird.y>p.bottom)
 ){
-gameOver=true
+location.reload()
 }
 
-if(pipe.x+pipe.width<bird.x && !pipe.passed){
+if(p.x+p.w<bird.x && !p.pass){
 score++
-pipe.passed=true
+p.pass=true
 }
 
 })
@@ -99,64 +85,36 @@ pipe.passed=true
 
 function draw(){
 
-ctx.clearRect(0,0,400,500)
+ctx.fillStyle="#70c5ce"
+ctx.fillRect(0,0,400,500)
 
 ctx.fillStyle="yellow"
 ctx.beginPath()
-ctx.arc(bird.x,bird.y,bird.size,0,Math.PI*2)
+ctx.arc(bird.x,bird.y,15,0,Math.PI*2)
 ctx.fill()
 
 ctx.fillStyle="green"
 
-pipes.forEach(pipe=>{
-
-ctx.fillRect(pipe.x,0,pipe.width,pipe.top)
-ctx.fillRect(pipe.x,pipe.bottom,pipe.width,500)
-
+pipes.forEach(p=>{
+ctx.fillRect(p.x,0,p.w,p.top)
+ctx.fillRect(p.x,p.bottom,p.w,500)
 })
 
 ctx.fillStyle="black"
 ctx.font="20px Arial"
-ctx.fillText("Score: "+score,10,30)
-
-if(gameOver){
-ctx.font="40px Arial"
-ctx.fillText("Game Over",110,250)
-}
+ctx.fillText("Score "+score,10,30)
 
 }
 
-function gameLoop(){
+function loop(){
 
 update()
 draw()
-requestAnimationFrame(gameLoop)
+requestAnimationFrame(loop)
 
 }
 
-gameLoop()
-
-function flap(){
-
-if(gameOver)return
-bird.velocity=bird.lift
-
-}
-
-document.addEventListener("keydown",e=>{
-
-if(
-e.key===" " ||
-e.key==="ArrowUp" ||
-e.key==="w"
-){
-flap()
-}
-
-})
-
-canvas.addEventListener("click",flap)
-canvas.addEventListener("touchstart",flap)
+loop()
 
 </script>
 
