@@ -1,115 +1,160 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Snake</title>
-
 <style>
-body{margin:0;background:black}
-canvas{display:block;margin:auto;background:#111}
+body{margin:0;background:black;color:white;font-family:Arial;text-align:center;touch-action:none;}
+canvas{background:#111;border:6px solid white;display:block;margin:auto;margin-top:20px;}
+.screen{position:fixed;top:0;left:0;width:100%;height:100%;background:#000d;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+button{padding:12px 25px;font-size:18px;margin:8px;cursor:pointer;}
+select,input{padding:6px;margin:5px;}
+#mobileControls{display:none;position:fixed;bottom:50px;width:100%;text-align:center;}
+.mobileBtn{padding:20px;margin:5px;background:#fff;color:#000;border-radius:10px;cursor:pointer;font-size:20px;opacity:0.7;}
+.mobileBtn:active{opacity:1;}
 </style>
-
 </head>
-
 <body>
 
-<canvas id="game" width="400" height="400"></canvas>
+<div id="startScreen" class="screen">
+<h1>🐍 Snake</h1>
+<button onclick="startGame()">Play</button>
+<button onclick="openSettings()">Settings</button>
+<button onclick="exitGame()">Exit</button>
+</div>
+
+<div id="settingsScreen" class="screen" style="display:none">
+<h2>⚙ Settings</h2>
+<label>Grid Size</label>
+<select id="difficulty">
+  <option value="25">Easy</option>
+  <option value="20" selected>Normal</option>
+  <option value="15">Hard</option>
+</select>
+<br>
+<label>Snake Color</label>
+<input type="color" id="snakeColor" value="#00ff00">
+<br>
+<label>Food Emoji</label>
+<select id="foodEmoji">
+  <option value="🍎">Apple 🍎</option>
+  <option value="🍊">Orange 🍊</option>
+  <option value="🍉">Watermelon 🍉</option>
+  <option value="🍇">Grape 🍇</option>
+  <option value="🍓">Strawberry 🍓</option>
+  <option value="random">Random 🎲</option>
+</select>
+<br>
+<button onclick="closeSettings()">Back</button>
+</div>
+
+<div id="gameOver" class="screen" style="display:none">
+<h1>Game Over</h1>
+<p id="finalScore"></p>
+<button onclick="restartGame()">Restart</button>
+<button onclick="exitGame()">Exit</button>
+</div>
+
+<canvas id="game" width="600" height="600"></canvas>
+
+<div id="mobileControls">
+<button class="mobileBtn" onclick="handleKey('ArrowUp')">↑</button><br>
+<button class="mobileBtn" onclick="handleKey('ArrowLeft')">←</button>
+<button class="mobileBtn" onclick="handleKey('ArrowDown')">↓</button>
+<button class="mobileBtn" onclick="handleKey('ArrowRight')">→</button>
+</div>
 
 <script>
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
+let grid,snake,food,dx,dy,score,boardSize,snakeColor,foodEmoji,running=false;
 
-const canvas=document.getElementById("game")
-const ctx=canvas.getContext("2d")
-
-const grid=20
-
-let snake=[{x:10,y:10}]
-let dx=1
-let dy=0
-
-let food={
-x:15,
-y:15
+// Start game
+function startGame(){
+  boardSize=document.getElementById("difficulty").value;
+  snakeColor=document.getElementById("snakeColor").value;
+  foodEmoji=document.getElementById("foodEmoji").value;
+  grid=600/boardSize;
+  snake=[{x:10,y:10}];
+  food={x:5,y:5};
+  dx=1; dy=0;
+  score=0; running=true;
+  document.getElementById("startScreen").style.display="none";
+  if(window.innerWidth<700) document.getElementById("mobileControls").style.display="block";
+  loop();
 }
 
-let score=0
+function openSettings(){document.getElementById("startScreen").style.display="none";document.getElementById("settingsScreen").style.display="flex";}
+function closeSettings(){document.getElementById("settingsScreen").style.display="none";document.getElementById("startScreen").style.display="flex";}
+function restartGame(){location.reload();}
+function exitGame(){window.parent.postMessage({exit:true},'*');}
 
-document.addEventListener("keydown",e=>{
-
-if(e.key==="ArrowUp"||e.key==="w"){dx=0;dy=-1}
-if(e.key==="ArrowDown"||e.key==="s"){dx=0;dy=1}
-if(e.key==="ArrowLeft"||e.key==="a"){dx=-1;dy=0}
-if(e.key==="ArrowRight"||e.key==="d"){dx=1;dy=0}
-
-})
-
-function spawnFood(){
-
-food={
-x:Math.floor(Math.random()*20),
-y:Math.floor(Math.random()*20)
+// Keyboard/WASD controls
+function handleKey(key){
+  if((key=='ArrowUp'||key=='w'||key=='W') && dy==0){dx=0;dy=-1;}
+  if((key=='ArrowDown'||key=='s'||key=='S') && dy==0){dx=0;dy=1;}
+  if((key=='ArrowLeft'||key=='a'||key=='A') && dx==0){dx=-1;dy=0;}
+  if((key=='ArrowRight'||key=='d'||key=='D') && dx==0){dx=1;dy=0;}
 }
+document.addEventListener('keydown',e=>handleKey(e.key));
 
+// Mobile swipe support
+let touchStartX=0,touchStartY=0;
+canvas.addEventListener('touchstart',e=>{touchStartX=e.touches[0].clientX;touchStartY=e.touches[0].clientY;});
+canvas.addEventListener('touchend',e=>{
+  let dxSwipe=e.changedTouches[0].clientX-touchStartX;
+  let dySwipe=e.changedTouches[0].clientY-touchStartY;
+  if(Math.abs(dxSwipe)>Math.abs(dySwipe)){
+    if(dxSwipe>0) handleKey('ArrowRight'); else handleKey('ArrowLeft');
+  } else {
+    if(dySwipe>0) handleKey('ArrowDown'); else handleKey('ArrowUp');
+  }
+});
+
+// iframe postMessage support
+window.addEventListener('message',e=>{
+  if(e.data.key) handleKey(e.data.key);
+  if(e.data.exit) exitGame();
+});
+
+// Game loop
+function loop(){
+  if(!running) return;
+  setTimeout(()=>{
+    update(); draw(); loop();
+  },120);
 }
 
 function update(){
+  let head={x:snake[0].x+dx,y:snake[0].y+dy};
+  snake.unshift(head);
+  if(head.x==food.x && head.y==food.y){
+    score++;
+    if(foodEmoji=="random"){
+      const fruits=["🍎","🍊","🍉","🍇","🍓"];
+      foodEmoji=fruits[Math.floor(Math.random()*fruits.length)];
+    }
+    food={x:Math.floor(Math.random()*boardSize),y:Math.floor(Math.random()*boardSize)};
+  } else snake.pop();
 
-let head={
-x:snake[0].x+dx,
-y:snake[0].y+dy
-}
-
-if(head.x<0||head.y<0||head.x>19||head.y>19){
-location.reload()
-}
-
-for(let s of snake){
-if(s.x===head.x && s.y===head.y){
-location.reload()
-}
-}
-
-snake.unshift(head)
-
-if(head.x===food.x && head.y===food.y){
-score++
-spawnFood()
-}else{
-snake.pop()
-}
-
+  if(head.x<0||head.y<0||head.x>=boardSize||head.y>=boardSize) endGame();
+  for(let i=1;i<snake.length;i++) if(head.x==snake[i].x && head.y==snake[i].y) endGame();
 }
 
 function draw(){
-
-ctx.fillStyle="black"
-ctx.fillRect(0,0,400,400)
-
-ctx.fillStyle="lime"
-
-snake.forEach(s=>{
-ctx.fillRect(s.x*grid,s.y*grid,grid-2,grid-2)
-})
-
-ctx.fillStyle="red"
-ctx.fillRect(food.x*grid,food.y*grid,grid-2,grid-2)
-
-ctx.fillStyle="white"
-ctx.font="20px Arial"
-ctx.fillText("Score "+score,10,25)
-
+  ctx.fillStyle="#111"; ctx.fillRect(0,0,600,600);
+  ctx.fillStyle=snakeColor;
+  snake.forEach(s=>ctx.fillRect(s.x*grid,s.y*grid,grid-2,grid-2));
+  ctx.font=grid+"px Arial"; ctx.textAlign="center"; ctx.textBaseline="middle";
+  ctx.fillText(foodEmoji,food.x*grid+grid/2,food.y*grid+grid/2);
 }
 
-function loop(){
-
-update()
-draw()
-setTimeout(loop,120)
-
+function endGame(){
+  running=false;
+  document.getElementById("gameOver").style.display="flex";
+  document.getElementById("finalScore").innerText="Score: "+score;
+  let high=Number(localStorage.getItem("snakeHighScore")||0);
+  if(score>high) localStorage.setItem("snakeHighScore",score);
 }
-
-loop()
-
 </script>
-
 </body>
 </html>
