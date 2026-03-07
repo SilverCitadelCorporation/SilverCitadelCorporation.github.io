@@ -29,18 +29,37 @@ let frame = 0;
 let score = 0;
 let gameOver = false;
 
-// Handle input
-function flap() {
-  bird.dy = jump;
-}
+// Input
+function flap() { bird.dy = jump; }
 document.addEventListener('keydown', e => { if(e.code==='Space') flap(); });
 canvas.addEventListener('click', flap);
 
-// Game Loop
+// Draw rounded rectangle
+function drawPipe(x, y, w, h) {
+  const radius = 10;
+  ctx.fillStyle = "#228B22";
+  ctx.beginPath();
+  ctx.moveTo(x + radius, y);
+  ctx.lineTo(x + w - radius, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
+  ctx.lineTo(x + w, y + h - radius);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h);
+  ctx.lineTo(x + radius, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - radius);
+  ctx.lineTo(x, y + radius);
+  ctx.quadraticCurveTo(x, y, x + radius, y);
+  ctx.closePath();
+  ctx.fill();
+
+  // Add lighter highlight
+  ctx.fillStyle = "#32CD32";
+  ctx.fillRect(x + 5, y + 5, w - 10, h - 10);
+}
+
+// Game loop
 function loop() {
   if(gameOver) return;
 
-  // Update
   bird.dy += gravity;
   bird.y += bird.dy;
 
@@ -51,14 +70,14 @@ function loop() {
 
   // Pipes
   if(frame % 90 === 0){
-    let topHeight = Math.random() * (canvas.height - pipeGap - 100) + 50;
+    const topHeight = Math.random() * (canvas.height - pipeGap - 100) + 50;
     pipes.push({ x: canvas.width, y: 0, width: pipeWidth, height: topHeight });
     pipes.push({ x: canvas.width, y: topHeight + pipeGap, width: pipeWidth, height: canvas.height - topHeight - pipeGap });
   }
+
   for(let i=0; i<pipes.length; i++){
     pipes[i].x -= 2;
 
-    // Collision
     if(bird.x < pipes[i].x + pipeWidth &&
        bird.x + bird.width > pipes[i].x &&
        bird.y < pipes[i].y + pipes[i].height &&
@@ -67,25 +86,19 @@ function loop() {
       return;
     }
 
-    // Score
     if(pipes[i].x + pipeWidth === bird.x) score++;
   }
 
-  // Remove offscreen pipes
   while(pipes.length && pipes[0].x + pipeWidth < 0) pipes.shift();
 
   // Draw
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  // Pipes
-  ctx.fillStyle = "#228B22";
-  pipes.forEach(p => ctx.fillRect(p.x, p.y, p.width, p.height));
+  pipes.forEach(p => drawPipe(p.x, p.y, p.width, p.height));
 
-  // Bird
   ctx.fillStyle = "#FFD700";
   ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
 
-  // Score
   document.getElementById('score').innerText = score;
 
   frame++;
