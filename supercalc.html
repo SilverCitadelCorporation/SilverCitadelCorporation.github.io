@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>Mega Arcade Hub</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
 body{
   margin:0;
@@ -77,22 +76,22 @@ iframe{
   cursor:pointer;
   border-radius:6px;
 }
-#studentBtn{
+#darkBtn{
   position:fixed;
   top:20px;
   left:20px;
-  background:red;
+  background:#34495e;
   color:white;
   padding:10px;
   border:none;
   border-radius:6px;
   cursor:pointer;
 }
-#darkBtn{
+#studentBtn{
   position:fixed;
-  bottom:80px;
+  top:70px; /* below dark mode button */
   left:20px;
-  background:#34495e;
+  background:red;
   color:white;
   padding:10px;
   border:none;
@@ -114,31 +113,27 @@ iframe{
   transition:.2s;
 }
 #reportBtn:hover{ background:#e67e22; }
-@media(max-width:600px){
-  #search{width:90%;}
-  #menu{grid-template-columns:repeat(auto-fit,minmax(120px,1fr));}
-}
 </style>
 </head>
 <body>
 
 <header id="title">Mega Arcade Hub</header>
 
-<button id="studentBtn" onclick="toggleStudent()">Student Mode</button>
 <button id="darkBtn" onclick="toggleDark()">Dark Mode</button>
+<button id="studentBtn" onclick="toggleStudent()">Student Mode</button>
 <input id="search" placeholder="Search games..." onkeyup="searchGames()">
 
 <div id="menu">
   <div class="card" data-name="snake" onclick="openGame('games/snake.html')">
-    <img src="images/snake.png" alt="Snake">
+    <img src="images/snake.png" alt="Snake"><br>
     Snake<br><span class="score">High Score: <span id="snakeScore">0</span></span>
   </div>
   <div class="card" data-name="flappy bird" onclick="openGame('games/flappy-bird.html')">
-    <img src="images/flappy-bird.png" alt="Flappy Bird">
+    <img src="images/flappy.png" alt="Flappy Bird"><br>
     Flappy Bird<br><span class="score">High Score: <span id="flappyScore">0</span></span>
   </div>
   <div class="card" data-name="pacman" onclick="openGame('games/pack-man.html')">
-    <img src="images/pacman.png" alt="Pac-Man">
+    <img src="images/pacman.png" alt="Pac-Man"><br>
     Pac-Man<br><span class="score">High Score: <span id="pacScore">0</span></span>
   </div>
   <!-- Add more game cards as needed -->
@@ -200,15 +195,11 @@ document.getElementById("snakeScore").innerText=localStorage.getItem("snakeHighS
 document.getElementById("flappyScore").innerText=localStorage.getItem("flappyHighScore")||0;
 document.getElementById("pacScore").innerText=localStorage.getItem("pacHighScore")||0;
 
-// Keyboard events forwarding to iframe
-window.addEventListener("keydown",e=>{
-  document.getElementById("gameFrame").contentWindow.postMessage({key:e.key},'*');
-});
-
 // Report Bug
 function reportBug(){
   window.location.href="mailto:silvercitadelcorporation@gmail.com?subject=Mega Arcade Bug Report&body=Describe the issue...";
 }
 </script>
+
 </body>
 </html>
