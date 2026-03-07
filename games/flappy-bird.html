@@ -4,154 +4,199 @@
 <meta charset="UTF-8">
 <title>Flappy Bird</title>
 <style>
-body{margin:0;background:#70c5ce;font-family:Arial;overflow:hidden;}
-canvas{display:block;margin:auto;background:#70c5ce;}
+body{margin:0;font-family:Arial;background:#70c5ce;display:flex;justify-content:center;align-items:center;height:100vh;}
+canvas{background:#70c5ce;display:block;margin:auto;border:2px solid #000;}
 .screen{
-  position:fixed;top:0;left:0;width:100%;height:100%;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:#000a;color:white;
+  position:fixed;
+  top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.6);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  color:white;font-size:24px;
 }
-button, select, input{padding:10px;margin:6px;font-size:16px;cursor:pointer;border-radius:6px;}
-#gameCanvas{background:#70c5ce;display:block;margin:auto;}
+button{padding:12px 25px;font-size:18px;margin:10px;cursor:pointer;border:none;border-radius:6px;}
+select{padding:6px;margin:10px;font-size:16px;border-radius:6px;}
+h1{margin-bottom:20px;}
 </style>
 </head>
 <body>
 
+<!-- START SCREEN -->
 <div id="startScreen" class="screen">
-<h1>Flappy Bird</h1>
-<label>Bird Color: <input type="color" id="birdColor" value="#ff0"></label><br>
-<label>Difficulty: 
-<select id="difficulty">
-<option value="3">Easy</option>
-<option value="5" selected>Normal</option>
-<option value="8">Hard</option>
-</select>
-</label><br>
-<button onclick="startGame()">Start</button>
+  <h1>Flappy Bird</h1>
+  <button onclick="startGame()">Play</button>
+  <button onclick="openSettings()">Settings</button>
+  <button onclick="exitGame()">Exit</button>
 </div>
 
-<div id="gameOverScreen" class="screen" style="display:none;">
-<h1>Game Over</h1>
-<p id="finalScore"></p>
-<button onclick="restartGame()">Restart</button>
+<!-- SETTINGS SCREEN -->
+<div id="settingsScreen" class="screen" style="display:none;">
+  <h1>Settings</h1>
+  <label>Bird Color:</label>
+  <select id="birdColor">
+    <option value="#ff0">Yellow</option>
+    <option value="#f00">Red</option>
+    <option value="#0f0">Green</option>
+    <option value="#00f">Blue</option>
+  </select>
+  <br>
+  <label>Bird Type:</label>
+  <select id="birdType">
+    <option value="circle" selected>Circle</option>
+    <option value="triangle">Triangle</option>
+    <option value="square">Square</option>
+  </select>
+  <br>
+  <label>Difficulty:</label>
+  <select id="difficulty">
+    <option value="easy">Easy</option>
+    <option value="normal" selected>Normal</option>
+    <option value="hard">Hard</option>
+  </select>
+  <br>
+  <button onclick="closeSettings()">Back</button>
 </div>
 
-<canvas id="gameCanvas" width="400" height="600"></canvas>
+<!-- GAME OVER SCREEN -->
+<div id="gameOver" class="screen" style="display:none;">
+  <h1>Game Over</h1>
+  <p id="finalScore"></p>
+  <button onclick="restartGame()">Restart</button>
+  <button onclick="exitGame()">Exit</button>
+</div>
+
+<canvas id="game" width="400" height="600"></canvas>
 
 <script>
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
+let bird, pipes=[], score, highScore=0, gravity, lift, speed, gap, running=false, difficulty, birdType;
 
-let bird, pipes, score, gameInterval, gravity, jumpHeight, pipeWidth=60, pipeGap;
-let running=false;
+// Initialize game variables
+function initGame(){
+  bird={
+    x:50,
+    y:300,
+    radius:15,
+    color:document.getElementById("birdColor").value,
+    velocity:0,
+    type:document.getElementById("birdType").value
+  };
+  pipes=[];
+  score=0;
+  gravity=difficulty==="easy"?0.4:difficulty==="normal"?0.6:0.8;
+  lift=-8;
+  speed=difficulty==="easy"?2:difficulty==="normal"?3:4;
+  gap=120;
+  running=true;
+}
 
-// Start Screen Settings
-let birdColorInput = document.getElementById("birdColor");
-let difficultySelect = document.getElementById("difficulty");
-
+// Start game
 function startGame(){
-  bird = {x:80,y:300,vy:0,color:birdColorInput.value,r:15};
-  gravity = Number(difficultySelect.value);
-  jumpHeight = -10;
-  pipeGap = 150; // space between pipes
-  pipes = [];
-  score = 0;
-  running = true;
-  document.getElementById('startScreen').style.display='none';
-  document.getElementById('gameOverScreen').style.display='none';
-  gameInterval = setInterval(loop,20);
-  spawnPipe();
+  difficulty=document.getElementById("difficulty").value;
+  birdType=document.getElementById("birdType").value;
+  initGame();
+  document.getElementById("startScreen").style.display="none";
+  loop();
 }
 
-// Restart
-function restartGame(){
-  startGame();
-}
+// Settings
+function openSettings(){document.getElementById("startScreen").style.display="none";document.getElementById("settingsScreen").style.display="flex";}
+function closeSettings(){document.getElementById("settingsScreen").style.display="none";document.getElementById("startScreen").style.display="flex";}
 
-// Loop
+// Restart & Exit
+function restartGame(){initGame();document.getElementById("gameOver").style.display="none";loop();}
+function exitGame(){window.location.href="supercalculator.html";}
+
+// Key controls
+document.addEventListener("keydown",e=>{
+  if(["ArrowUp","w"," ","W"].includes(e.key)){bird.velocity=lift;}
+});
+
+// Game loop
+let frame=0;
 function loop(){
+  if(!running) return;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
   update();
   draw();
+  requestAnimationFrame(loop);
 }
 
-// Update bird and pipes
 function update(){
-  bird.vy += gravity*0.2;
-  bird.y += bird.vy;
+  bird.velocity+=gravity;
+  bird.y+=bird.velocity;
 
   // Add pipes
-  if(pipes.length===0 || pipes[pipes.length-1].x<canvas.width-200){
-    spawnPipe();
+  if(frame%90===0){
+    let topHeight=Math.random()*(canvas.height-gap-60)+30;
+    pipes.push({x:canvas.width, top:topHeight, bottom:topHeight+gap});
   }
 
   // Move pipes
   for(let i=pipes.length-1;i>=0;i--){
-    pipes[i].x -= 2;
-    if(pipes[i].x+pipeWidth<0){
-      pipes.splice(i,1);
-      score++;
-    }
-  }
+    pipes[i].x-=speed;
 
-  // Collision
-  for(let p of pipes){
-    if(bird.x + bird.r > p.x && bird.x - bird.r < p.x + pipeWidth){
-      if(bird.y - bird.r < p.top || bird.y + bird.r > canvas.height - p.bottom){
+    // Check collision
+    if(bird.x+bird.radius>pipes[i].x && bird.x-bird.radius<pipes[i].x+50){
+      if(bird.y-bird.radius<pipes[i].top || bird.y+bird.radius>pipes[i].bottom){
         endGame();
       }
     }
+
+    // Score
+    if(pipes[i].x+50<bird.x && !pipes[i].scored){
+      score++;
+      pipes[i].scored=true;
+      if(score>highScore){highScore=score;}
+    }
+
+    // Remove offscreen pipes
+    if(pipes[i].x+50<0){pipes.splice(i,1);}
   }
 
-  // Hit ground or ceiling
-  if(bird.y + bird.r > canvas.height || bird.y - bird.r < 0){
-    endGame();
-  }
+  // Check floor/ceiling
+  if(bird.y+bird.radius>canvas.height || bird.y-bird.radius<0){endGame();}
+  frame++;
 }
 
-// Draw everything
 function draw(){
-  ctx.fillStyle = '#70c5ce';
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-
-  // Pipes
-  ctx.fillStyle='green';
-  for(let p of pipes){
-    ctx.fillRect(p.x,0,pipeWidth,p.top);
-    ctx.fillRect(p.x,canvas.height-p.bottom,pipeWidth,p.bottom);
+  // Draw bird based on type
+  ctx.fillStyle=bird.color;
+  if(bird.type==="circle"){
+    ctx.beginPath();
+    ctx.arc(bird.x,bird.y,bird.radius,0,Math.PI*2);
+    ctx.fill();
+  } else if(bird.type==="triangle"){
+    ctx.beginPath();
+    ctx.moveTo(bird.x,bird.y-bird.radius);
+    ctx.lineTo(bird.x-bird.radius,bird.y+bird.radius);
+    ctx.lineTo(bird.x+bird.radius,bird.y+bird.radius);
+    ctx.closePath();
+    ctx.fill();
+  } else if(bird.type==="square"){
+    ctx.fillRect(bird.x-bird.radius,bird.y-bird.radius,bird.radius*2,bird.radius*2);
   }
 
-  // Bird
-  ctx.fillStyle = bird.color;
-  ctx.beginPath();
-  ctx.arc(bird.x,bird.y,bird.r,0,Math.PI*2);
-  ctx.fill();
+  // Draw pipes
+  ctx.fillStyle="#0a0";
+  pipes.forEach(p=>{
+    ctx.fillRect(p.x,0,50,p.top);
+    ctx.fillRect(p.x,p.bottom,50,canvas.height-p.bottom);
+  });
 
-  // Score
-  ctx.fillStyle='white';
-  ctx.font='30px Arial';
-  ctx.fillText(score,canvas.width/2,50);
+  // Draw score
+  ctx.fillStyle="#fff";
+  ctx.font="24px Arial";
+  ctx.fillText("Score: "+score,10,30);
+  ctx.fillText("High Score: "+highScore,10,60);
 }
-
-// Spawn a pipe
-function spawnPipe(){
-  let topHeight = Math.random()*(canvas.height - pipeGap - 100)+50;
-  let bottomHeight = canvas.height - topHeight - pipeGap;
-  pipes.push({x:canvas.width,top:topHeight,bottom:bottomHeight});
-}
-
-// Bird jump
-document.addEventListener('keydown',e=>{
-  if(e.key===' ' || e.key==='ArrowUp' || e.key==='w'){bird.vy=jumpHeight;}
-});
-canvas.addEventListener('mousedown',()=>{bird.vy=jumpHeight;});
-canvas.addEventListener('touchstart',()=>{bird.vy=jumpHeight;});
 
 // End game
 function endGame(){
   running=false;
-  clearInterval(gameInterval);
-  document.getElementById('finalScore').innerText='Score: '+score;
-  document.getElementById('gameOverScreen').style.display='flex';
+  document.getElementById("finalScore").innerText="Score: "+score;
+  document.getElementById("gameOver").style.display="flex";
 }
 </script>
 </body>
