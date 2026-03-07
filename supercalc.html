@@ -114,26 +114,6 @@ iframe{
   transition:.2s;
 }
 #reportBtn:hover{ background:#e67e22; }
-#joystick{
-  position:fixed;
-  bottom:20px;
-  left:20px;
-  width:120px;
-  height:120px;
-  background:rgba(0,0,0,.2);
-  border-radius:50%;
-  touch-action:none;
-}
-#actionBtn{
-  position:fixed;
-  bottom:20px;
-  right:140px;
-  width:80px;
-  height:80px;
-  background:red;
-  border-radius:50%;
-  touch-action:none;
-}
 @media(max-width:600px){
   #search{width:90%;}
   #menu{grid-template-columns:repeat(auto-fit,minmax(120px,1fr));}
@@ -150,12 +130,15 @@ iframe{
 
 <div id="menu">
   <div class="card" data-name="snake" onclick="openGame('games/snake.html')">
+    <img src="images/snake.png" alt="Snake">
     Snake<br><span class="score">High Score: <span id="snakeScore">0</span></span>
   </div>
   <div class="card" data-name="flappy bird" onclick="openGame('games/flappy-bird.html')">
+    <img src="images/flappy-bird.png" alt="Flappy Bird">
     Flappy Bird<br><span class="score">High Score: <span id="flappyScore">0</span></span>
   </div>
   <div class="card" data-name="pacman" onclick="openGame('games/pack-man.html')">
+    <img src="images/pacman.png" alt="Pac-Man">
     Pac-Man<br><span class="score">High Score: <span id="pacScore">0</span></span>
   </div>
   <!-- Add more game cards as needed -->
@@ -166,8 +149,6 @@ iframe{
   <iframe id="gameFrame"></iframe>
 </div>
 
-<div id="joystick"></div>
-<div id="actionBtn">Space</div>
 <button id="reportBtn" onclick="reportBug()">Report Bug</button>
 
 <script>
@@ -219,39 +200,7 @@ document.getElementById("snakeScore").innerText=localStorage.getItem("snakeHighS
 document.getElementById("flappyScore").innerText=localStorage.getItem("flappyHighScore")||0;
 document.getElementById("pacScore").innerText=localStorage.getItem("pacHighScore")||0;
 
-// Mobile Joystick
-let joystick = document.getElementById("joystick");
-let actionBtn = document.getElementById("actionBtn");
-if(/Mobi|Android/i.test(navigator.userAgent)){
-  joystick.style.display="block";
-  actionBtn.style.display="block";
-}
-
-// Touch joystick events
-let startX,startY,direction;
-joystick.addEventListener("touchstart",e=>{
-  let t = e.touches[0];
-  startX=t.clientX; startY=t.clientY;
-});
-joystick.addEventListener("touchmove",e=>{
-  let t = e.touches[0];
-  let dx=t.clientX-startX;
-  let dy=t.clientY-startY;
-  if(Math.abs(dx)>Math.abs(dy)){
-    direction = dx>0?'ArrowRight':'ArrowLeft';
-  } else { direction = dy>0?'ArrowDown':'ArrowUp'; }
-  document.getElementById("gameFrame").contentWindow.postMessage({key:direction},'*');
-});
-joystick.addEventListener("touchend",e=>{
-  direction=null;
-});
-
-// Action button for space / click
-actionBtn.addEventListener("touchstart",()=>{
-  document.getElementById("gameFrame").contentWindow.postMessage({key:' '},'*');
-});
-
-// Keyboard events forwarding
+// Keyboard events forwarding to iframe
 window.addEventListener("keydown",e=>{
   document.getElementById("gameFrame").contentWindow.postMessage({key:e.key},'*');
 });
@@ -260,11 +209,6 @@ window.addEventListener("keydown",e=>{
 function reportBug(){
   window.location.href="mailto:silvercitadelcorporation@gmail.com?subject=Mega Arcade Bug Report&body=Describe the issue...";
 }
-
-// Controller Support
-window.addEventListener("gamepadconnected",e=>{
-  console.log("Controller connected:", e.gamepad.id);
-});
 </script>
 </body>
 </html>
