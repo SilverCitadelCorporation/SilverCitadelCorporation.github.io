@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <title>Flappy Bird</title>
 <style>
-body { margin:0; background:#70c5ce; font-family:Arial; display:flex; justify-content:center; align-items:center; height:100vh; }
-canvas { display:block; }
+body { margin:0; background:#70c5ce; display:flex; justify-content:center; align-items:center; height:100vh; overflow:hidden; }
+canvas { display:block; background:#70c5ce; }
 .screen { position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); color:white; display:flex; flex-direction:column; justify-content:center; align-items:center; font-size:32px; }
 button { padding:12px 25px; margin-top:20px; font-size:20px; cursor:pointer; border:none; border-radius:6px; }
 #score { position:absolute; top:20px; left:50%; transform:translateX(-50%); font-size:32px; color:white; text-shadow:2px 2px #000; }
@@ -16,7 +16,7 @@ button { padding:12px 25px; margin-top:20px; font-size:20px; cursor:pointer; bor
 <canvas id="game" width="400" height="600"></canvas>
 
 <div id="startScreen" class="screen">
-  <div>Flappy Bird</div>
+  Flappy Bird
   <button onclick="startGame()">Start</button>
 </div>
 
@@ -31,35 +31,43 @@ button { padding:12px 25px; margin-top:20px; font-size:20px; cursor:pointer; bor
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 
-const bird = { x: 80, y: 300, width: 34, height: 24, dy: 0 };
+let running = false;
+let frame = 0;
+let score = 0;
+
+const bird = {
+  x: 80,
+  y: 300,
+  width: 34,
+  height: 24,
+  dy: 0
+};
+
 const gravity = 0.5;
 const jump = -8;
 
 const pipes = [];
 const pipeWidth = 60;
 const pipeGap = 150;
-let frame = 0;
-let score = 0;
-let running = false;
+const groundHeight = 100;
+let groundX = 0;
 
-// Start Game
+// Start / restart
 function startGame() {
-  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('startScreen').style.display='none';
   resetGame();
-  running = true;
+  running=true;
   loop();
 }
 
-// Restart
 function restartGame() {
-  document.getElementById('gameOverScreen').style.display = 'none';
+  document.getElementById('gameOverScreen').style.display='none';
   resetGame();
-  running = true;
+  running=true;
   loop();
 }
 
-// Reset
-function resetGame(){
+function resetGame() {
   bird.y = 300; bird.dy = 0;
   pipes.length = 0;
   frame = 0;
@@ -69,64 +77,81 @@ function resetGame(){
 
 // Input
 function flap(){ bird.dy = jump; }
-document.addEventListener('keydown', e => { if(e.code==='Space') flap(); });
+document.addEventListener('keydown', e=>{ if(e.code==='Space') flap(); });
 canvas.addEventListener('click', flap);
 
-// Draw rounded rectangle for pipes
-function drawPipe(x, y, w, h){
-  const radius = 10;
-  ctx.fillStyle="#228B22";
-  ctx.beginPath();
-  ctx.moveTo(x + radius, y);
-  ctx.lineTo(x + w - radius, y);
-  ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
-  ctx.lineTo(x + w, y + h - radius);
-  ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h);
-  ctx.lineTo(x + radius, y + h);
-  ctx.quadraticCurveTo(x, y + h, x, y + h - radius);
-  ctx.lineTo(x, y + radius);
-  ctx.quadraticCurveTo(x, y, x + radius, y);
-  ctx.closePath();
-  ctx.fill();
-  ctx.fillStyle="#32CD32"; ctx.fillRect(x+5, y+5, w-10, h-10);
+// Draw functions
+function drawBird() {
+  ctx.fillStyle='yellow';
+  ctx.save();
+  ctx.translate(bird.x+bird.width/2,bird.y+bird.height/2);
+  ctx.rotate(Math.min(bird.dy/10,0.5));
+  ctx.fillRect(-bird.width/2,-bird.height/2,bird.width,bird.height);
+  ctx.restore();
 }
 
-// Game Loop
+function drawPipe(x, y, w, h) {
+  ctx.fillStyle="#228B22";
+  ctx.fillRect(x, y, w, h);
+  ctx.fillStyle="#32CD32";
+  ctx.fillRect(x+5, y+5, w-10, h-10);
+}
+
+function drawGround() {
+  ctx.fillStyle="#DEB887";
+  ctx.fillRect(groundX, canvas.height-groundHeight, canvas.width, groundHeight);
+  ctx.fillRect(groundX+canvas.width, canvas.height-groundHeight, canvas.width, groundHeight);
+}
+
+// Main loop
 function loop(){
   if(!running) return;
 
   bird.dy += gravity;
   bird.y += bird.dy;
 
-  if(bird.y + bird.height > canvas.height || bird.y < 0){
+  if(bird.y + bird.height > canvas.height - groundHeight || bird.y < 0){
     endGame();
     return;
   }
 
-  if(frame % 90 === 0){
-    const topHeight = Math.random()*(canvas.height-pipeGap-100)+50;
+  if(frame%90===0){
+    const topHeight = Math.floor(Math.random()*(canvas.height - pipeGap - groundHeight - 50)) + 50;
+    const bottomY = topHeight + pipeGap;
+    const bottomHeight = canvas.height - groundHeight - bottomY;
     pipes.push({x:canvas.width, y:0, width:pipeWidth, height:topHeight});
-    pipes.push({x:canvas.width, y:topHeight+pipeGap, width:pipeWidth, height:canvas.height-topHeight-pipeGap});
+    pipes.push({x:canvas.width, y:bottomY, width:pipeWidth, height:bottomHeight});
   }
 
   for(let i=0;i<pipes.length;i++){
     pipes[i].x -= 2;
-    if(bird.x < pipes[i].x + pipeWidth &&
-       bird.x + bird.width > pipes[i].x &&
-       bird.y < pipes[i].y + pipes[i].height &&
-       bird.y + bird.height > pipes[i].y){
+
+    if(
+      bird.x < pipes[i].x + pipeWidth &&
+      bird.x + bird.width > pipes[i].x &&
+      bird.y < pipes[i].y + pipes[i].height &&
+      bird.y + bird.height > pipes[i].y
+    ){
       endGame();
       return;
     }
-    if(pipes[i].x + pipeWidth === bird.x) score++;
+
+    if(i%2===0 && pipes[i].x + pipeWidth === bird.x) score++;
   }
 
   while(pipes.length && pipes[0].x + pipeWidth < 0) pipes.shift();
 
   ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  ctx.fillStyle="#70c5ce";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
   pipes.forEach(p => drawPipe(p.x,p.y,p.width,p.height));
-  ctx.fillStyle="#FFD700";
-  ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
+  drawBird();
+
+  groundX -= 2;
+  if(groundX <= -canvas.width) groundX=0;
+  drawGround();
 
   document.getElementById('score').innerText = score;
   frame++;
@@ -134,9 +159,9 @@ function loop(){
 }
 
 function endGame(){
-  running = false;
+  running=false;
   document.getElementById('gameOverScreen').style.display='flex';
-  document.getElementById('finalScore').innerText = "Score: "+score;
+  document.getElementById('finalScore').innerText = "Score: " + score;
 }
 </script>
 
