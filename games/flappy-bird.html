@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flappy Bird</title>
+
+<style>
+body{
+margin:0;
+background:#70c5ce;
+text-align:center;
+font-family:sans-serif;
+}
+
+canvas{
+background:#70c5ce;
+display:block;
+margin:auto;
+}
+
+h2{
+margin:10px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Flappy Bird</h2>
+<p>Space / Click / Tap / WASD / Arrows</p>
+
+<canvas id="game" width="400" height="500"></canvas>
+
+<script>
+
+const canvas = document.getElementById("game")
+const ctx = canvas.getContext("2d")
+
+let bird={
+x:80,
+y:200,
+size:20,
+gravity:0.5,
+lift:-8,
+velocity:0
+}
+
+let pipes=[]
+let score=0
+let gameOver=false
+
+function spawnPipe(){
+
+let gap=120
+let top=Math.random()*250
+
+pipes.push({
+x:400,
+top:top,
+bottom:top+gap,
+width:60
+})
+
+}
+
+setInterval(spawnPipe,2000)
+
+function update(){
+
+if(gameOver)return
+
+bird.velocity+=bird.gravity
+bird.y+=bird.velocity
+
+if(bird.y>500 || bird.y<0){
+gameOver=true
+}
+
+pipes.forEach(pipe=>{
+
+pipe.x-=2
+
+if(
+bird.x+bird.size>pipe.x &&
+bird.x<pipe.x+pipe.width &&
+(bird.y<pipe.top || bird.y+bird.size>pipe.bottom)
+){
+gameOver=true
+}
+
+if(pipe.x+pipe.width<bird.x && !pipe.passed){
+score++
+pipe.passed=true
+}
+
+})
+
+}
+
+function draw(){
+
+ctx.clearRect(0,0,400,500)
+
+ctx.fillStyle="yellow"
+ctx.beginPath()
+ctx.arc(bird.x,bird.y,bird.size,0,Math.PI*2)
+ctx.fill()
+
+ctx.fillStyle="green"
+
+pipes.forEach(pipe=>{
+
+ctx.fillRect(pipe.x,0,pipe.width,pipe.top)
+ctx.fillRect(pipe.x,pipe.bottom,pipe.width,500)
+
+})
+
+ctx.fillStyle="black"
+ctx.font="20px Arial"
+ctx.fillText("Score: "+score,10,30)
+
+if(gameOver){
+ctx.font="40px Arial"
+ctx.fillText("Game Over",110,250)
+}
+
+}
+
+function gameLoop(){
+
+update()
+draw()
+requestAnimationFrame(gameLoop)
+
+}
+
+gameLoop()
+
+function flap(){
+
+if(gameOver)return
+bird.velocity=bird.lift
+
+}
+
+document.addEventListener("keydown",e=>{
+
+if(
+e.key===" " ||
+e.key==="ArrowUp" ||
+e.key==="w"
+){
+flap()
+}
+
+})
+
+canvas.addEventListener("click",flap)
+canvas.addEventListener("touchstart",flap)
+
+</script>
+
+</body>
+</html>
