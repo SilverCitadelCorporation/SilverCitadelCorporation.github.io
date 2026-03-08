@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Mega Arcade Hub</title>
+<title>Student Studie Hub</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
 body{
   margin:0;
@@ -78,7 +79,7 @@ iframe{
 }
 #darkBtn{
   position:fixed;
-  bottom:140px; /* bottom left, above student mode */
+  bottom:20px;
   left:20px;
   background:#34495e;
   color:white;
@@ -86,10 +87,11 @@ iframe{
   border:none;
   border-radius:6px;
   cursor:pointer;
+  margin-bottom:5px;
 }
 #studentBtn{
   position:fixed;
-  bottom:80px; /* directly under dark mode button */
+  bottom:60px; /* under dark mode */
   left:20px;
   background:red;
   color:white;
@@ -117,7 +119,7 @@ iframe{
 </head>
 <body>
 
-<header id="title">Mega Arcade Hub</header>
+<header id="title">Student Studie Hub</header>
 
 <button id="darkBtn" onclick="toggleDark()">Dark Mode</button>
 <button id="studentBtn" onclick="toggleStudent()">Student Mode</button>
@@ -136,7 +138,7 @@ iframe{
     <img src="images/pacman.png" alt="Pac-Man"><br>
     Pac-Man<br><span class="score">High Score: <span id="pacScore">0</span></span>
   </div>
-  <!-- Add more game cards as needed -->
+  <!-- add more game cards as needed -->
 </div>
 
 <div id="player">
@@ -197,9 +199,8 @@ document.getElementById("pacScore").innerText=localStorage.getItem("pacHighScore
 
 // Report Bug
 function reportBug(){
-  window.location.href="mailto:silvercitadelcorporation@gmail.com?subject=Mega Arcade Bug Report&body=Describe the issue...";
+  window.location.href="mailto:silvercitadelcorporation@gmail.com?subject=Student Studie Hub Bug Report&body=Describe the issue...";
 }
 </script>
-
 </body>
 </html>
