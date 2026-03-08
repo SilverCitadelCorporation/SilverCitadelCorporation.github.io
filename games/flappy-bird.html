@@ -68,6 +68,7 @@ h1{margin-bottom:20px;}
 <script>
 const canvas=document.getElementById("game");
 const ctx=canvas.getContext("2d");
+
 let bird,pipes=[],score,highScore=0,gravity,lift,speed,gap,running=false,difficulty,birdType;
 
 // Initialize game variables
@@ -82,6 +83,7 @@ function initGame(){
   };
   pipes=[];
   score=0;
+  difficulty=document.getElementById("difficulty").value;
   gravity=difficulty==="easy"?0.4:difficulty==="normal"?0.6:0.8;
   lift=-8;
   speed=difficulty==="easy"?2:difficulty==="normal"?3:4;
@@ -91,7 +93,6 @@ function initGame(){
 
 // Start game
 function startGame(){
-  difficulty=document.getElementById("difficulty").value;
   birdType=document.getElementById("birdType").value;
   initGame();
   document.getElementById("startScreen").style.display="none";
@@ -106,12 +107,19 @@ function closeSettings(){document.getElementById("settingsScreen").style.display
 function restartGame(){initGame();document.getElementById("gameOver").style.display="none";loop();}
 function exitGame(){window.location.href="supercalculator.html";}
 
-// Controls
+// Flap function
 function flap(){bird.velocity=lift;}
+
+// Controls
 document.addEventListener("keydown",e=>{
   if(["ArrowUp","w"," ","W"].includes(e.key)){flap();}
 });
-canvas.addEventListener("touchstart",e=>{flap();});
+
+// Touch for mobile
+canvas.addEventListener("touchstart",function(e){
+  flap();
+  e.preventDefault(); // prevent scrolling
+});
 
 // Game loop
 let frame=0;
@@ -127,20 +135,23 @@ function update(){
   bird.velocity+=gravity;
   bird.y+=bird.velocity;
 
+  // Add pipes
   if(frame%90===0){
     let topHeight=Math.random()*(canvas.height-gap-60)+30;
-    pipes.push({x:canvas.width, top:topHeight, bottom:topHeight+gap});
+    pipes.push({x:canvas.width, top:topHeight, bottom:topHeight+gap, scored:false});
   }
 
   for(let i=pipes.length-1;i>=0;i--){
     pipes[i].x-=speed;
 
+    // Collision
     if(bird.x+bird.radius>pipes[i].x && bird.x-bird.radius<pipes[i].x+50){
       if(bird.y-bird.radius<pipes[i].top || bird.y+bird.radius>pipes[i].bottom){
         endGame();
       }
     }
 
+    // Score
     if(pipes[i].x+50<bird.x && !pipes[i].scored){
       score++;
       pipes[i].scored=true;
@@ -150,11 +161,13 @@ function update(){
     if(pipes[i].x+50<0) pipes.splice(i,1);
   }
 
+  // Out of bounds
   if(bird.y+bird.radius>canvas.height || bird.y-bird.radius<0){endGame();}
   frame++;
 }
 
 function draw(){
+  // Draw bird
   ctx.fillStyle=bird.color;
   if(bird.type==="circle"){
     ctx.beginPath();ctx.arc(bird.x,bird.y,bird.radius,0,Math.PI*2);ctx.fill();
@@ -169,12 +182,14 @@ function draw(){
     ctx.fillRect(bird.x-bird.radius,bird.y-bird.radius,bird.radius*2,bird.radius*2);
   }
 
+  // Draw pipes
   ctx.fillStyle="#0a0";
   pipes.forEach(p=>{
     ctx.fillRect(p.x,0,50,p.top);
     ctx.fillRect(p.x,p.bottom,50,canvas.height-p.bottom);
   });
 
+  // Draw score
   ctx.fillStyle="#fff";
   ctx.font="24px Arial";
   ctx.fillText("Score: "+score,10,30);
