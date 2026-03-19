@@ -1,0 +1,11 @@
+    <div class="grid">
+        <a href="#img1"><img src="1000002941.png" class="card"></a>
+        <a href="#img2"><img src="1000002942.png" class="card"></a>
+        <a href="#img3"><img src="1000002943.png" class="card"></a>
+        <a href="#img4"><img src="1000002944.png" class="card"></a>
+    </div>
+
+    <div id="img1" class="overlay"><a href="#" class="close">&times;</a><img src="1000002941.png"></div>
+    <div id="img2" class="overlay"><a href="#" class="close">&times;</a><img src="1000002942.png"></div>
+    <div id="img3" class="overlay"><a href="#" class="close">&times;</a><img src="1000002943.png"></div>
+    <div id="img4" class="overlay"><a href="#" class="close">&times;</a><img src="1000002944.png"></div>
