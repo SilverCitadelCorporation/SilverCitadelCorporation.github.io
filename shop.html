@@ -32,8 +32,7 @@ nav .links a {
     text-decoration:none; padding:8px 12px; border-radius:6px; transition:0.3s;
 }
 
-nav .links a:hover, .dc-nav:hover { background: rgba(212,175,55,0.5); color:#fff; }
-.dc-nav { background: #5865F2; color: white !important; }
+nav .links a:hover { background: rgba(212,175,55,0.5); color:#fff; }
 
 .overlay {
     background: rgba(0,0,0,0.8); min-height:100vh;
@@ -80,7 +79,6 @@ nav .links a:hover, .dc-nav:hover { background: rgba(212,175,55,0.5); color:#fff
     width: 100%; padding: 12px; border: none; border-radius: 6px;
     font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.2s;
 }
-.btn-container button:hover { filter: brightness(1.2); transform: translateY(-2px); }
 
 .paypal { background-color: #0070ba; color: white; }
 .cashapp { background-color: #00c244; color: white; }
@@ -96,16 +94,34 @@ nav .links a:hover, .dc-nav:hover { background: rgba(212,175,55,0.5); color:#fff
 .step-list li { margin: 15px 0; padding-left: 35px; position: relative; font-size: 16px; }
 .step-list li::before { content: '⚔️'; position: absolute; left: 0; }
 
+/* --- CHAT SYSTEM STYLES --- */
 .support-widget { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
 .support-btn {
     background: #5865F2; color: white; border: none; padding: 15px 25px;
     border-radius: 50px; font-weight: bold; cursor: pointer;
     box-shadow: 0 4px 15px rgba(0,0,0,0.5); transition: 0.3s;
 }
-.support-btn:hover { transform: scale(1.1); background: #4752c4; }
+
+/* Chat Popup Window */
+.chat-window {
+    display: none; position: fixed; bottom: 90px; right: 20px;
+    width: 300px; background: #1e293b; border: 2px solid #d4af37;
+    border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    z-index: 1001; text-align: left;
+}
+.chat-window h4 { margin-top: 0; color: #d4af37; }
+.chat-window input, .chat-window textarea {
+    width: 100%; margin-bottom: 10px; background: #0f172a;
+    border: 1px solid #d4af37; color: #fff; padding: 8px;
+    border-radius: 4px; box-sizing: border-box;
+}
+.send-chat-btn {
+    background: #4ade80; color: #000; border: none; width: 100%;
+    padding: 10px; font-weight: bold; border-radius: 4px; cursor: pointer;
+}
 
 footer { text-align: center; padding: 40px; color: #888; background: #0f172a; }
-footer a { color: #5865F2; text-decoration: none; font-weight: bold; }
+footer a { color: #d4af37; text-decoration: none; font-weight: bold; margin: 0 10px; }
 </style>
 </head>
 <body>
@@ -117,8 +133,7 @@ footer a { color: #5865F2; text-decoration: none; font-weight: bold; }
     </div>
     <div class="links">
         <a href="index.html">Home</a>
-        <a href="shop.html" style="color:#fff; border-bottom: 1px solid #d4af37;">Shop</a>
-        <a href="https://discord.gg/silvercitadel" target="_blank" class="dc-nav">Join Discord</a>
+        <a href="shop.html">Shop</a>
     </div>
 </nav>
 
@@ -164,7 +179,7 @@ footer a { color: #5865F2; text-decoration: none; font-weight: bold; }
         <h3>How to Redeem Your Bot</h3>
         <ul class="step-list">
             <li><b>Step 1:</b> Select your bot and complete the payment.</li>
-            <li><b>Step 2:</b> Join our HQ via the "Join Discord" button.</li>
+            <li><b>Step 2:</b> Join our Discord HQ (link in footer).</li>
             <li><b>Step 3:</b> Open a ticket with your receipt.</li>
             <li><b>Step 4:</b> We build and deliver your bot!</li>
         </ul>
@@ -172,28 +187,57 @@ footer a { color: #5865F2; text-decoration: none; font-weight: bold; }
 </div>
 
 <div class="support-widget">
-    <button class="support-btn" onclick="sendSupportAlert()">💬 Need Help?</button>
+    <div class="chat-window" id="chatWindow">
+        <h4>Live Support</h4>
+        <input type="text" id="userName" placeholder="Your Name" required>
+        <textarea id="userMsg" placeholder="How can we help?" rows="3" required></textarea>
+        <button class="send-chat-btn" onclick="submitChat()">Send Message</button>
+    </div>
+    <button class="support-btn" onclick="toggleChat()">💬 Need Help?</button>
 </div>
 
 <footer>
-    &copy; 2026 Silver Citadel Corporation | <a href="https://discord.gg/silvercitadel" target="_blank">Support Discord</a>
+    &copy; 2026 Silver Citadel Corporation | 
+    <a href="https://discord.gg/silvercitadel" target="_blank">Join Discord</a> | 
+    <a href="tos.html">Terms</a>
 </footer>
 
 <script>
-// --- WEBHOOK SETTINGS ---
 const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1487495121640624239/mS1JBHdbq7pIupYpu_Bvwgv1cfhiDtS0YVb2K6eEmYWc3kZ-5lF2w5x0Expip_xpdWE8';
 
-function sendSupportAlert() {
+function toggleChat() {
+    const chat = document.getElementById('chatWindow');
+    chat.style.display = chat.style.display === 'block' ? 'none' : 'block';
+}
+
+function submitChat() {
+    const name = document.getElementById('userName').value;
+    const msg = document.getElementById('userMsg').value;
+
+    if (!name || !msg) {
+        alert("Please fill in both fields!");
+        return;
+    }
+
     fetch(DISCORD_WEBHOOK, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            content: "🔔 **New Support Request!** Someone on the Shop page clicked the 'Need Help' button and needs assistance."
+            embeds: [{
+                title: "🚨 New Support Inquiry",
+                color: 13936439,
+                fields: [
+                    { name: "Customer Name", value: name, inline: true },
+                    { name: "Message", value: msg }
+                ],
+                footer: { text: "Silver Citadel Shop Support" }
+            }]
         })
     }).then(() => {
-        alert("Message sent! Someone from our team will be with you in Discord shortly.");
-    }).catch(() => {
-        alert("Error sending message. Please join our Discord manually!");
+        alert("Message sent! We have been notified.");
+        toggleChat();
+        document.getElementById('userName').value = '';
+        document.getElementById('userMsg').value = '';
     });
 }
 
@@ -201,14 +245,12 @@ function sendSupportAlert() {
 window.addEventListener('DOMContentLoaded', () => {
     const priceElems = document.querySelectorAll('.price');
     const hasDiscount = localStorage.getItem('sc_loyalty_earned');
-
     if (hasDiscount === 'true') {
         priceElems.forEach(el => {
             const basePrice = parseFloat(el.getAttribute('data-price'));
             const finalPrice = (basePrice * 0.95).toFixed(2);
             el.textContent = `$${finalPrice} / mo`;
         });
-        alert("🎉 Loyalty Applied! Your 5% discount from your last purchase is now active.");
         localStorage.removeItem('sc_loyalty_earned');
     }
 });
