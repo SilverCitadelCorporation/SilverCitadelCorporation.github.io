@@ -7,7 +7,6 @@
 <link rel="icon" type="image/png" href="logo.png">
 
 <style>
-/* ... (All your previous styles remain the same) ... */
 body {
     margin:0;
     font-family:'Garamond', serif;
@@ -63,9 +62,9 @@ nav .links a:hover, .dc-nav:hover { background: rgba(212,175,55,0.5); color:#fff
 .badge-sck { background: #d4af37; }
 .badge-custom { background: #4ade80; }
 
-.shop-card img { width: 130px; margin: 0 auto 20px auto; }
+.shop-card img { width: 130px; margin: 0 auto 20px auto; border-radius: 8px; }
 .shop-card h2 { margin-bottom:10px; color:#d4af37; }
-.desc-text { margin-bottom: 20px; font-style: italic; color: #ccc; font-size: 15px; }
+.desc-text { margin-bottom: 20px; font-style: italic; color: #ccc; font-size: 15px; min-height: 45px;}
 
 .price-box { margin-bottom:15px; }
 .old-price { text-decoration: line-through; color: #888; font-size: 16px; margin-right: 10px; }
@@ -79,8 +78,9 @@ nav .links a:hover, .dc-nav:hover { background: rgba(212,175,55,0.5); color:#fff
 .btn-container { display: flex; flex-direction: column; gap: 10px; }
 .btn-container button {
     width: 100%; padding: 12px; border: none; border-radius: 6px;
-    font-weight: bold; cursor: pointer; text-transform: uppercase;
+    font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.2s;
 }
+.btn-container button:hover { filter: brightness(1.2); transform: translateY(-2px); }
 
 .paypal { background-color: #0070ba; color: white; }
 .cashapp { background-color: #00c244; color: white; }
@@ -96,17 +96,12 @@ nav .links a:hover, .dc-nav:hover { background: rgba(212,175,55,0.5); color:#fff
 .step-list li { margin: 15px 0; padding-left: 35px; position: relative; font-size: 16px; }
 .step-list li::before { content: '⚔️'; position: absolute; left: 0; }
 
-/* --- NEW: LIVE SUPPORT BUTTON STYLE --- */
-.support-widget {
-    position: fixed; bottom: 20px; right: 20px; z-index: 1000;
-}
-
+.support-widget { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
 .support-btn {
     background: #5865F2; color: white; border: none; padding: 15px 25px;
     border-radius: 50px; font-weight: bold; cursor: pointer;
     box-shadow: 0 4px 15px rgba(0,0,0,0.5); transition: 0.3s;
 }
-
 .support-btn:hover { transform: scale(1.1); background: #4752c4; }
 
 footer { text-align: center; padding: 40px; color: #888; background: #0f172a; }
@@ -122,7 +117,7 @@ footer a { color: #5865F2; text-decoration: none; font-weight: bold; }
     </div>
     <div class="links">
         <a href="index.html">Home</a>
-        <a href="shop.html">Shop</a>
+        <a href="shop.html" style="color:#fff; border-bottom: 1px solid #d4af37;">Shop</a>
         <a href="https://discord.gg/silvercitadel" target="_blank" class="dc-nav">Join Discord</a>
     </div>
 </nav>
@@ -152,7 +147,7 @@ footer a { color: #5865F2; text-decoration: none; font-weight: bold; }
             <div class="badge badge-custom">30% OFF SALE</div>
             <img src="bot-elite.png" alt="Custom Bot">
             <h2>Custom Bot</h2>
-            <p class="desc-text">A unique custom build tailored specifically to your server's needs.</p>
+            <p class="desc-text">Custom build tailored specifically to your server's unique needs.</p>
             <div class="price-box">
                 <span class="old-price">$25.99</span>
                 <span class="price" data-price="18.19">$18.19 / mo</span>
@@ -186,15 +181,9 @@ footer a { color: #5865F2; text-decoration: none; font-weight: bold; }
 
 <script>
 // --- WEBHOOK SETTINGS ---
-// REPLACE 'YOUR_WEBHOOK_URL' WITH YOUR ACTUAL DISCORD WEBHOOK URL
-const DISCORD_WEBHOOK = 'YOUR_WEBHOOK_URL';
+const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1487495121640624239/mS1JBHdbq7pIupYpu_Bvwgv1cfhiDtS0YVb2K6eEmYWc3kZ-5lF2w5x0Expip_xpdWE8';
 
 function sendSupportAlert() {
-    if(DISCORD_WEBHOOK === 'YOUR_WEBHOOK_URL') {
-        alert("Please set up the Discord Webhook in the code first!");
-        return;
-    }
-
     fetch(DISCORD_WEBHOOK, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -219,6 +208,7 @@ window.addEventListener('DOMContentLoaded', () => {
             const finalPrice = (basePrice * 0.95).toFixed(2);
             el.textContent = `$${finalPrice} / mo`;
         });
+        alert("🎉 Loyalty Applied! Your 5% discount from your last purchase is now active.");
         localStorage.removeItem('sc_loyalty_earned');
     }
 });
