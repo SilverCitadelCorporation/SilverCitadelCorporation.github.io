@@ -29,20 +29,9 @@ nav {
     z-index:100;
 }
 
-nav .logo {
-    display:flex;
-    align-items:center;
-}
-
-nav .logo img {
-    width:50px;
-    margin-right:10px;
-}
-
-nav .logo span {
-    font-size:1.5rem;
-    font-weight:bold;
-}
+nav .logo { display:flex; align-items:center; }
+nav .logo img { width:50px; margin-right:10px; }
+nav .logo span { font-size:1.5rem; font-weight:bold; }
 
 nav .links a {
     margin-left:20px;
@@ -51,135 +40,113 @@ nav .links a {
     text-decoration:none;
     padding:8px 15px;
     border-radius:6px;
-    transition:all 0.3s;
+    transition:0.3s;
 }
 
 nav .links a:hover {
     background: rgba(212,175,55,0.5);
     color:#fff;
-    box-shadow:0 0 10px #d4af37;
 }
 
 .overlay {
-    background: rgba(0,0,0,0.75);
+    background: rgba(0,0,0,0.8);
     min-height:100vh;
-    padding:120px 30px 30px 30px;
+    padding:120px 20px 50px 20px;
     box-sizing:border-box;
     text-align:center;
 }
 
-.sale-banner {
-    background: linear-gradient(90deg, #b8860b, #d4af37, #b8860b);
-    color:#000;
-    padding:12px;
-    font-weight:bold;
-    font-size:18px;
-    border-radius:8px;
-    margin-bottom:25px;
-    box-shadow:0 0 20px rgba(212,175,55,0.6);
-}
-
-.shop-container {
+.shop-wrapper {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .shop-card {
     background: rgba(30,41,59,0.95);
-    max-width:400px;
-    padding:30px;
-    border-radius:12px;
-    border:2px solid rgba(212,175,55,0.6);
-    box-shadow:0 8px 30px rgba(0,0,0,0.8);
+    width: 100%;
+    max-width: 400px;
+    padding: 30px;
+    border-radius: 12px;
+    border: 2px solid rgba(212,175,55,0.6);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.8);
     transition: transform 0.3s;
-    flex: 1 1 350px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
 }
 
-.shop-card:hover {
-    transform: translateY(-5px);
+.shop-card:hover { transform: translateY(-10px); }
+
+/* Badge for the Custom Bot */
+.badge {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    background: #d4af37;
+    color: #000;
+    padding: 5px 15px;
+    font-weight: bold;
+    border-radius: 20px;
+    font-size: 14px;
+    box-shadow: 0 0 15px #d4af37;
 }
 
 .shop-card img {
-    width:140px;
-    margin-bottom:20px;
-    border-radius:8px;
-    transition: transform 0.3s;
+    width: 140px;
+    margin: 0 auto 20px auto;
+    border-radius: 8px;
 }
 
-.shop-card h2 {
-    margin-bottom:15px;
-    font-size:24px;
-    color:#d4af37;
-}
+.shop-card h2 { margin-bottom:15px; font-size:24px; color:#d4af37; }
 
 .shop-card ul {
-    list-style:none;
-    padding:0;
-    margin:0 0 20px 0;
-    text-align:left;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+    text-align: left;
+    flex-grow: 1;
 }
 
-.shop-card ul li {
-    margin:8px 0;
-    font-size:15px;
-}
+.shop-card ul li { margin: 8px 0; font-size: 15px; color: #eee; }
 
-.price-box {
-    margin-bottom:20px;
-}
-
-.price-box .old-price {
-    text-decoration: line-through;
-    color:#888;
-    font-size:16px;
-    margin-right:8px;
-}
-
-.price-box .price {
-    font-size:26px;
-    color:#4ade80;
-    font-weight:bold;
-}
+.price-box { margin-bottom:15px; }
+.old-price { text-decoration: line-through; color: #888; font-size: 16px; margin-right: 10px; }
+.price { font-size: 26px; color: #4ade80; font-weight: bold; }
 
 .loyalty-box {
-    margin-top:15px;
-    padding:10px;
-    background: rgba(74,222,128,0.1);
-    border:1px solid rgba(74,222,128,0.4);
-    border-radius:8px;
-    font-size:13px;
+    margin-bottom: 20px;
+    padding: 12px;
+    background: rgba(74, 222, 128, 0.1);
+    border: 1px solid rgba(74, 222, 128, 0.4);
+    border-radius: 8px;
+    font-size: 13px;
+    color: #4ade80;
 }
 
-.btn-container {
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    margin-top:15px;
-}
-
+.btn-container { display: flex; flex-direction: column; gap: 10px; }
 .btn-container button {
-    width:100%;
-    padding:12px;
-    border:none;
-    border-radius:6px;
-    font-weight:bold;
-    cursor:pointer;
-    text-transform:uppercase;
-    transition: all 0.2s;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.2s;
 }
 
-.paypal { background-color:#0070ba; color:white; }
-.cashapp { background-color:#00c244; color:white; }
+.paypal { background-color: #0070ba; color: white; }
+.cashapp { background-color: #00c244; color: white; }
 
 footer {
-    text-align:center;
-    margin-top:50px;
-    padding:20px;
-    font-size:14px;
-    color:#888;
-    border-top:1px solid rgba(212,175,55,0.3);
+    text-align: center;
+    padding: 40px;
+    color: #888;
+    background: #0f172a;
 }
 </style>
 </head>
@@ -198,80 +165,78 @@ footer {
 </nav>
 
 <div class="overlay">
-    <div class="sale-banner">
-        ⚔️ FLASH SALE: UP TO 30% OFF SELECT ITEMS! ⚔️
-    </div>
+    <h1 style="margin-bottom: 40px;">Silver Citadel Command Center</h1>
 
-    <div class="shop-container">
+    <div class="shop-wrapper">
         <section class="shop-card">
-            <img src="bot.png" alt="Standard Bot">
-            <h2>Standard Custom Bot</h2>
-            <ul>
-                <li>⚔️ Ticket System</li>
-                <li>🛡️ Moderation Tools</li>
-                <li>⚡ Custom Commands</li>
-            </ul>
+            <img src="bot.png" alt="SCK Bot">
+            <h2>SCK Bot</h2>
             <div class="price-box">
                 <span class="old-price">$7.99</span>
                 <span class="price" data-price="5.99">$5.99 / mo</span>
             </div>
+            <ul>
+                <li>⚔️ Advanced Ticket System</li>
+                <li>🛡️ Elite Moderation Tools</li>
+                <li>🔥 Banned Words Filter</li>
+                <li>⚡ Custom Commands</li>
+            </ul>
             <div class="loyalty-box">
-                🎁 <b>Reward:</b> Buy this to get 5% OFF your next order!
+                🎁 <b>PURCHASE BONUS:</b> Buy this to get 5% OFF your next order!
             </div>
             <div class="btn-container">
-                <a href="https://paypal.me/SilverCitadelCo" target="_blank" class="purchase-link"><button class="paypal">PayPal</button></a>
-                <a href="https://cash.app/$SilverCitadelCo" target="_blank" class="purchase-link"><button class="cashapp">Cash App</button></a>
+                <a href="https://paypal.me/SilverCitadelCo" target="_blank" class="buy-link"><button class="paypal">PayPal</button></a>
+                <a href="https://cash.app/$SilverCitadelCo" target="_blank" class="buy-link"><button class="cashapp">Cash App</button></a>
             </div>
         </section>
 
         <section class="shop-card">
-            <img src="bot-elite.png" alt="Elite Bot">
-            <h2>Elite Custom Bot</h2>
-            <ul>
-                <li>🔥 Everything in Standard</li>
-                <li>💰 Economy & Level System</li>
-                <li>🎮 Mini Games & Music</li>
-                <li>🚀 Priority Support</li>
-            </ul>
+            <div class="badge">30% OFF SALE</div>
+            <img src="bot-elite.png" alt="Custom Bot">
+            <h2>Custom Bot</h2>
             <div class="price-box">
                 <span class="old-price">$25.99</span>
                 <span class="price" data-price="18.19">$18.19 / mo</span>
             </div>
+            <ul>
+                <li>👑 <b>Everything in SCK Bot</b></li>
+                <li>💰 Full Economy & Leveling</li>
+                <li>🎮 Integrated Mini Games</li>
+                <li>🎙️ Music & Voice Controls</li>
+                <li>🚀 24/7 Priority Support</li>
+            </ul>
             <div class="loyalty-box">
-                🎁 <b>Reward:</b> Buy this to get 5% OFF your next order!
+                🎁 <b>PURCHASE BONUS:</b> Buy this to get 5% OFF your next order!
             </div>
             <div class="btn-container">
-                <a href="https://paypal.me/SilverCitadelCo" target="_blank" class="purchase-link"><button class="paypal">PayPal</button></a>
-                <a href="https://cash.app/$SilverCitadelCo" target="_blank" class="purchase-link"><button class="cashapp">Cash App</button></a>
+                <a href="https://paypal.me/SilverCitadelCo" target="_blank" class="buy-link"><button class="paypal">PayPal</button></a>
+                <a href="https://cash.app/$SilverCitadelCo" target="_blank" class="buy-link"><button class="cashapp">Cash App</button></a>
             </div>
         </section>
     </div>
 </div>
 
-<footer>&copy; 2026 Silver Citadel Corporation.</footer>
+<footer>&copy; 2026 Silver Citadel Corporation</footer>
 
 <script>
 window.addEventListener('DOMContentLoaded', () => {
-    const priceElements = document.querySelectorAll('.price');
-    const discountActive = localStorage.getItem('sc_loyalty_discount');
+    const priceElems = document.querySelectorAll('.price');
+    const hasDiscount = localStorage.getItem('sc_loyalty_earned');
 
-    if (discountActive === 'true') {
-        priceElements.forEach(el => {
-            const original = parseFloat(el.getAttribute('data-price'));
-            const discounted = (original * 0.95).toFixed(2);
-            el.textContent = `$${discounted} / mo`;
+    if (hasDiscount === 'true') {
+        priceElems.forEach(el => {
+            const basePrice = parseFloat(el.getAttribute('data-price'));
+            const finalPrice = (basePrice * 0.95).toFixed(2);
+            el.textContent = `$${finalPrice} / mo`;
         });
-        alert('🎉 Welcome back! Your 5% loyalty discount has been applied to all items.');
-        // We keep the discount for the session or clear it after purchase. 
-        // For now, let's clear it so it only applies once.
-        localStorage.removeItem('sc_loyalty_discount');
+        alert("🎉 Loyalty Applied! Your 5% discount is active because of your last purchase.");
+        localStorage.removeItem('sc_loyalty_earned');
     }
 });
 
-// Activate the discount for the NEXT visit when they click a buy button
-document.querySelectorAll('.purchase-link').forEach(link => {
+document.querySelectorAll('.buy-link').forEach(link => {
     link.addEventListener('click', () => {
-        localStorage.setItem('sc_loyalty_discount', 'true');
+        localStorage.setItem('sc_loyalty_earned', 'true');
     });
 });
 </script>
