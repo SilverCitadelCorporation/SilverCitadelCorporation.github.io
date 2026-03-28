@@ -34,18 +34,23 @@ nav .logo img { width:50px; margin-right:10px; }
 nav .logo span { font-size:1.5rem; font-weight:bold; }
 
 nav .links a {
-    margin-left:20px;
+    margin-left:15px;
     color:#d4af37;
     font-weight:bold;
     text-decoration:none;
-    padding:8px 15px;
+    padding:8px 12px;
     border-radius:6px;
     transition:0.3s;
 }
 
-nav .links a:hover {
+nav .links a:hover, .dc-nav:hover {
     background: rgba(212,175,55,0.5);
     color:#fff;
+}
+
+.dc-nav {
+    background: #5865F2;
+    color: white !important;
 }
 
 .overlay {
@@ -61,19 +66,19 @@ nav .links a:hover {
     flex-wrap: wrap;
     justify-content: center;
     gap: 30px;
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
 }
 
 .shop-card {
     background: rgba(30,41,59,0.95);
     width: 100%;
-    max-width: 400px;
+    max-width: 380px;
     padding: 30px;
     border-radius: 12px;
     border: 2px solid rgba(212,175,55,0.6);
     box-shadow: 0 8px 30px rgba(0,0,0,0.8);
-    transition: transform 0.3s;
+    transition: 0.3s;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -81,37 +86,34 @@ nav .links a:hover {
 
 .shop-card:hover { transform: translateY(-10px); }
 
-/* Badge for the Custom Bot */
+/* Sale Badges */
 .badge {
     position: absolute;
-    top: -15px;
-    right: -15px;
-    background: #d4af37;
+    top: -12px;
+    right: -12px;
     color: #000;
-    padding: 5px 15px;
+    padding: 6px 15px;
     font-weight: bold;
     border-radius: 20px;
-    font-size: 14px;
-    box-shadow: 0 0 15px #d4af37;
+    font-size: 13px;
+    box-shadow: 0 0 15px rgba(212,175,55,0.5);
 }
+.badge-sck { background: #d4af37; }
+.badge-custom { background: #4ade80; }
 
 .shop-card img {
-    width: 140px;
+    width: 130px;
     margin: 0 auto 20px auto;
-    border-radius: 8px;
 }
 
-.shop-card h2 { margin-bottom:15px; font-size:24px; color:#d4af37; }
+.shop-card h2 { margin-bottom:10px; color:#d4af37; }
 
-.shop-card ul {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 20px 0;
-    text-align: left;
-    flex-grow: 1;
+.desc-text {
+    margin-bottom: 20px;
+    font-style: italic;
+    color: #ccc;
+    font-size: 15px;
 }
-
-.shop-card ul li { margin: 8px 0; font-size: 15px; color: #eee; }
 
 .price-box { margin-bottom:15px; }
 .old-price { text-decoration: line-through; color: #888; font-size: 16px; margin-right: 10px; }
@@ -119,12 +121,11 @@ nav .links a:hover {
 
 .loyalty-box {
     margin-bottom: 20px;
-    padding: 12px;
-    background: rgba(74, 222, 128, 0.1);
-    border: 1px solid rgba(74, 222, 128, 0.4);
+    padding: 10px;
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.3);
     border-radius: 8px;
     font-size: 13px;
-    color: #4ade80;
 }
 
 .btn-container { display: flex; flex-direction: column; gap: 10px; }
@@ -136,11 +137,47 @@ nav .links a:hover {
     font-weight: bold;
     cursor: pointer;
     text-transform: uppercase;
-    transition: 0.2s;
 }
 
 .paypal { background-color: #0070ba; color: white; }
 .cashapp { background-color: #00c244; color: white; }
+
+/* HOW TO REDEEM SECTION */
+.redeem-section {
+    max-width: 800px;
+    margin: 60px auto 0;
+    padding: 30px;
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px dashed #d4af37;
+    border-radius: 12px;
+    text-align: left;
+}
+
+.redeem-section h3 {
+    color: #d4af37;
+    text-align: center;
+    margin-top: 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.step-list {
+    list-style: none;
+    padding: 0;
+}
+
+.step-list li {
+    margin: 15px 0;
+    padding-left: 35px;
+    position: relative;
+    font-size: 16px;
+}
+
+.step-list li::before {
+    content: '⚔️';
+    position: absolute;
+    left: 0;
+}
 
 footer {
     text-align: center;
@@ -148,6 +185,8 @@ footer {
     color: #888;
     background: #0f172a;
 }
+
+footer a { color: #5865F2; text-decoration: none; font-weight: bold; }
 </style>
 </head>
 <body>
@@ -160,29 +199,26 @@ footer {
     <div class="links">
         <a href="index.html">Home</a>
         <a href="shop.html">Shop</a>
-        <a href="tos.html">TOS</a>
+        <a href="https://discord.gg/silvercitadel" target="_blank" class="dc-nav">Join Discord</a>
     </div>
 </nav>
 
 <div class="overlay">
-    <h1 style="margin-bottom: 40px;">Silver Citadel Command Center</h1>
+    <h1 style="margin-bottom: 10px;">The Armory</h1>
+    <p style="margin-bottom: 40px; color: #aaa;">Secure your server with our elite bot systems.</p>
 
     <div class="shop-wrapper">
         <section class="shop-card">
+            <div class="badge badge-sck">25% OFF SALE</div>
             <img src="bot.png" alt="SCK Bot">
             <h2>SCK Bot</h2>
+            <p class="desc-text">Advanced tickets, elite moderation, and custom command suite.</p>
             <div class="price-box">
                 <span class="old-price">$7.99</span>
                 <span class="price" data-price="5.99">$5.99 / mo</span>
             </div>
-            <ul>
-                <li>⚔️ Advanced Ticket System</li>
-                <li>🛡️ Elite Moderation Tools</li>
-                <li>🔥 Banned Words Filter</li>
-                <li>⚡ Custom Commands</li>
-            </ul>
             <div class="loyalty-box">
-                🎁 <b>PURCHASE BONUS:</b> Buy this to get 5% OFF your next order!
+                🎁 Buy now to get 5% OFF your next order!
             </div>
             <div class="btn-container">
                 <a href="https://paypal.me/SilverCitadelCo" target="_blank" class="buy-link"><button class="paypal">PayPal</button></a>
@@ -191,22 +227,16 @@ footer {
         </section>
 
         <section class="shop-card">
-            <div class="badge">30% OFF SALE</div>
+            <div class="badge badge-custom">30% OFF SALE</div>
             <img src="bot-elite.png" alt="Custom Bot">
             <h2>Custom Bot</h2>
+            <p class="desc-text">A unique custom build tailored specifically to your server's needs.</p>
             <div class="price-box">
                 <span class="old-price">$25.99</span>
                 <span class="price" data-price="18.19">$18.19 / mo</span>
             </div>
-            <ul>
-                <li>👑 <b>Everything in SCK Bot</b></li>
-                <li>💰 Full Economy & Leveling</li>
-                <li>🎮 Integrated Mini Games</li>
-                <li>🎙️ Music & Voice Controls</li>
-                <li>🚀 24/7 Priority Support</li>
-            </ul>
             <div class="loyalty-box">
-                🎁 <b>PURCHASE BONUS:</b> Buy this to get 5% OFF your next order!
+                🎁 Buy now to get 5% OFF your next order!
             </div>
             <div class="btn-container">
                 <a href="https://paypal.me/SilverCitadelCo" target="_blank" class="buy-link"><button class="paypal">PayPal</button></a>
@@ -214,9 +244,22 @@ footer {
             </div>
         </section>
     </div>
+
+    <div class="redeem-section">
+        <h3>How to Redeem Your Bot</h3>
+        <ul class="step-list">
+            <li><b>Step 1:</b> Select your bot and complete the payment via PayPal or Cash App.</li>
+            <li><b>Step 2:</b> Click the <b>"Join Discord"</b> button in the navigation bar to enter our headquarters.</li>
+            <li><b>Step 3:</b> Open a <b>Support Ticket</b> and provide a screenshot of your payment receipt.</li>
+            <li><b>Step 4:</b> Our technicians will begin building your custom instance immediately!</li>
+            <li><b>Step 5:</b> Your 5% Loyalty Discount will be ready for you the next time you visit this shop.</li>
+        </ul>
+    </div>
 </div>
 
-<footer>&copy; 2026 Silver Citadel Corporation</footer>
+<footer>
+    &copy; 2026 Silver Citadel Corporation | <a href="https://discord.gg/silvercitadel" target="_blank">Support Discord</a>
+</footer>
 
 <script>
 window.addEventListener('DOMContentLoaded', () => {
