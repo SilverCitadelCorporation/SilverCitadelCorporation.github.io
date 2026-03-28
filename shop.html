@@ -27,12 +27,15 @@ nav .logo { display:flex; align-items:center; }
 nav .logo img { width:50px; margin-right:10px; }
 nav .logo span { font-size:1.5rem; font-weight:bold; }
 
+nav .links { display: flex; align-items: center; }
 nav .links a {
     margin-left:15px; color:#d4af37; font-weight:bold;
     text-decoration:none; padding:8px 12px; border-radius:6px; transition:0.3s;
+    font-size: 14px;
 }
 
-nav .links a:hover { background: rgba(212,175,55,0.5); color:#fff; }
+nav .links a:hover { background: rgba(212,175,55,0.3); color:#fff; }
+.dc-btn { background: #5865F2; color: white !important; }
 
 .overlay {
     background: rgba(0,0,0,0.8); min-height:100vh;
@@ -83,45 +86,31 @@ nav .links a:hover { background: rgba(212,175,55,0.5); color:#fff; }
 .paypal { background-color: #0070ba; color: white; }
 .cashapp { background-color: #00c244; color: white; }
 
-.redeem-section {
-    max-width: 800px; margin: 60px auto 0; padding: 30px;
-    background: rgba(15, 23, 42, 0.8); border: 1px dashed #d4af37;
-    border-radius: 12px; text-align: left;
+/* --- LIVE CHAT STYLES --- */
+.chat-container {
+    position: fixed; bottom: 20px; right: 20px; z-index: 1000;
 }
-
-.redeem-section h3 { color: #d4af37; text-align: center; margin-top: 0; text-transform: uppercase; letter-spacing: 2px; }
-.step-list { list-style: none; padding: 0; }
-.step-list li { margin: 15px 0; padding-left: 35px; position: relative; font-size: 16px; }
-.step-list li::before { content: '⚔️'; position: absolute; left: 0; }
-
-/* --- CHAT SYSTEM STYLES --- */
-.support-widget { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
-.support-btn {
-    background: #5865F2; color: white; border: none; padding: 15px 25px;
+.chat-trigger {
+    background: #d4af37; color: #000; border: none; padding: 15px 25px;
     border-radius: 50px; font-weight: bold; cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5); transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
-
-/* Chat Popup Window */
-.chat-window {
-    display: none; position: fixed; bottom: 90px; right: 20px;
-    width: 300px; background: #1e293b; border: 2px solid #d4af37;
-    border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    z-index: 1001; text-align: left;
+.chat-box {
+    display: none; width: 320px; height: 400px;
+    background: #1e293b; border: 2px solid #d4af37;
+    border-radius: 12px; flex-direction: column;
+    overflow: hidden; margin-bottom: 10px;
 }
-.chat-window h4 { margin-top: 0; color: #d4af37; }
-.chat-window input, .chat-window textarea {
-    width: 100%; margin-bottom: 10px; background: #0f172a;
-    border: 1px solid #d4af37; color: #fff; padding: 8px;
-    border-radius: 4px; box-sizing: border-box;
-}
-.send-chat-btn {
-    background: #4ade80; color: #000; border: none; width: 100%;
-    padding: 10px; font-weight: bold; border-radius: 4px; cursor: pointer;
-}
+.chat-header { background: #d4af37; color: #000; padding: 10px; font-weight: bold; }
+.chat-messages { flex: 1; padding: 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+.msg { padding: 8px 12px; border-radius: 8px; max-width: 80% ; font-size: 14px; }
+.msg.bot { background: #334155; align-self: flex-start; color: #fff; }
+.msg.user { background: #d4af37; align-self: flex-end; color: #000; }
+.chat-input-area { display: flex; padding: 10px; border-top: 1px solid #334155; }
+.chat-input-area input { flex: 1; background: #0f172a; border: 1px solid #d4af37; color: #fff; padding: 8px; border-radius: 4px; }
+.chat-input-area button { background: #4ade80; border: none; margin-left: 5px; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
 
 footer { text-align: center; padding: 40px; color: #888; background: #0f172a; }
-footer a { color: #d4af37; text-decoration: none; font-weight: bold; margin: 0 10px; }
 </style>
 </head>
 <body>
@@ -134,24 +123,24 @@ footer a { color: #d4af37; text-decoration: none; font-weight: bold; margin: 0 1
     <div class="links">
         <a href="index.html">Home</a>
         <a href="shop.html">Shop</a>
+        <a href="tos.html">TOS</a>
+        <a href="https://discord.gg/silvercitadel" target="_blank" class="dc-btn">Join Discord</a>
     </div>
 </nav>
 
 <div class="overlay">
-    <h1 style="margin-bottom: 10px;">The Armory</h1>
-    <p style="margin-bottom: 40px; color: #aaa;">Secure your server with our elite bot systems.</p>
+    <h1 style="margin-bottom: 40px;">The Armory</h1>
 
     <div class="shop-wrapper">
         <section class="shop-card">
             <div class="badge badge-sck">25% OFF SALE</div>
             <img src="bot.png" alt="SCK Bot">
             <h2>SCK Bot</h2>
-            <p class="desc-text">Advanced tickets, elite moderation, and custom command suite.</p>
+            <p class="desc-text">Advanced tickets and moderation tools.</p>
             <div class="price-box">
                 <span class="old-price">$7.99</span>
                 <span class="price" data-price="5.99">$5.99 / mo</span>
             </div>
-            <div class="loyalty-box">🎁 Buy now to get 5% OFF your next order!</div>
             <div class="btn-container">
                 <a href="https://paypal.me/SilverCitadelCo" target="_blank" class="buy-link"><button class="paypal">PayPal</button></a>
                 <a href="https://cash.app/$SilverCitadelCo" target="_blank" class="buy-link"><button class="cashapp">Cash App</button></a>
@@ -162,104 +151,66 @@ footer a { color: #d4af37; text-decoration: none; font-weight: bold; margin: 0 1
             <div class="badge badge-custom">30% OFF SALE</div>
             <img src="bot-elite.png" alt="Custom Bot">
             <h2>Custom Bot</h2>
-            <p class="desc-text">Custom build tailored specifically to your server's unique needs.</p>
+            <p class="desc-text">Custom build tailored to your specific needs.</p>
             <div class="price-box">
                 <span class="old-price">$25.99</span>
                 <span class="price" data-price="18.19">$18.19 / mo</span>
             </div>
-            <div class="loyalty-box">🎁 Buy now to get 5% OFF your next order!</div>
             <div class="btn-container">
                 <a href="https://paypal.me/SilverCitadelCo" target="_blank" class="buy-link"><button class="paypal">PayPal</button></a>
                 <a href="https://cash.app/$SilverCitadelCo" target="_blank" class="buy-link"><button class="cashapp">Cash App</button></a>
             </div>
         </section>
     </div>
-
-    <div class="redeem-section">
-        <h3>How to Redeem Your Bot</h3>
-        <ul class="step-list">
-            <li><b>Step 1:</b> Select your bot and complete the payment.</li>
-            <li><b>Step 2:</b> Join our Discord HQ (link in footer).</li>
-            <li><b>Step 3:</b> Open a ticket with your receipt.</li>
-            <li><b>Step 4:</b> We build and deliver your bot!</li>
-        </ul>
-    </div>
 </div>
 
-<div class="support-widget">
-    <div class="chat-window" id="chatWindow">
-        <h4>Live Support</h4>
-        <input type="text" id="userName" placeholder="Your Name" required>
-        <textarea id="userMsg" placeholder="How can we help?" rows="3" required></textarea>
-        <button class="send-chat-btn" onclick="submitChat()">Send Message</button>
+<div class="chat-container">
+    <div class="chat-box" id="chatBox">
+        <div class="chat-header">Citadel Support</div>
+        <div class="chat-messages" id="chatMsgs">
+            <div class="msg bot">Welcome to the Citadel! How can I help you today?</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" placeholder="Type a message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
     </div>
-    <button class="support-btn" onclick="toggleChat()">💬 Need Help?</button>
+    <button class="chat-trigger" onclick="toggleChat()">💬 Live Support</button>
 </div>
 
-<footer>
-    &copy; 2026 Silver Citadel Corporation | 
-    <a href="https://discord.gg/silvercitadel" target="_blank">Join Discord</a> | 
-    <a href="tos.html">Terms</a>
-</footer>
+<footer>&copy; 2026 Silver Citadel Corporation</footer>
 
 <script>
 const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1487495121640624239/mS1JBHdbq7pIupYpu_Bvwgv1cfhiDtS0YVb2K6eEmYWc3kZ-5lF2w5x0Expip_xpdWE8';
 
 function toggleChat() {
-    const chat = document.getElementById('chatWindow');
-    chat.style.display = chat.style.display === 'block' ? 'none' : 'block';
+    const box = document.getElementById('chatBox');
+    box.style.display = (box.style.display === 'flex') ? 'none' : 'flex';
 }
 
-function submitChat() {
-    const name = document.getElementById('userName').value;
-    const msg = document.getElementById('userMsg').value;
+function sendMessage() {
+    const input = document.getElementById('chatInput');
+    const msgs = document.getElementById('chatMsgs');
+    if (!input.value.trim()) return;
 
-    if (!name || !msg) {
-        alert("Please fill in both fields!");
-        return;
-    }
+    // Add user message to UI
+    const userDiv = document.createElement('div');
+    userDiv.className = 'msg user';
+    userDiv.textContent = input.value;
+    msgs.appendChild(userDiv);
 
+    // Send to Discord
     fetch(DISCORD_WEBHOOK, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            embeds: [{
-                title: "🚨 New Support Inquiry",
-                color: 13936439,
-                fields: [
-                    { name: "Customer Name", value: name, inline: true },
-                    { name: "Message", value: msg }
-                ],
-                footer: { text: "Silver Citadel Shop Support" }
-            }]
+            content: `🗨️ **Live Chat Message:** ${input.value}`
         })
-    }).then(() => {
-        alert("Message sent! We have been notified.");
-        toggleChat();
-        document.getElementById('userName').value = '';
-        document.getElementById('userMsg').value = '';
     });
+
+    input.value = '';
+    msgs.scrollTop = msgs.scrollHeight;
 }
-
-// --- LOYALTY LOGIC ---
-window.addEventListener('DOMContentLoaded', () => {
-    const priceElems = document.querySelectorAll('.price');
-    const hasDiscount = localStorage.getItem('sc_loyalty_earned');
-    if (hasDiscount === 'true') {
-        priceElems.forEach(el => {
-            const basePrice = parseFloat(el.getAttribute('data-price'));
-            const finalPrice = (basePrice * 0.95).toFixed(2);
-            el.textContent = `$${finalPrice} / mo`;
-        });
-        localStorage.removeItem('sc_loyalty_earned');
-    }
-});
-
-document.querySelectorAll('.buy-link').forEach(link => {
-    link.addEventListener('click', () => {
-        localStorage.setItem('sc_loyalty_earned', 'true');
-    });
-});
 </script>
 
 </body>
