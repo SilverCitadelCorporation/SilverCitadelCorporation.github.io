@@ -68,7 +68,6 @@ nav .links a:hover {
     text-align:center;
 }
 
-/* SALE BANNER */
 .sale-banner {
     background: linear-gradient(90deg, #b8860b, #d4af37, #b8860b);
     color:#000;
@@ -78,22 +77,24 @@ nav .links a:hover {
     border-radius:8px;
     margin-bottom:25px;
     box-shadow:0 0 20px rgba(212,175,55,0.6);
-    transition: transform 0.3s, box-shadow 0.3s;
 }
-.sale-banner:hover {
-    transform: scale(1.02);
-    box-shadow:0 0 30px rgba(212,175,55,0.9);
+
+.shop-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
 }
 
 .shop-card {
     background: rgba(30,41,59,0.95);
-    max-width:450px;
-    margin:40px auto;
+    max-width:400px;
     padding:30px;
     border-radius:12px;
     border:2px solid rgba(212,175,55,0.6);
     box-shadow:0 8px 30px rgba(0,0,0,0.8);
     transition: transform 0.3s;
+    flex: 1 1 350px;
 }
 
 .shop-card:hover {
@@ -101,22 +102,16 @@ nav .links a:hover {
 }
 
 .shop-card img {
-    width:160px;
+    width:140px;
     margin-bottom:20px;
     border-radius:8px;
     transition: transform 0.3s;
 }
 
-.shop-card img:hover {
-    transform: scale(1.05);
-    filter: drop-shadow(0 0 15px #d4af37);
-}
-
 .shop-card h2 {
     margin-bottom:15px;
-    font-size:26px;
+    font-size:24px;
     color:#d4af37;
-    text-shadow:1px 1px 3px #000;
 }
 
 .shop-card ul {
@@ -128,18 +123,7 @@ nav .links a:hover {
 
 .shop-card ul li {
     margin:8px 0;
-    font-size:16px;
-}
-
-.trust-bar {
-    display:flex;
-    justify-content:space-around;
-    font-size:13px;
-    margin-bottom:20px;
-    padding:10px;
-    border-radius:8px;
-    border:1px solid rgba(255,255,255,0.1);
-    background: rgba(255,255,255,0.05);
+    font-size:15px;
 }
 
 .price-box {
@@ -149,73 +133,45 @@ nav .links a:hover {
 .price-box .old-price {
     text-decoration: line-through;
     color:#888;
-    font-size:18px;
+    font-size:16px;
     margin-right:8px;
 }
 
 .price-box .price {
-    font-size:28px;
+    font-size:26px;
     color:#4ade80;
     font-weight:bold;
 }
 
 .loyalty-box {
     margin-top:15px;
-    padding:12px;
+    padding:10px;
     background: rgba(74,222,128,0.1);
     border:1px solid rgba(74,222,128,0.4);
     border-radius:8px;
-    font-size:14px;
+    font-size:13px;
 }
 
 .btn-container {
     display:flex;
     flex-direction:column;
-    align-items:center;
     gap:10px;
     margin-top:15px;
 }
 
 .btn-container button {
     width:100%;
-    max-width:300px;
     padding:12px;
     border:none;
     border-radius:6px;
     font-weight:bold;
     cursor:pointer;
     text-transform:uppercase;
-    letter-spacing:1px;
     transition: all 0.2s;
-}
-
-.btn-container button:hover {
-    opacity:0.9;
-    transform:translateY(-2px);
-}
-
-.btn-container button[title]:hover::after {
-    content: attr(title);
-    position: absolute;
-    background: rgba(0,0,0,0.8);
-    color: #d4af37;
-    padding:5px 8px;
-    border-radius:4px;
-    top:-35px;
-    font-size:12px;
 }
 
 .paypal { background-color:#0070ba; color:white; }
 .cashapp { background-color:#00c244; color:white; }
-.discord { background-color:#5865F2; color:white; }
-
-.info-section {
-    text-align:left;
-    margin-top:25px;
-    padding-top:15px;
-    border-top:1px solid rgba(212,175,55,0.2);
-    font-size:14px;
-}
 
 footer {
     text-align:center;
@@ -224,12 +180,6 @@ footer {
     font-size:14px;
     color:#888;
     border-top:1px solid rgba(212,175,55,0.3);
-}
-
-/* Mobile tweak */
-@media (max-width:500px){
-    .shop-card { margin:20px; padding:20px; }
-    .price-box .price { font-size:24px; }
 }
 </style>
 </head>
@@ -242,92 +192,84 @@ footer {
     </div>
     <div class="links">
         <a href="index.html">Home</a>
-        <a href="about.html">About</a>
         <a href="shop.html">Shop</a>
-        <a href="contact.html">Contact</a>
-        <a href="tos.html">Terms of Service</a>
+        <a href="tos.html">TOS</a>
     </div>
 </nav>
 
 <div class="overlay">
-
     <div class="sale-banner">
-        ⚔️ LIMITED TIME OFFER: 25% OFF TODAY! ⚔️
+        ⚔️ FLASH SALE: UP TO 30% OFF SELECT ITEMS! ⚔️
     </div>
 
-    <section class="shop-card">
-        <img src="bot.png" alt="Silver Citadel Bot" title="Custom Discord Bot">
-        <h2>Custom Discord Bot</h2>
+    <div class="shop-container">
+        <section class="shop-card">
+            <img src="bot.png" alt="Standard Bot">
+            <h2>Standard Custom Bot</h2>
+            <ul>
+                <li>⚔️ Ticket System</li>
+                <li>🛡️ Moderation Tools</li>
+                <li>⚡ Custom Commands</li>
+            </ul>
+            <div class="price-box">
+                <span class="old-price">$7.99</span>
+                <span class="price" data-price="5.99">$5.99 / mo</span>
+            </div>
+            <div class="loyalty-box">
+                🎁 <b>Reward:</b> Buy this to get 5% OFF your next order!
+            </div>
+            <div class="btn-container">
+                <a href="https://paypal.me/SilverCitadelCo" target="_blank" class="purchase-link"><button class="paypal">PayPal</button></a>
+                <a href="https://cash.app/$SilverCitadelCo" target="_blank" class="purchase-link"><button class="cashapp">Cash App</button></a>
+            </div>
+        </section>
 
-        <ul>
-            <li>⚔️ Advanced Ticket System</li>
-            <li>🛡️ Elite Moderation Tools</li>
-            <li>🔥 Banned Words Filter</li>
-            <li>⚡ Custom Commands</li>
-            <li>💰 Economy & Level System (Optional)</li>
-            <li>🎮 Mini Games (Optional)</li>
-        </ul>
-
-        <div class="trust-bar">
-            <span>✅ 99.9% Uptime</span>
-            <span>🛡️ Secure</span>
-            <span>🚀 Quick Setup</span>
-        </div>
-
-        <div class="price-box">
-            <span class="old-price">$7.99 / month</span>
-            <span class="price" data-price="5.99">$5.99 / month</span>
-        </div>
-
-        <div class="loyalty-box">
-            🎉 After completing your purchase, you will receive a 5% OFF discount automatically for your next monthly subscription!
-        </div>
-
-        <div class="btn-container">
-            <a href="https://paypal.me/SilverCitadelCo" target="_blank" title="Monthly Price: $5.99"><button class="paypal">Pay with PayPal</button></a>
-            <a href="https://cash.app/$SilverCitadelCo" target="_blank" title="Monthly Price: $5.99"><button class="cashapp">Pay with Cash App</button></a>
-            <a href="https://discord.gg/silvercitadel" target="_blank"><button class="discord">Join Discord to Claim</button></a>
-        </div>
-
-        <div class="info-section">
-            <h3>How It Works</h3>
-            <p>
-                1. Complete your monthly payment using PayPal or Cash App.<br>
-                2. Join our Discord server and open a support ticket.<br>
-                3. Provide your server details and customization requests.<br>
-                4. Receive your custom bot delivery within 1–2 hours.<br>
-                5. The 5% OFF discount will be applied automatically on your next monthly subscription.
-            </p>
-
-            <h3>Need Help?</h3>
-            <p>Join our Discord server and speak with our team. We’re happy to help.</p>
-        </div>
-
-    </section>
+        <section class="shop-card">
+            <img src="bot-elite.png" alt="Elite Bot">
+            <h2>Elite Custom Bot</h2>
+            <ul>
+                <li>🔥 Everything in Standard</li>
+                <li>💰 Economy & Level System</li>
+                <li>🎮 Mini Games & Music</li>
+                <li>🚀 Priority Support</li>
+            </ul>
+            <div class="price-box">
+                <span class="old-price">$25.99</span>
+                <span class="price" data-price="18.19">$18.19 / mo</span>
+            </div>
+            <div class="loyalty-box">
+                🎁 <b>Reward:</b> Buy this to get 5% OFF your next order!
+            </div>
+            <div class="btn-container">
+                <a href="https://paypal.me/SilverCitadelCo" target="_blank" class="purchase-link"><button class="paypal">PayPal</button></a>
+                <a href="https://cash.app/$SilverCitadelCo" target="_blank" class="purchase-link"><button class="cashapp">Cash App</button></a>
+            </div>
+        </section>
+    </div>
 </div>
 
-<footer>
-    &copy; 2026 Silver Citadel Corporation. All rights reserved.
-</footer>
+<footer>&copy; 2026 Silver Citadel Corporation.</footer>
 
-<!-- LOYALTY DISCOUNT SCRIPT -->
 <script>
 window.addEventListener('DOMContentLoaded', () => {
-    const priceElem = document.querySelector('.price');
-    const originalPrice = parseFloat(priceElem.getAttribute('data-price'));
-
-    // Apply 5% discount if user has it
+    const priceElements = document.querySelectorAll('.price');
     const discountActive = localStorage.getItem('sc_loyalty_discount');
+
     if (discountActive === 'true') {
-        const discountedPrice = (originalPrice * 0.95).toFixed(2);
-        priceElem.textContent = `$${discountedPrice} / month`;
+        priceElements.forEach(el => {
+            const original = parseFloat(el.getAttribute('data-price'));
+            const discounted = (original * 0.95).toFixed(2);
+            el.textContent = `$${discounted} / mo`;
+        });
+        alert('🎉 Welcome back! Your 5% loyalty discount has been applied to all items.');
+        // We keep the discount for the session or clear it after purchase. 
+        // For now, let's clear it so it only applies once.
         localStorage.removeItem('sc_loyalty_discount');
-        alert('🎉 Your 5% loyalty discount has been applied!');
     }
 });
 
-// Set loyalty discount on purchase click
-document.querySelectorAll('.btn-container a').forEach(link => {
+// Activate the discount for the NEXT visit when they click a buy button
+document.querySelectorAll('.purchase-link').forEach(link => {
     link.addEventListener('click', () => {
         localStorage.setItem('sc_loyalty_discount', 'true');
     });
